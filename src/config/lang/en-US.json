@@ -1,0 +1,8 @@
+{
+    "bot": {
+        "activity": {
+            "type": "LISTENING",
+            "text": "sick music"
+        }
+    }
+}

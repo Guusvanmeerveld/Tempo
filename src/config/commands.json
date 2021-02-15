@@ -1,0 +1,171 @@
+[
+    {
+        "name": "disconnect",
+        "aliases": [
+            "dis",
+            "d",
+            "l",
+            "leave"
+        ],
+        "usage": "disconnect",
+        "description": "Disconnect the bot from the voice channel.",
+        "requireVoice": true
+    },
+    {
+        "name": "help",
+        "aliases": [
+            "h"
+        ],
+        "usage": "help [page / command]",
+        "description": "Get information about a specific command or just a general list of commands."
+    },
+    {
+        "name": "invite",
+        "aliases": [
+            "inv",
+            "i"
+        ],
+        "usage": "invite",
+        "description": "Generates an invite to add this bot to your Discord server."
+    },
+    {
+        "name": "join",
+        "aliases": [
+            "j",
+            "summon",
+            "connect"
+        ],
+        "usage": "join",
+        "description": "Make the bot join the voice channel.",
+        "requireVoice": true
+    },
+    {
+        "name": "loop",
+        "aliases": [
+            "repeat",
+            "lo",
+            "re"
+        ],
+        "usage": "loop",
+        "description": "Loops the current song."
+    },
+    {
+        "name": "pause",
+        "aliases": [
+            "pa"
+        ],
+        "usage": "pause",
+        "description": "Pause or unpause the bot.",
+        "requireVoice": true
+    },
+    {
+        "name": "ping",
+        "aliases": [
+            "pi"
+        ],
+        "usage": "ping",
+        "description": "Ping the bot to get the latency"
+    },
+    {
+        "name": "play",
+        "aliases": [
+            "p"
+        ],
+        "usage": "play [link to song or playlist / youtube query]",
+        "description": "Play a song via a link or a search request.",
+        "requireVoice": true
+    },
+    {
+        "name": "playskip",
+        "aliases": [
+            "ps",
+            "now"
+        ],
+        "usage": "playskip [link to song or playlist / youtube query]",
+        "description": "Plays a song immediately, ingoring the queue.",
+        "requireVoice": true
+    },
+    {
+        "name": "purge",
+        "aliases": [
+            "pu",
+            "clean"
+        ],
+        "usage": "purge [number of messages to delete]",
+        "description": "Cleans the channel by removing all the bots messages and command inputs."
+    },
+    {
+        "name": "queue",
+        "aliases": [
+            "q",
+            "list",
+            "songs"
+        ],
+        "usage": "queue",
+        "description": "Gives a list of all the songs currently in the queue."
+    },
+    {
+        "name": "resume",
+        "aliases": [
+            "r"
+        ],
+        "usage": "resume",
+        "description": "Resume the bot.",
+        "requireVoice": true
+    },
+    {
+        "name": "search",
+        "aliases": [
+            "f",
+            "find"
+        ],
+        "usage": "search [search query]",
+        "description": "Search for music video's on youtube."
+    },
+    {
+        "name": "settings",
+        "aliases": [
+            "set",
+            "setting"
+        ],
+        "usage": "settings [setting to change] [new value of the setting]",
+        "description": "Change the settings to the way you want the bot to behave."
+    },
+    {
+        "name": "shuffle",
+        "aliases": [
+            "shfl"
+        ],
+        "usage": "shuffle",
+        "description": "Shuffle the current queue."
+    },
+    {
+        "name": "skip",
+        "aliases": [
+            "s",
+            "next"
+        ],
+        "usage": "skip [amount of songs to skip]",
+        "description": "Skip the current song.",
+        "requireVoice": true
+    },
+    {
+        "name": "stop",
+        "aliases": [
+            "stp",
+            "st"
+        ],
+        "usage": "stop",
+        "description": "Stop the bot.",
+        "requireVoice": true
+    },
+    {
+        "name": "volume",
+        "aliases": [
+            "v",
+            "vol"
+        ],
+        "usage": "volume [0 - 1000]%",
+        "description": "Set the bots volume."
+    }
+]
