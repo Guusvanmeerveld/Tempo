@@ -1,12 +1,19 @@
 const { search_platform }: { search_platform: string } = require("../config/settings.json");
 
-import DefaultEmbed from "@models/embed";
-import { Command } from "@models/command";
-import Song from "@models/song";
+import DefaultEmbed from "../models/embed";
+import { Command } from "../models/command";
+import { abbreviate } from "../utils/functions";
+import Song from "../models/song";
 
 import { Message } from "discord.js";
 
+import ytdl from "ytdl-core";
+import scdl from "soundcloud-downloader";
+
 import youtube from "../utils/requests/youtube";
+import soundcloud from "../utils/requests/soundcloud";
+
+import { Readable } from "node:stream";
 
 const ytRegex = /^(https?:\/\/)?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/.+$/gi;
 const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
@@ -38,25 +45,60 @@ export class Play implements Command {
       msg.channel.send(`Successfully joined \`${msg.member?.voice.channel?.name ?? "Unknown channel"}\`.`);
     }
 
-    this.info(args[0]).then((info: Song) => {
+    this.info(msg, args).then((info: Song) => {
       let embed = new DefaultEmbed(msg.author);
 
-      embed.setTitle(info?.title ?? "No title");
+      embed.setTitle(info?.title ?? "Unknown song");
       embed.setThumbnail(info?.image);
+      embed.setURL(info?.url);
 
-      embed.addFields({ name: "Published", value: info?.date ?? "Unknown" });
+      embed.addFields(
+        { name: "Published:", value: info?.date.toLocaleDateString() ?? "Unknown date", inline: true },
+        { name: "Author:", value: info?.author, inline: true },
+        { name: "Streams:", value: abbreviate(info?.views ?? 0), inline: true }
+      );
 
-      msg.channel.send(embed);
+      if (info?.likes) {
+        embed.addField("Likes:", abbreviate(info?.likes ?? 0), true);
+      }
+
+      if (info?.dislikes) {
+        embed.addField("Dislikes:", abbreviate(info?.dislikes ?? 0), true);
+      }
+
+      msg.channel.send("🎵  Now playing:", { embed });
+
+      switch (info.platform) {
+        case "youtube":
+          this.stream(msg, ytdl(info.url));
+          break;
+        case "soundcloud":
+          scdl.download(info.url).then((stream) => this.stream(msg, stream));
+          break;
+      }
     });
   }
 
-  private async info(input: string): Promise<Song> {
+  private stream(msg: Message, stream: Readable | string) {
+    if (msg.guild?.voice?.connection) {
+      const connection = msg.guild.voice.connection;
+
+      // let musicStream = typeof stream == "string" ? stream : this.filter(stream);
+
+      connection.play(stream).on("finish", () => {
+        msg.guild?.voice?.channel?.leave();
+      });
+    }
+  }
+
+  private async info(msg: Message, args: Array<string>): Promise<Song> {
+    let input = args[0];
     if (input.match(ytRegex)) {
       return await youtube.info(input);
     }
 
     if (input.match(scRegex)) {
-      // return
+      return await soundcloud.info(input);
     }
 
     if (input.match(spRegex)) {
@@ -64,20 +106,39 @@ export class Play implements Command {
     }
 
     if (input.match(audioPattern)) {
-      // return
     }
 
-    return await this.search(input);
+    let search = args.join(" ");
+
+    msg.channel.send(`🔍  Searching for \`${search}\`.`);
+    return await this.search(search);
   }
 
-  private stream() {}
+  private filter(inputStream: Readable) {
+    // let audioContext = null;
+    // if (HasAudioContext) {
+    //   audioContext = new AudioContext();
+    // }
+    // const input = new Input(audioContext);
+    // input.input = inputStream;
+    // const distortion = new Distortion(audioContext);
+    // distortion.intensity = 200;
+    // distortion.gain = 100;
+    // distortion.lowPassFilter = true;
+    // return new Output(audioContext);
+  }
 
   private async search(input: string) {
     switch (search_platform) {
+      case "soundcloud":
+        let tracks = await soundcloud.search(input, 5);
+        let track = tracks.collection[0];
+
+        return await soundcloud.info(track.permalink_url);
       default:
         let video = await youtube.search(input, 1);
 
-        return youtube.info(video.id);
+        return youtube.info(video?.id ?? "Unknown");
     }
   }
 }

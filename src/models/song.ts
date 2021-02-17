@@ -3,8 +3,9 @@ export default interface Song {
   title: string;
   author: string;
   image: string;
-  date: string;
+  date: Date;
   views?: number;
   likes?: number;
   dislikes?: number;
+  url: string;
 }

@@ -5,14 +5,18 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev src/start.ts",
-    "build": "tsc",
-    "start": "tsc && node dist/index.js --production"
+    "build": "tsc --project tsconfig.json",
+    "start": "tsc --project tsconfig.json && node dist/index.js --production"
   },
   "author": "Guus van Meerveld",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "discord.js": "^12.5.1",
+    "opusscript": "^0.0.7",
+    "pg": "^8.5.1",
+    "soundcloud-downloader": "^0.2.4",
+    "ytdl": "^1.4.1",
     "ytsr": "^3.3.0"
   },
   "devDependencies": {

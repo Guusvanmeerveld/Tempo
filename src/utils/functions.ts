@@ -22,3 +22,15 @@ export function chunk(array: Array<any>, size: number) {
 export function ucFirst(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+const abs = ["K", "M", "B", "T"];
+export function abbreviate(number: number) {
+  for (var i = abs.length - 1; i >= 0; i--) {
+    let zero = Math.pow(1000, i) * 1000;
+    if (number >= zero) {
+      return Math.floor(number / zero) + abs[i];
+    }
+  }
+
+  return number;
+}
