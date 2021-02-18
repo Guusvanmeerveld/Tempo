@@ -1,5 +1,4 @@
-import { BotMessage } from "../models/message";
-import { Command } from "../models/command";
+import { BotMessage, Command } from "../models";
 
 import { Play } from "./play";
 

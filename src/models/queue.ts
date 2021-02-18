@@ -1,4 +1,4 @@
-import Song from "./song";
+import { Song } from "./song";
 
 export interface Queue {
   songs: Array<Song>;

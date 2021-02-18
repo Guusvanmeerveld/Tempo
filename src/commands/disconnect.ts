@@ -1,6 +1,5 @@
-import { BotMessage } from "../models/message";
+import { BotMessage, Command } from "../models";
 import { VoiceChannel } from "discord.js";
-import { Command } from "../models/command";
 
 export class Disconnect implements Command {
   name: string;

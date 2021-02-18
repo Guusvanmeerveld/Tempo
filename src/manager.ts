@@ -1,4 +1,4 @@
-const { discordToken } = require("./config/tokens.json");
+const { discordToken } = require(process.cwd() + "/src/config/tokens.json");
 
 import { ShardingManager } from "discord.js";
 

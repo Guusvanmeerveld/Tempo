@@ -5,13 +5,14 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev src/start.ts",
-    "build": "tsc --project tsconfig.json",
-    "start": "tsc --project tsconfig.json && node dist/index.js --production"
+    "build": "tsc",
+    "start": "node . --production"
   },
   "author": "Guus van Meerveld",
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
+    "@zerollup/ts-transform-paths": "^1.7.18",
     "axios": "^0.21.1",
     "discord.js": "^12.5.1",
     "discord.js-light": "3.5.3",
@@ -24,9 +25,9 @@
   "devDependencies": {
     "@types/humanize-duration": "^3.18.1",
     "@types/node": "^14.14.27",
+    "@types/ws": "^7.4.0",
     "chalk": "^4.1.0",
     "ts-node-dev": "^1.1.1",
-    "tslint": "^6.1.3",
-    "typescript": "^4.1.5"
+    "typescript": "^4.1.3"
   }
 }

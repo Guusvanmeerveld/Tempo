@@ -1,10 +1,9 @@
 import { Collection, Guild, Message, TextChannel, User } from "discord.js";
-import { Command } from "./models/command";
-const { prefix } = require("./config/settings.json");
 
+import { Command, BotMessage, Queue } from "./models";
 import { Disconnect, Help, Join, Play, Ping, Volume, Uptime, Skip } from "./commands";
-import { BotMessage } from "./models/message";
-import { Queue } from "./models/queue";
+
+const { prefix } = require(process.cwd() + "/src/config/settings.json");
 
 export class HandleMessage {
   public commands: Collection<string, Command>;

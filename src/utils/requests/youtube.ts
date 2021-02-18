@@ -1,6 +1,6 @@
-const { youtubeToken } = require("../../config/tokens.json");
+const { youtubeToken } = require(process.cwd() + "/src/config/tokens.json");
 
-import Song from "../../models/song";
+import { Song } from "../../models";
 import axios from "axios";
 import ytsr, { Video } from "ytsr";
 

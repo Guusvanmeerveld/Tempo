@@ -1,4 +1,3 @@
-import { Collection } from "discord.js";
 import { Client } from "discord.js-light";
 import Console from "./utils/console";
 import lang from "./utils/language";

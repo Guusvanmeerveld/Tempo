@@ -1,10 +1,8 @@
-const { prefix } = require("../config/settings.json");
+const { prefix } = require(process.cwd() + "/src/config/settings.json");
 
-import { Command } from "../models/command";
-import DefaultEmbed from "../models/embed";
+import { Command, DefaultEmbed, BotMessage } from "../models";
 import getCommands from "../utils/requests/commands";
 import { chunk } from "../utils/functions";
-import { BotMessage } from "../models/message";
 
 export class Help implements Command {
   name: string;

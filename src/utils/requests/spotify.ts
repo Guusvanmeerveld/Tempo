@@ -1,6 +1,6 @@
-const { spotify } = require("../../config/tokens.json");
+const { spotify } = require(process.cwd() + "/src/config/tokens.json");
 
-import Song from "../../models/song";
+import { Song } from "../../models";
 import axios from "axios";
 import Console from "../console";
 

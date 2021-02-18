@@ -1,5 +1,4 @@
-import { BotMessage } from "../models/message";
-import { Command } from "../models/command";
+import { BotMessage, Command } from "../models";
 
 export class Ping implements Command {
   name: string;

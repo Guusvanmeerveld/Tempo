@@ -1,27 +1,24 @@
-const { search_platform }: { search_platform: string } = require("../config/settings.json");
+const { search_platform }: { search_platform: string } = require(process.cwd() + "/src/config/settings.json");
 
-import DefaultEmbed from "../models/embed";
-import { Command } from "../models/command";
+import { Command, BotMessage, Queue, Song, DefaultEmbed } from "../models";
+
+import Console from "../utils/console";
 import { abbreviate, ucFirst } from "../utils/functions";
-import Song from "../models/song";
-
-import { Join } from "./join";
-
-const join = new Join().run;
-
-import ytdl from "ytdl-core";
-import scdl from "soundcloud-downloader";
 
 import youtube from "../utils/requests/youtube";
+
 import soundcloud from "../utils/requests/soundcloud";
 import Spotify from "../utils/requests/spotify";
 
 let spotify = new Spotify();
 
+import { Join } from "./join";
+const join = new Join().run;
+
+import ytdl from "ytdl-core";
+import scdl from "soundcloud-downloader";
+
 import { Readable } from "node:stream";
-import { BotMessage } from "../models/message";
-import { Queue } from "../models/queue";
-import Console from "../utils/console";
 import { Video } from "ytsr";
 
 const ytRegex = /^(https?:\/\/)?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/.+$/gi;

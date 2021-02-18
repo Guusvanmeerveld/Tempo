@@ -1,6 +1,6 @@
-const { soundcloudToken } = require("../../config/tokens.json");
+const { soundcloudToken } = require(process.cwd() + "/src/config/tokens.json");
 
-import Song from "../../models/song";
+import { Song } from "../../models";
 import axios from "axios";
 
 const request = axios.create({

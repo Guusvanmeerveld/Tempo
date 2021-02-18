@@ -1,7 +1,7 @@
 console.clear();
-process.env.NODE_ENV = "development";
+// process.env.NODE_ENV = "development";
 
-const { discordToken } = require("./config/tokens.json");
+const { discordToken } = require(process.cwd() + "/src/config/tokens.json");
 import { handleGuildJoin, HandleMessage } from "./events";
 
 import Bot from "./bot";

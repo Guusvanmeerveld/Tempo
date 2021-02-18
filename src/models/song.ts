@@ -1,4 +1,4 @@
-export default interface Song {
+export interface Song {
   platform: string;
   title: string;
   author: string;

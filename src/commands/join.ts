@@ -1,6 +1,5 @@
-import { BotMessage } from "../models/message";
+import { BotMessage, Command } from "../models";
 import { User, VoiceChannel } from "discord.js";
-import { Command } from "../models/command";
 
 export class Join implements Command {
   name: string;

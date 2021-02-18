@@ -1,5 +1,4 @@
-import { Command } from "../models/command";
-import { BotMessage } from "../models/message";
+import { Command, BotMessage } from "../models";
 
 import humanizeDuration from "humanize-duration";
 
