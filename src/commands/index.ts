@@ -6,3 +6,4 @@ export * from "./ping";
 export * from "./volume";
 export * from "./uptime";
 export * from "./skip";
+export * from "./queue";

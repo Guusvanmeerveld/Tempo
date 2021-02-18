@@ -8,10 +8,13 @@ export class Skip implements Command {
   name: string;
   aliases: Array<string>;
   player: Play;
+  description: string;
+
   constructor() {
     this.player = new Play();
     this.name = "skip";
     this.aliases = ["s"];
+    this.description = "Skip the current song.";
   }
 
   run(msg: Message, args: Array<string>, client: Bot) {

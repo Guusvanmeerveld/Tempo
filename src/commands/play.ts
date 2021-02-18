@@ -1,6 +1,6 @@
 const { search_platform }: { search_platform: string } = require(process.cwd() + "/src/config/settings.json");
 
-import { Command, Queue, Song, DefaultEmbed } from "../models";
+import { Command, Song, DefaultEmbed } from "../models";
 
 import Console from "../utils/console";
 import { abbreviate, ucFirst } from "../utils/functions";
@@ -33,13 +33,21 @@ export class Play implements Command {
   name: string;
   aliases: Array<string>;
   voice: boolean;
+  description: string;
 
   constructor() {
     this.name = "play";
     this.aliases = ["p"];
     this.voice = true;
+    this.description = "Play a song via a link or a search request.";
   }
 
+  /**
+   * Join the voice channel, get info about the song and play it.
+   * @param msg
+   * @param args
+   * @param client
+   */
   public async run(msg: Message, args: Array<string>, client: Bot) {
     if (args.length < 1) {
       msg.channel.send("Please enter a link/search entry.");
@@ -48,7 +56,7 @@ export class Play implements Command {
 
     await join(msg, args, client);
 
-    let queue = client.queues.get(msg.guild?.id ?? "");
+    let queue = client.queues.get(msg.guild.id);
 
     this.info(msg, args)
       .then((info: Song) => {
@@ -91,6 +99,12 @@ export class Play implements Command {
       });
   }
 
+  /**
+   * Determine the platform and stream the song.
+   * @param msg
+   * @param client
+   * @param song
+   */
   public play(msg: Message, client: Bot, song: Song | undefined) {
     if (!song) {
       msg.guild?.voice?.channel?.leave();
@@ -110,12 +124,18 @@ export class Play implements Command {
     }
   }
 
+  /**
+   * Stream the song to the voice channel
+   * @param msg
+   * @param client
+   * @param stream
+   */
   private stream(msg: Message, client: Bot, stream: Readable | string) {
     if (msg.guild?.voice?.connection) {
       const connection = msg.guild.voice.connection;
 
       connection.play(stream).on("finish", () => {
-        let queue = client.queues.get(msg.guild?.id ?? "") as Queue;
+        let queue = client.queues.get(msg.guild?.id ?? "");
 
         if (queue.songs.length > 0) {
           let newSong = queue.songs.shift() as Song;
@@ -131,6 +151,11 @@ export class Play implements Command {
     }
   }
 
+  /**
+   * Get info about a certain user input.
+   * @param msg
+   * @param args
+   */
   private async info(msg: Message, args: Array<string>): Promise<Song> {
     let input = args[0];
     if (input.match(ytRegex)) {
@@ -154,6 +179,10 @@ export class Play implements Command {
     return await this.search(search);
   }
 
+  /**
+   * Search on a given platform for a user input
+   * @param input
+   */
   private async search(input: string): Promise<Song> {
     switch (search_platform) {
       case "soundcloud":

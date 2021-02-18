@@ -6,11 +6,13 @@ export class Join implements Command {
   name: string;
   aliases: Array<string>;
   voice: boolean;
+  description: string;
 
   constructor() {
     this.name = "join";
     this.aliases = ["j", "summon", "connect"];
     this.voice = true;
+    this.description = "Make the bot join the voice channel.";
   }
 
   public async run(msg: Message, args: Array<string>, client: Bot) {

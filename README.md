@@ -6,7 +6,7 @@ Tempo is a Discord music bot, written in TypeScript.
 ```
 git clone https://github.com/guusvanmeerveld/tempo-ts/
 cd tempo-ts
-npm install
+npm install --production
 npm run build
 ```
 

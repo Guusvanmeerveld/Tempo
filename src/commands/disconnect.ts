@@ -4,12 +4,14 @@ import { Message, VoiceChannel } from "discord.js-light";
 export class Disconnect implements Command {
   name: string;
   aliases: Array<string>;
+  description: string;
   voice: boolean;
 
   constructor() {
     this.name = "disconnect";
     this.aliases = ["dis", "d", "l", "leave"];
     this.voice = true;
+    this.description = "Disconnect the bot from the voice channel.";
   }
 
   public async run(msg: Message) {

@@ -7,11 +7,13 @@ export class Volume implements Command {
   name: string;
   aliases: Array<string>;
   voice: boolean;
+  description: string;
 
   constructor() {
     this.name = "volume";
     this.aliases = ["v", "vol"];
     this.voice = true;
+    this.description = "Set the bots volume.";
   }
 
   run(msg: Message, args: Array<string>) {

@@ -1,21 +1,10 @@
-import { Collection, Guild, Message, TextChannel, User } from "discord.js-light";
+import { Guild, Message, TextChannel, User } from "discord.js-light";
 
-import { Command, Queue } from "./models";
-import { Disconnect, Help, Join, Play, Ping, Volume, Uptime, Skip } from "./commands";
 import Bot from "./bot";
 
 const { prefix } = require(process.cwd() + "/src/config/settings.json");
 
 export class HandleMessage {
-  public commands: Collection<string, Command>;
-  private queues: Collection<string, Queue>;
-  constructor() {
-    this.commands = new Collection();
-
-    this.listCommands();
-    this.queues = new Collection();
-  }
-
   public async handle(msg: Message, client: Bot) {
     if (msg.partial || msg.system || msg.author.id === msg.client.user!.id || msg.author.bot || !msg.guild) {
       return;
@@ -38,7 +27,7 @@ export class HandleMessage {
     const commandInput: string = args.shift()!.toLowerCase();
 
     const command =
-      this.commands.get(commandInput) || this.commands.find((cmd) => cmd.aliases?.includes(commandInput) ?? false);
+      client.commands.get(commandInput) || client.commands.find((cmd) => cmd.aliases?.includes(commandInput) ?? false);
 
     if (!command) return;
 
@@ -48,17 +37,6 @@ export class HandleMessage {
     }
 
     command.run(msg, args, client);
-  }
-
-  private listCommands() {
-    this.commands.set("help", new Help());
-    this.commands.set("join", new Join());
-    this.commands.set("disconnect", new Disconnect());
-    this.commands.set("play", new Play());
-    this.commands.set("ping", new Ping());
-    this.commands.set("volume", new Volume());
-    this.commands.set("uptime", new Uptime());
-    this.commands.set("skip", new Skip());
   }
 }
 

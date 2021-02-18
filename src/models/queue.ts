@@ -1,6 +1,6 @@
 import { Song } from "./song";
 
-export interface Queue {
+export interface QueueList {
   songs: Array<Song>;
   playing?: Song;
 }
