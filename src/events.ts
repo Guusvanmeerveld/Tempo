@@ -1,7 +1,8 @@
-import { Collection, Guild, Message, TextChannel, User } from "discord.js";
+import { Collection, Guild, Message, TextChannel, User } from "discord.js-light";
 
-import { Command, BotMessage, Queue } from "./models";
+import { Command, Queue } from "./models";
 import { Disconnect, Help, Join, Play, Ping, Volume, Uptime, Skip } from "./commands";
+import Bot from "./bot";
 
 const { prefix } = require(process.cwd() + "/src/config/settings.json");
 
@@ -15,7 +16,7 @@ export class HandleMessage {
     this.queues = new Collection();
   }
 
-  public async handle(msg: Message) {
+  public async handle(msg: Message, client: Bot) {
     if (msg.partial || msg.system || msg.author.id === msg.client.user!.id || msg.author.bot || !msg.guild) {
       return;
     }
@@ -46,17 +47,7 @@ export class HandleMessage {
       return;
     }
 
-    let botMessage = this.updateCache(msg);
-
-    command.run(botMessage, args);
-  }
-
-  private updateCache(msg: Message): BotMessage {
-    let botMsg = msg as BotMessage;
-
-    botMsg.queues = this.queues;
-
-    return botMsg;
+    command.run(msg, args, client);
   }
 
   private listCommands() {

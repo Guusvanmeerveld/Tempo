@@ -1,8 +1,10 @@
-import { Client } from "discord.js-light";
+import { Client, Collection } from "discord.js-light";
+import { Queue } from "./models";
 import Console from "./utils/console";
 import lang from "./utils/language";
 
 export default class Bot extends Client {
+  queues: Collection<string, Queue>;
   constructor() {
     super({
       cacheGuilds: true,
@@ -12,6 +14,8 @@ export default class Bot extends Client {
       cacheEmojis: false,
       cachePresences: false,
     });
+
+    this.queues = new Collection();
   }
 
   public start(token: string) {

@@ -1,6 +1,6 @@
 const { discordToken } = require(process.cwd() + "/src/config/tokens.json");
 
-import { ShardingManager } from "discord.js";
+import { ShardingManager } from "discord.js-light";
 
 export default class Manager {
   manager: ShardingManager;

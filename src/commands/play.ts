@@ -1,6 +1,6 @@
 const { search_platform }: { search_platform: string } = require(process.cwd() + "/src/config/settings.json");
 
-import { Command, BotMessage, Queue, Song, DefaultEmbed } from "../models";
+import { Command, Queue, Song, DefaultEmbed } from "../models";
 
 import Console from "../utils/console";
 import { abbreviate, ucFirst } from "../utils/functions";
@@ -20,6 +20,8 @@ import scdl from "soundcloud-downloader";
 
 import { Readable } from "node:stream";
 import { Video } from "ytsr";
+import { Message } from "discord.js";
+import Bot from "../bot";
 
 const ytRegex = /^(https?:\/\/)?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/.+$/gi;
 const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
@@ -38,15 +40,15 @@ export class Play implements Command {
     this.voice = true;
   }
 
-  public async run(msg: BotMessage, args: Array<string>) {
+  public async run(msg: Message, args: Array<string>, client: Bot) {
     if (args.length < 1) {
       msg.channel.send("Please enter a link/search entry.");
       return;
     }
 
-    await join(msg, args);
+    await join(msg, args, client);
 
-    let queue = msg.queues.get(msg.guild?.id ?? "") as Queue;
+    let queue = client.queues.get(msg.guild?.id ?? "") as Queue;
 
     this.info(msg, args)
       .then((info: Song) => {
@@ -82,7 +84,7 @@ export class Play implements Command {
 
         msg.channel.send("🎵  Now playing:", { embed });
 
-        this.play(msg, info);
+        this.play(msg, client, info);
       })
       .catch((error) => {
         Console.error(error);
@@ -92,7 +94,7 @@ export class Play implements Command {
       });
   }
 
-  public play(msg: BotMessage, song: Song | undefined) {
+  public play(msg: Message, client: Bot, song: Song | undefined) {
     if (!song) {
       msg.guild?.voice?.channel?.leave();
       return;
@@ -100,28 +102,26 @@ export class Play implements Command {
 
     switch (song.platform) {
       case "youtube":
-        this.stream(msg, ytdl(song.url, { filter: "audioonly" }));
+        this.stream(msg, client, ytdl(song.url, { filter: "audioonly" }));
         break;
       case "soundcloud":
-        scdl.download(song.url).then((stream) => this.stream(msg, stream));
+        scdl.download(song.url).then((stream) => this.stream(msg, client, stream));
         break;
     }
   }
 
-  private stream(msg: BotMessage, stream: Readable | string) {
+  private stream(msg: Message, client: Bot, stream: Readable | string) {
     if (msg.guild?.voice?.connection) {
       const connection = msg.guild.voice.connection;
 
-      // let musicStream = typeof stream == "string" ? stream : this.filter(stream);
-
       connection.play(stream).on("finish", () => {
-        let queue = msg.queues.get(msg.guild?.id ?? "") as Queue;
+        let queue = client.queues.get(msg.guild?.id ?? "") as Queue;
 
         if (queue.songs.length > 0) {
           let newSong = queue.songs.shift() as Song;
 
           queue.playing = newSong;
-          this.play(msg, newSong);
+          this.play(msg, client, newSong);
 
           return;
         }
@@ -131,7 +131,7 @@ export class Play implements Command {
     }
   }
 
-  private async info(msg: BotMessage, args: Array<string>): Promise<Song> {
+  private async info(msg: Message, args: Array<string>): Promise<Song> {
     let input = args[0];
     if (input.match(ytRegex)) {
       return await youtube.info(input);
@@ -153,8 +153,6 @@ export class Play implements Command {
     msg.channel.send(`🔍  Searching for \`${search}\`.`);
     return await this.search(search);
   }
-
-  private filter(inputStream: Readable) {}
 
   private async search(input: string): Promise<Song> {
     switch (search_platform) {

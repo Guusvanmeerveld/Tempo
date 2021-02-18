@@ -1,4 +1,5 @@
-import { BotMessage, Command } from "../models";
+import { Message } from "discord.js-light";
+import { Command } from "../models";
 
 const MAX_VOLUME = 1000;
 
@@ -13,7 +14,7 @@ export class Volume implements Command {
     this.voice = true;
   }
 
-  run(msg: BotMessage, args: Array<string>) {
+  run(msg: Message, args: Array<string>) {
     let volume = parseInt(args[0].replace("%", ""));
 
     if (isNaN(volume) || volume < 0 || volume > MAX_VOLUME) {

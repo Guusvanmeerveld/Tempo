@@ -1,4 +1,5 @@
-import { BotMessage } from "./message";
+import { Message } from "discord.js-light";
+import Bot from "../bot";
 
 export interface Command {
   name: string;
@@ -6,5 +7,5 @@ export interface Command {
   usage?: string;
   aliases?: Array<string>;
   voice?: boolean;
-  run: (msg: BotMessage, args: Array<string>) => void;
+  run: (msg: Message, args: Array<string>, client: Bot) => void;
 }

@@ -1,5 +1,5 @@
-import { BotMessage, Command } from "../models";
-import { VoiceChannel } from "discord.js";
+import { Command } from "../models";
+import { Message, VoiceChannel } from "discord.js-light";
 
 export class Disconnect implements Command {
   name: string;
@@ -12,7 +12,7 @@ export class Disconnect implements Command {
     this.voice = true;
   }
 
-  public async run(msg: BotMessage, args: Array<string>) {
+  public async run(msg: Message) {
     const voice = msg.guild?.voice;
     const channel = (await voice?.channel?.fetch()) as VoiceChannel;
 

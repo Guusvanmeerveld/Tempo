@@ -1,5 +1,6 @@
-import { BotMessage, Command } from "../models";
-import { User, VoiceChannel } from "discord.js";
+import { Command } from "../models";
+import { User, VoiceChannel, Message } from "discord.js-light";
+import Bot from "../bot";
 
 export class Join implements Command {
   name: string;
@@ -12,10 +13,10 @@ export class Join implements Command {
     this.voice = true;
   }
 
-  public async run(msg: BotMessage, args: Array<string>) {
+  public async run(msg: Message, args: Array<string>, client: Bot) {
     const memberChannel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
 
-    if (memberChannel.members.get(msg.client.user?.id ?? "") && msg.guild?.voice?.connection) {
+    if (memberChannel.members.get(client.user?.id ?? "") && msg.guild?.voice?.connection) {
       let guildChannel = (await msg.guild?.voice?.channel?.fetch()) as VoiceChannel;
       msg.channel.send(`🔈  Connected to \`${guildChannel.name}\``);
       return;
@@ -35,7 +36,7 @@ export class Join implements Command {
       return;
     }
 
-    msg.queues.set(msg.guild?.id ?? "", { songs: [] });
+    client.queues.set(msg.guild?.id ?? "", { songs: [] });
 
     await memberChannel?.join();
 

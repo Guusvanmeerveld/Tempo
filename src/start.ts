@@ -12,5 +12,5 @@ const bot = new Bot();
 
 bot.start(discordToken);
 
-bot.on("message", (msg) => message.handle(msg));
+bot.on("message", (msg) => message.handle(msg, bot));
 bot.on("guildCreate", (guild) => handleGuildJoin(guild));

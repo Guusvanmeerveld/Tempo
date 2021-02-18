@@ -1,4 +1,6 @@
-import { BotMessage, Command } from "../models";
+import { Message } from "discord.js-light";
+import Bot from "../bot";
+import { Command } from "../models";
 
 import { Play } from "./play";
 
@@ -12,11 +14,11 @@ export class Skip implements Command {
     this.aliases = ["s"];
   }
 
-  run(msg: BotMessage, args: Array<string>) {
-    let queue = msg.queues.get(msg.guild?.id ?? "");
+  run(msg: Message, args: Array<string>, client: Bot) {
+    let queue = client.queues.get(msg.guild?.id ?? "");
 
     let newSong = queue?.songs.shift();
     msg.channel.send("▶️  Successfully skipped the song.");
-    this.player.play(msg, newSong);
+    this.player.play(msg, client, newSong);
   }
 }

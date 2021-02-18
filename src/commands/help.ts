@@ -1,8 +1,9 @@
 const { prefix } = require(process.cwd() + "/src/config/settings.json");
 
-import { Command, DefaultEmbed, BotMessage } from "../models";
+import { Command, DefaultEmbed } from "../models";
 import getCommands from "../utils/requests/commands";
 import { chunk } from "../utils/functions";
+import { Message } from "discord.js";
 
 export class Help implements Command {
   name: string;
@@ -13,7 +14,7 @@ export class Help implements Command {
     (this.name = "help"), (this.aliases = ["h"]), (this.commands = chunk(getCommands(), 5));
   }
 
-  public run(msg: BotMessage, args: Array<string>) {
+  public run(msg: Message, args: Array<string>) {
     let page: number = 1;
 
     if (args.length > 0) {
