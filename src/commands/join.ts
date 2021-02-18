@@ -1,4 +1,5 @@
-import { Message, User } from "discord.js";
+import { BotMessage } from "../models/message";
+import { User, VoiceChannel } from "discord.js";
 import { Command } from "../models/command";
 
 export class Join implements Command {
@@ -12,29 +13,33 @@ export class Join implements Command {
     this.voice = true;
   }
 
-  public run(msg: Message, args: Array<string>) {
-    if (msg.member?.voice.channel?.members.get(msg.client.user?.id ?? "")) {
-      msg.channel.send(`Connected to \`${msg.guild?.voice?.channel?.name}\``);
+  public async run(msg: BotMessage, args: Array<string>) {
+    const memberChannel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
+
+    if (memberChannel.members.get(msg.client.user?.id ?? "") && msg.guild?.voice?.connection) {
+      let guildChannel = (await msg.guild?.voice?.channel?.fetch()) as VoiceChannel;
+      msg.channel.send(`🔈  Connected to \`${guildChannel.name}\``);
       return;
     }
 
-    const channel = msg.member?.voice.channel;
     const user = msg.client.user as User;
 
-    let channelPerms = channel?.permissionsFor(user);
+    let channelPerms = memberChannel?.permissionsFor(user);
 
     if (!channelPerms?.has("CONNECT")) {
-      msg.channel.send("I am not allowed to connect to your voice channel.");
+      msg.channel.send("❌  I am not allowed to connect to your voice channel.");
       return;
     }
 
     if (!channelPerms?.has("SPEAK")) {
-      msg.channel.send("I am not allowed to speak in your voice channel.");
+      msg.channel.send("❌  I am not allowed to speak in your voice channel.");
       return;
     }
 
-    channel?.join().then(() => {
-      msg.channel.send(`Successfully joined \`${channel.name ?? "Unknown channel"}\`.`);
-    });
+    msg.queues.set(msg.guild?.id ?? "", { songs: [] });
+
+    await memberChannel?.join();
+
+    msg.channel.send(`🔈  Successfully joined \`${memberChannel.name ?? "Unknown channel"}\`.`);
   }
 }

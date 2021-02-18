@@ -17,14 +17,14 @@ export default class Youtube {
    * @param id
    */
   public static async video(id: string) {
-    let res = await request("videos", {
-      params: {
-        part: "snippet,statistics",
-        id,
-      },
-    });
-
-    return res.data;
+    return (
+      await request("videos", {
+        params: {
+          part: "snippet,statistics",
+          id,
+        },
+      })
+    ).data;
   }
 
   /**
@@ -32,12 +32,12 @@ export default class Youtube {
    * @param query
    * @param limit
    */
-  public static async search(query: string, limit: number): Promise<Video> {
+  public static async search(query: string, limit: number) {
     let res = await ytsr(query, {
       limit,
     });
 
-    return res.items[0] as Video;
+    return res;
   }
 
   /**

@@ -1,4 +1,5 @@
-import { Message } from "discord.js";
+import { BotMessage } from "../models/message";
+import { VoiceChannel } from "discord.js";
 import { Command } from "../models/command";
 
 export class Disconnect implements Command {
@@ -12,15 +13,16 @@ export class Disconnect implements Command {
     this.voice = true;
   }
 
-  public run(msg: Message, args: Array<string>) {
+  public async run(msg: BotMessage, args: Array<string>) {
     const voice = msg.guild?.voice;
+    const channel = (await voice?.channel?.fetch()) as VoiceChannel;
 
-    if (!voice?.channel) {
-      msg.channel.send("I'm not connected to a voice channel.");
+    if (!channel) {
+      msg.channel.send("❌  I'm not connected to a voice channel.");
       return;
     }
 
-    msg.channel.send(`Successfully disconnected from \`${voice.channel?.name}\`.`);
-    voice.channel.leave();
+    msg.channel.send(`🔈  Successfully disconnected from \`${channel?.name}\`.`);
+    voice?.connection?.disconnect();
   }
 }

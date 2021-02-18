@@ -2,9 +2,9 @@ const { prefix } = require("../config/settings.json");
 
 import { Command } from "../models/command";
 import DefaultEmbed from "../models/embed";
-import { Message } from "discord.js";
 import getCommands from "../utils/requests/commands";
 import { chunk } from "../utils/functions";
+import { BotMessage } from "../models/message";
 
 export class Help implements Command {
   name: string;
@@ -15,14 +15,14 @@ export class Help implements Command {
     (this.name = "help"), (this.aliases = ["h"]), (this.commands = chunk(getCommands(), 5));
   }
 
-  public run(msg: Message, args: Array<string>) {
+  public run(msg: BotMessage, args: Array<string>) {
     let page: number = 1;
 
     if (args.length > 0) {
       page = parseInt(args[0]);
 
       if (isNaN(page) || page > this.commands.length || page < 0) {
-        msg.channel.send("That is not a valid page number.");
+        msg.channel.send("❌  That is not a valid page number.");
         return;
       }
     }

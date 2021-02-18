@@ -4,9 +4,9 @@ process.env.NODE_ENV = "development";
 const { discordToken } = require("./config/tokens.json");
 import { handleGuildJoin, HandleMessage } from "./events";
 
-let message = new HandleMessage();
-
 import Bot from "./bot";
+
+let message = new HandleMessage();
 
 const bot = new Bot();
 

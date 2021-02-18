@@ -1,10 +1,18 @@
-import { Client } from "discord.js";
+import { Collection } from "discord.js";
+import { Client } from "discord.js-light";
 import Console from "./utils/console";
 import lang from "./utils/language";
 
 export default class Bot extends Client {
   constructor() {
-    super();
+    super({
+      cacheGuilds: true,
+      cacheChannels: false,
+      cacheOverwrites: false,
+      cacheRoles: true,
+      cacheEmojis: false,
+      cachePresences: false,
+    });
   }
 
   public start(token: string) {

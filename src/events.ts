@@ -2,17 +2,21 @@ import { Collection, Guild, Message, TextChannel, User } from "discord.js";
 import { Command } from "./models/command";
 const { prefix } = require("./config/settings.json");
 
-import { Disconnect, Help, Join, Play } from "./commands";
+import { Disconnect, Help, Join, Play, Ping, Volume, Uptime, Skip } from "./commands";
+import { BotMessage } from "./models/message";
+import { Queue } from "./models/queue";
 
 export class HandleMessage {
   public commands: Collection<string, Command>;
+  private queues: Collection<string, Queue>;
   constructor() {
     this.commands = new Collection();
 
     this.listCommands();
+    this.queues = new Collection();
   }
 
-  handle(msg: Message) {
+  public async handle(msg: Message) {
     if (msg.partial || msg.system || msg.author.id === msg.client.user!.id || msg.author.bot || !msg.guild) {
       return;
     }
@@ -21,7 +25,7 @@ export class HandleMessage {
       return;
     }
 
-    const channel = msg.channel as TextChannel;
+    const channel = (await msg.channel.fetch()) as TextChannel;
     const user = msg.client.user as User;
 
     let channelPerms = channel.permissionsFor(user);
@@ -43,14 +47,28 @@ export class HandleMessage {
       return;
     }
 
-    command.run(msg, args);
+    let botMessage = this.updateCache(msg);
+
+    command.run(botMessage, args);
   }
 
-  listCommands() {
+  private updateCache(msg: Message): BotMessage {
+    let botMsg = msg as BotMessage;
+
+    botMsg.queues = this.queues;
+
+    return botMsg;
+  }
+
+  private listCommands() {
     this.commands.set("help", new Help());
     this.commands.set("join", new Join());
     this.commands.set("disconnect", new Disconnect());
     this.commands.set("play", new Play());
+    this.commands.set("ping", new Ping());
+    this.commands.set("volume", new Volume());
+    this.commands.set("uptime", new Uptime());
+    this.commands.set("skip", new Skip());
   }
 }
 

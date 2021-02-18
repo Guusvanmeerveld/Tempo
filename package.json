@@ -11,15 +11,18 @@
   "author": "Guus van Meerveld",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.4.0",
     "axios": "^0.21.1",
     "discord.js": "^12.5.1",
-    "opusscript": "^0.0.7",
+    "discord.js-light": "3.5.3",
+    "humanize-duration": "^3.25.1",
     "pg": "^8.5.1",
     "soundcloud-downloader": "^0.2.4",
     "ytdl": "^1.4.1",
     "ytsr": "^3.3.0"
   },
   "devDependencies": {
+    "@types/humanize-duration": "^3.18.1",
     "@types/node": "^14.14.27",
     "chalk": "^4.1.0",
     "ts-node-dev": "^1.1.1",
