@@ -48,7 +48,7 @@ export class Play implements Command {
 
     await join(msg, args, client);
 
-    let queue = client.queues.get(msg.guild?.id ?? "") as Queue;
+    let queue = client.queues.get(msg.guild?.id ?? "");
 
     this.info(msg, args)
       .then((info: Song) => {
@@ -80,8 +80,6 @@ export class Play implements Command {
           return;
         }
 
-        queue.playing = info;
-
         msg.channel.send("🎵  Now playing:", { embed });
 
         this.play(msg, client, info);
@@ -90,7 +88,6 @@ export class Play implements Command {
         Console.error(error);
 
         msg.channel.send("❌  " + error);
-        msg.guild?.voice?.channel?.leave();
       });
   }
 
@@ -99,6 +96,9 @@ export class Play implements Command {
       msg.guild?.voice?.channel?.leave();
       return;
     }
+
+    let queue = client.queues.get(msg.guild?.id ?? "");
+    queue.playing = song;
 
     switch (song.platform) {
       case "youtube":
