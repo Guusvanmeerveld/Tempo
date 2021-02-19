@@ -1,3 +1,5 @@
+<p align="center"><img src="src/img/logo-banner.png" width="400"></p>
+
 # Tempo-TS
 Tempo is a Discord music bot, written in TypeScript.
 
