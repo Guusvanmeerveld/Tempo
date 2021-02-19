@@ -18,14 +18,14 @@ export class Skip implements Command {
   }
 
   run(msg: Message, args: Array<string>, client: Bot) {
-    if (!msg.guild.voice?.connection) {
+    if (!msg.guild?.voice?.connection) {
       msg.channel.send("❌  I'm not connected to a voice channel.");
       return;
     }
 
     let queue = client.queues.get(msg.guild?.id ?? "");
 
-    if (!queue.playing) {
+    if (!queue?.playing) {
       msg.channel.send("❌  There is nothing playing right now.");
       return;
     }

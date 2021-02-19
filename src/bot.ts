@@ -3,7 +3,7 @@ import { QueueList, Command } from "./models";
 import Console from "./utils/console";
 import lang from "./utils/language";
 
-import { Disconnect, Help, Join, Play, Ping, Volume, Uptime, Skip, Queue } from "./commands";
+import { Disconnect, Help, Join, Play, Ping, Volume, Uptime, Skip, Queue, Stop } from "./commands";
 
 export default class Bot extends Client {
   public commands: Collection<string, Command>;
@@ -48,5 +48,6 @@ export default class Bot extends Client {
     this.commands.set("uptime", new Uptime());
     this.commands.set("skip", new Skip());
     this.commands.set("queue", new Queue());
+    this.commands.set("stop", new Stop());
   }
 }

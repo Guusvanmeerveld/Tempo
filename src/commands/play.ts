@@ -16,7 +16,6 @@ import { Join } from "./join";
 const join = new Join().run;
 
 import ytdl from "ytdl-core";
-import scdl from "soundcloud-downloader";
 
 import { Readable } from "node:stream";
 import { Video } from "ytsr";
@@ -56,7 +55,7 @@ export class Play implements Command {
 
     await join(msg, args, client);
 
-    let queue = client.queues.get(msg.guild.id);
+    let queue = client.queues.get(msg.guild?.id ?? "");
 
     this.info(msg, args)
       .then((info: Song) => {
@@ -112,6 +111,8 @@ export class Play implements Command {
     }
 
     let queue = client.queues.get(msg.guild?.id ?? "");
+    if (!queue) return;
+
     queue.playing = song;
 
     switch (song.platform) {
@@ -119,7 +120,7 @@ export class Play implements Command {
         this.stream(msg, client, ytdl(song.url, { filter: "audioonly" }));
         break;
       case "soundcloud":
-        scdl.download(song.url).then((stream) => this.stream(msg, client, stream));
+        soundcloud.download(song.download).then((stream) => this.stream(msg, client, stream));
         break;
     }
   }
@@ -136,6 +137,8 @@ export class Play implements Command {
 
       connection.play(stream).on("finish", () => {
         let queue = client.queues.get(msg.guild?.id ?? "");
+
+        if (!queue) return;
 
         if (queue.songs.length > 0) {
           let newSong = queue.songs.shift() as Song;

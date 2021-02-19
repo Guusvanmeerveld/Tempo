@@ -14,7 +14,7 @@ export class Queue implements Command {
   }
 
   run(msg: Message, args: Array<string>, client: Bot) {
-    let queue = client.queues.get(msg.guild.id);
+    let queue = client.queues.get(msg.guild?.id ?? "");
 
     console.log(queue);
 

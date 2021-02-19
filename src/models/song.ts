@@ -8,4 +8,5 @@ export interface Song {
   likes?: number;
   dislikes?: number;
   url: string;
+  download?: string;
 }
