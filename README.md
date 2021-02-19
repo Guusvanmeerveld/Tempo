@@ -2,6 +2,12 @@
 Tempo is a Discord music bot, written in TypeScript.
 
 ### Installation
+In order to compile the TypeScript to Javascript, you will need to have TypeScript installed. You can install it using the following command:
+```
+npm i -g typescript
+```
+
+Then, install Tempo using the following commands:
 
 ```
 git clone https://github.com/guusvanmeerveld/tempo-ts/
