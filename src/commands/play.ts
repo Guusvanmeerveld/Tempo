@@ -187,12 +187,13 @@ export class Play implements Command {
    * @param input
    */
   private async search(input: string): Promise<Song> {
+    let notFound = (platform: string) => `I was not able to find \`${input}\` on ${platform}.`;
     switch (search_platform) {
       case "soundcloud":
         let tracks = await soundcloud.search(input, 1);
 
         if (tracks.collection.length < 1) {
-          throw "I was not able to find that song on Soundcloud.";
+          throw notFound("Soundcloud");
         }
 
         let track = tracks.collection[0];
@@ -202,7 +203,7 @@ export class Play implements Command {
         let songs = (await spotify.search(input, 1)).tracks;
 
         if (songs.items.length < 1) {
-          throw "I was not able to find that song on Spotify.";
+          throw notFound("Spotify");
         }
 
         let song = songs.items[0];
@@ -212,7 +213,7 @@ export class Play implements Command {
         let videos = await youtube.search(input, 1);
 
         if (videos.items.length < 1) {
-          throw "I was not able to find that song on Youtube.";
+          throw notFound("Youtube");
         }
 
         let video = videos.items[0] as Video;

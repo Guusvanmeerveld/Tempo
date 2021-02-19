@@ -21,11 +21,11 @@
     "ytsr": "^3.3.0"
   },
   "devDependencies": {
-    "typescript": "^4.1.3",
     "@types/humanize-duration": "^3.18.1",
     "@types/node": "^14.14.27",
     "@types/ws": "^7.4.0",
     "chalk": "^4.1.0",
-    "ts-node-dev": "^1.1.1"
+    "ts-node-dev": "^1.1.1",
+    "typescript": "^4.1.3"
   }
 }
