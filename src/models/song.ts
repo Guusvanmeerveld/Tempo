@@ -1,3 +1,5 @@
+import { User } from "discord.js";
+
 export interface Song {
   platform: string;
   title: string;
@@ -9,4 +11,5 @@ export interface Song {
   dislikes?: number;
   url: string;
   download?: string;
+  requested?: User;
 }

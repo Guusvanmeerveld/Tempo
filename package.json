@@ -17,7 +17,7 @@
     "humanize-duration": "^3.25.1",
     "m3u8stream": "^0.8.3",
     "pg": "^8.5.1",
-    "ytdl-core": "^4.4.5",
+    "ytdl-core": "^4.5.0",
     "ytsr": "^3.3.0"
   },
   "devDependencies": {

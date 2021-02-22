@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
+import { EmbedField } from "discord.js-light";
 import Bot from "../bot";
-import { Command, DefaultEmbed } from "../models";
+import { Command, PaginatedEmbed } from "../models";
 
 export class Queue implements Command {
   name: string;
@@ -16,14 +17,29 @@ export class Queue implements Command {
   run(msg: Message, args: Array<string>, client: Bot) {
     let queue = client.queues.get(msg.guild?.id ?? "");
 
-    console.log(queue);
-
     if (!queue?.playing) {
       msg.channel.send("❌  Queue is empty.");
       return;
     }
 
-    let embed = new DefaultEmbed(msg.author);
+    let fields: Array<EmbedField> = new Array();
+    if (queue.songs.length > 0) {
+      queue.songs.forEach((g, i) =>
+        fields.push({
+          name: `#${i + 1} ${g.title}`,
+          value: "Requested by " + g.requested?.toString() ?? "Unknown user",
+          inline: false,
+        })
+      );
+    }
+
+    let embed = new PaginatedEmbed({ author: msg.author, args, fields });
+
+    embed.setDescription(
+      `Currently playing: \`${queue.playing?.title ?? "Nothing"}\` requested by ${queue.playing.requested?.toString()}`
+    );
+
+    embed.setTitle("Songs in the queue");
 
     msg.channel.send(embed);
   }

@@ -59,37 +59,38 @@ export class Play implements Command {
 
     this.info(msg, args)
       .then((info: Song) => {
+        let song: Song = { requested: msg.author, ...info };
         let embed = new DefaultEmbed(msg.author);
 
-        embed.setTitle(info?.title ?? "Unknown song");
-        embed.setThumbnail(info?.image);
-        embed.setURL(info?.url);
+        embed.setTitle(song?.title ?? "Unknown song");
+        embed.setThumbnail(song?.image);
+        embed.setURL(song?.url);
 
         embed.addFields(
-          { name: "Published", value: info?.date.toLocaleDateString() ?? "Unknown date", inline: true },
-          { name: "Author", value: info?.author, inline: true },
-          { name: "Platform", value: ucFirst(info.platform), inline: true },
-          { name: "Streams", value: abbreviate(info?.views ?? 0), inline: true }
+          { name: "Published", value: song?.date.toLocaleDateString() ?? "Unknown date", inline: true },
+          { name: "Author", value: song?.author, inline: true },
+          { name: "Platform", value: ucFirst(song.platform), inline: true },
+          { name: "Streams", value: abbreviate(song?.views ?? 0), inline: true }
         );
 
-        if (info?.likes) {
-          embed.addField("Likes", abbreviate(info?.likes ?? 0), true);
+        if (song?.likes) {
+          embed.addField("Likes", abbreviate(song?.likes ?? 0), true);
         }
 
-        if (info?.dislikes) {
-          embed.addField("Dislikes", abbreviate(info?.dislikes ?? 0), true);
+        if (song?.dislikes) {
+          embed.addField("Dislikes", abbreviate(song?.dislikes ?? 0), true);
         }
 
         if (queue?.playing) {
-          queue.songs.push(info);
-          msg.channel.send(`🎵  Added \`${info.title}\` to the queue.`, { embed });
+          queue.songs.push(song);
+          msg.channel.send(`🎵  Added \`${song.title}\` to the queue.`, { embed });
 
           return;
         }
 
         msg.channel.send("🎵  Now playing:", { embed });
 
-        this.play(msg, client, info);
+        this.play(msg, client, song);
       })
       .catch((error) => {
         Console.error(error);
