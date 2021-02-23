@@ -1,9 +1,8 @@
 const { prefix } = require(process.cwd() + "/src/config/settings.json");
 
-import { Command, DefaultEmbed } from "../models";
-import { Message } from "discord.js";
+import { Command, PaginatedEmbed } from "../models";
+import { EmbedField, Message } from "discord.js";
 import Bot from "../bot";
-import { chunk } from "../utils/functions";
 
 export class Help implements Command {
   name: string;
@@ -17,30 +16,19 @@ export class Help implements Command {
   }
 
   public run(msg: Message, args: Array<string>, client: Bot) {
-    let page: number = 1;
+    let commands = client.commands.array();
+    let fields: Array<EmbedField> = new Array();
 
-    let commands = chunk(client.commands.array(), 5);
-
-    if (args.length > 0) {
-      page = parseInt(args[0]);
-
-      if (isNaN(page) || page > commands.length || page < 0) {
-        msg.channel.send("❌  That is not a valid page number.");
-        return;
-      }
-    }
-
-    let embed = new DefaultEmbed(msg.author);
-
-    embed.setTitle("List of commands for Tempo:");
-    embed.setFooter(`Page ${page}/${commands.length}`);
-
-    commands[page - 1].forEach((cmd: Command) => {
-      embed.addField(
-        `\`${prefix + cmd.name}\``,
-        `${cmd.description}${cmd.aliases ? `\nAliases: \`${cmd.aliases?.join(", ")}\`` : ""}`
-      );
+    commands.forEach((cmd) => {
+      fields.push({
+        name: `\`${prefix + cmd.name}\``,
+        value: `${cmd.description}${cmd.aliases ? `\nAliases: \`${cmd.aliases?.join(", ")}\`` : ""}`,
+        inline: false,
+      });
     });
+
+    let embed = new PaginatedEmbed({ author: msg.author, args, fields });
+    embed.setTitle("List of commands for Tempo");
 
     msg.channel.send(embed);
   }

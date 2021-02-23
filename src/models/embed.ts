@@ -25,6 +25,7 @@ export class PaginatedEmbed extends DefaultEmbed {
       if (args.length > 0) {
         this.page = parseInt(args[0]);
         if (isNaN(this.page) || this.page < 1 || this.page > chunked.length) {
+          return;
         }
       }
 
