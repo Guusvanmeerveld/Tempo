@@ -1,17 +1,17 @@
-import { Command } from "../models";
+import { Command, Requirement } from "../models";
 import { User, VoiceChannel, Message } from "discord.js-light";
 import Bot from "../bot";
 
 export class Join implements Command {
   name: string;
   aliases: Array<string>;
-  voice: boolean;
+  requirements: Array<Requirement>;
   description: string;
 
   constructor() {
     this.name = "join";
     this.aliases = ["j", "summon", "connect"];
-    this.voice = true;
+    this.requirements = ["VOICE"];
     this.description = "Make the bot join the voice channel.";
   }
 

@@ -31,7 +31,7 @@ export class PaginatedEmbed extends DefaultEmbed {
 
       this.setFooter(`Page ${this.page}/${chunked.length}`);
 
-      chunked[this.page - 1].forEach((item) => this.addField(item.name, item.value, item.inline));
+      chunked[this.page - 1].forEach((item: EmbedField) => this.addField(item.name, item.value, item.inline));
     }
   }
 }

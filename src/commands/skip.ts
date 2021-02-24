@@ -1,6 +1,6 @@
 import { Message } from "discord.js-light";
 import Bot from "../bot";
-import { Command } from "../models";
+import { Command, Requirement } from "../models";
 
 import { Play } from "./play";
 
@@ -8,11 +8,13 @@ export class Skip implements Command {
   name: string;
   aliases: Array<string>;
   player: Play;
+  requirements: Array<Requirement>;
   description: string;
 
   constructor() {
     this.player = new Play();
     this.name = "skip";
+    this.requirements = ["VOICE"];
     this.aliases = ["s"];
     this.description = "Skip the current song.";
   }

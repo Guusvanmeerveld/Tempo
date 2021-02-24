@@ -17,14 +17,13 @@ export class Help implements Command {
 
   public run(msg: Message, args: Array<string>, client: Bot) {
     let commands = client.commands.array();
-    let fields: Array<EmbedField> = new Array();
 
-    commands.forEach((cmd) => {
-      fields.push({
+    let fields: Array<EmbedField> = commands.map((cmd: Command) => {
+      return {
         name: `\`${prefix + cmd.name}\``,
         value: `${cmd.description}${cmd.aliases ? `\nAliases: \`${cmd.aliases?.join(", ")}\`` : ""}`,
         inline: false,
-      });
+      };
     });
 
     let embed = new PaginatedEmbed({ author: msg.author, args, fields });

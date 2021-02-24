@@ -2,7 +2,12 @@
     "bot": {
         "activity": {
             "type": "LISTENING",
-            "text": "sick music"
+            "text": "-help"
+        }
+    },
+    "commands": {
+        "help": {
+            "description": "Get information about a specific command or just a general list of commands."
         }
     }
 }

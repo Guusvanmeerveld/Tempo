@@ -1,6 +1,6 @@
 const { search_platform }: { search_platform: string } = require(process.cwd() + "/src/config/settings.json");
 
-import { Command, Song, DefaultEmbed } from "../models";
+import { Command, Song, DefaultEmbed, Requirement } from "../models";
 
 import Console from "../utils/console";
 import { abbreviate, ucFirst } from "../utils/functions";
@@ -31,13 +31,13 @@ const audioPattern = /\.(?:wav|mp3)$/i;
 export class Play implements Command {
   name: string;
   aliases: Array<string>;
-  voice: boolean;
+  requirements: Array<Requirement>;
   description: string;
 
   constructor() {
     this.name = "play";
     this.aliases = ["p"];
-    this.voice = true;
+    this.requirements = ["VOICE", "ROLE"];
     this.description = "Play a song via a link or a search request.";
   }
 

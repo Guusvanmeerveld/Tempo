@@ -1,16 +1,18 @@
 import { Message } from "discord.js";
 import { EmbedField } from "discord.js-light";
 import Bot from "../bot";
-import { Command, PaginatedEmbed } from "../models";
+import { Command, PaginatedEmbed, Requirement, Song } from "../models";
 
 export class Queue implements Command {
   name: string;
   aliases: Array<string>;
   description: string;
+  requirements: Array<Requirement>;
 
   constructor() {
     this.name = "queue";
     this.aliases = ["q"];
+    this.requirements = ["VOICE"];
     this.description = "Gives a list of all the songs currently in the queue.";
   }
 
@@ -24,13 +26,13 @@ export class Queue implements Command {
 
     let fields: Array<EmbedField> = new Array();
     if (queue.songs.length > 0) {
-      queue.songs.forEach((g, i) =>
-        fields.push({
-          name: `#${i + 1} ${g.title}`,
-          value: "Requested by " + g.requested?.toString() ?? "Unknown user",
+      fields = queue.songs.map((song: Song, i) => {
+        return {
+          name: `#${i + 1} ${song.title}`,
+          value: "Requested by " + song.requested?.toString() ?? "Unknown user",
           inline: false,
-        })
-      );
+        };
+      });
     }
 
     let embed = new PaginatedEmbed({ author: msg.author, args, fields });

@@ -6,6 +6,8 @@ export interface Command {
   description?: string;
   usage?: string;
   aliases?: Array<string>;
-  voice?: boolean;
+  requirements?: Array<Requirement>;
   run: (msg: Message, args: Array<string>, client: Bot) => void;
 }
+
+export type Requirement = "ROLE" | "VOICE";

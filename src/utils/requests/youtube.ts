@@ -2,7 +2,7 @@ const { youtubeToken } = require(process.cwd() + "/src/config/tokens.json");
 
 import { Song } from "../../models";
 import axios from "axios";
-import ytsr, { Video } from "ytsr";
+import ytsr from "ytsr";
 
 const request = axios.create({
   baseURL: "https://www.googleapis.com/youtube/v3/",

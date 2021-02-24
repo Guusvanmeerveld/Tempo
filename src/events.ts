@@ -2,7 +2,7 @@ import { Guild, Message, TextChannel, User } from "discord.js-light";
 
 import Bot from "./bot";
 
-const { prefix } = require(process.cwd() + "/src/config/settings.json");
+const { prefix, role } = require(process.cwd() + "/src/config/settings.json");
 
 export async function handleMessage(msg: Message, client: Bot) {
   if (msg.partial || msg.system || msg.author.id === msg.client.user!.id || msg.author.bot || !msg.guild) {
@@ -14,7 +14,7 @@ export async function handleMessage(msg: Message, client: Bot) {
   }
 
   const channel = (await msg.channel.fetch()) as TextChannel;
-  const user = msg.client.user as User;
+  const user = client.user as User;
 
   let channelPerms = channel.permissionsFor(user);
 
@@ -30,8 +30,13 @@ export async function handleMessage(msg: Message, client: Bot) {
 
   if (!command) return;
 
-  if (command.voice && !msg.member?.voice.channel) {
+  if (command.requirements?.includes("VOICE") && !msg.member?.voice.channel) {
     msg.channel.send("You need to be connected to a voice channel to use this command.");
+    return;
+  }
+
+  if (command.requirements?.includes("ROLE") && !msg.member?.roles.cache.has(role)) {
+    msg.channel.send("Je hebt toch potverdomme die kut rol niet jonge.");
     return;
   }
 

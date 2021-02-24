@@ -1,18 +1,18 @@
 import { Message } from "discord.js-light";
-import { Command } from "../models";
+import { Command, Requirement } from "../models";
 
 const MAX_VOLUME = 1000;
 
 export class Volume implements Command {
   name: string;
   aliases: Array<string>;
-  voice: boolean;
+  requirements: Array<Requirement>;
   description: string;
 
   constructor() {
     this.name = "volume";
     this.aliases = ["v", "vol"];
-    this.voice = true;
+    this.requirements = ["VOICE"];
     this.description = "Set the bots volume.";
   }
 

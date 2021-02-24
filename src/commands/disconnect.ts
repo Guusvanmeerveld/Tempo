@@ -1,16 +1,16 @@
-import { Command } from "../models";
+import { Command, Requirement } from "../models";
 import { Message, VoiceChannel } from "discord.js-light";
 
 export class Disconnect implements Command {
   name: string;
   aliases: Array<string>;
   description: string;
-  voice: boolean;
+  requirements: Array<Requirement>;
 
   constructor() {
     this.name = "disconnect";
     this.aliases = ["dis", "d", "l", "leave"];
-    this.voice = true;
+    this.requirements = ["VOICE"];
     this.description = "Disconnect the bot from the voice channel.";
   }
 

@@ -1,6 +1,7 @@
 const { discordToken } = require(process.cwd() + "/src/config/tokens.json");
 
 import { ShardingManager } from "discord.js-light";
+import Console from "./utils/console";
 
 export default class Manager {
   manager: ShardingManager;
@@ -11,7 +12,7 @@ export default class Manager {
   }
 
   public start() {
-    this.manager.on("shardCreate", (shard) => console.log(`Launched shard ${shard.id}`));
+    this.manager.on("shardCreate", (shard) => Console.info(`Launched shard ${shard.id}`));
 
     this.manager.spawn();
   }
