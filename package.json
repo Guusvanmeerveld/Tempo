@@ -15,6 +15,7 @@
     "axios": "^0.21.1",
     "discord.js-light": "3.5.3",
     "humanize-duration": "^3.25.1",
+    "long": "^4.0.0",
     "m3u8stream": "^0.8.3",
     "mysql": "^2.18.1",
     "ytdl-core": "^4.5.0",
@@ -22,6 +23,8 @@
   },
   "devDependencies": {
     "@types/humanize-duration": "^3.18.1",
+    "@types/long": "^4.0.1",
+    "@types/mysql": "^2.15.17",
     "@types/node": "^14.14.27",
     "@types/ws": "^7.4.0",
     "chalk": "^4.1.0",

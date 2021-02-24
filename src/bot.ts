@@ -5,9 +5,11 @@ import lang from "./utils/language";
 
 import { Disconnect, Help, Join, Play, Ping, Volume, Uptime, Skip, Queue, Stop } from "./commands";
 import Logger from "./utils/logger";
+import Settings from "./utils/settings";
 
 export default class Bot extends Client {
   public logger: Logger;
+  public settings: Settings;
   public commands: Collection<string, Command>;
   public queues: Collection<string, QueueList>;
   constructor() {
@@ -20,6 +22,7 @@ export default class Bot extends Client {
       cachePresences: false,
     });
 
+    this.settings = new Settings(this.guilds);
     this.logger = new Logger();
     this.commands = new Collection();
     this.queues = new Collection();
