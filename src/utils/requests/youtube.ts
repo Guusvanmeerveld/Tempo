@@ -1,4 +1,4 @@
-const { youtubeToken } = require(process.cwd() + "/src/config/tokens.json");
+const youtubeToken = process.env.YOUTUBE;
 
 import { Song } from "../../models";
 import axios from "axios";
@@ -63,6 +63,8 @@ export default class Youtube {
     let data = await this.video(id);
 
     let video = data.items[0];
+
+    if (!video) throw "Could not find any information about this video.";
 
     let snippet = video.snippet;
     let statistics = video.statistics;

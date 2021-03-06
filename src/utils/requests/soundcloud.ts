@@ -1,4 +1,4 @@
-const { soundcloudToken } = require(process.cwd() + "/src/config/tokens.json");
+const soundcloudToken = process.env.SOUNDCLOUD;
 
 import { Song } from "../../models";
 import axios from "axios";

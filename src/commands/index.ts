@@ -8,3 +8,6 @@ export * from "./uptime";
 export * from "./skip";
 export * from "./queue";
 export * from "./stop";
+export * from "./invite";
+export * from "./settings";
+export * from "./playskip";

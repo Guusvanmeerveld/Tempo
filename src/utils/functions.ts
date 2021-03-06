@@ -1,6 +1,7 @@
 import fs from "fs";
-import path from "path";
 import Console from "./console";
+
+const abs = ["K", "M", "B", "T"];
 
 /**
  * Chunk an array into a new array that contains arrays with a set size
@@ -27,8 +28,11 @@ export function ucFirst(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const abs = ["K", "M", "B", "T"];
-export function abbreviate(number: number) {
+/**
+ * Abbreviate a number down to a single number with a character
+ * @param number
+ */
+export function abbreviate(number: number): string | number {
   for (var i = abs.length - 1; i >= 0; i--) {
     let zero = Math.pow(1000, i) * 1000;
     if (number >= zero) {
@@ -39,6 +43,10 @@ export function abbreviate(number: number) {
   return number;
 }
 
+/**
+ * Remove every file from a given directory
+ * @param path
+ */
 export function emptyDir(path: string) {
   if (fs.existsSync(path)) {
     const files = fs.readdirSync(path);

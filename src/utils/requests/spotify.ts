@@ -1,4 +1,7 @@
-const { spotify } = require(process.cwd() + "/src/config/tokens.json");
+const spotify = {
+  id: process.env.SPOTIFY_ID,
+  secret: process.env.SPOTIFY_SECRET,
+};
 
 import { Song } from "../../models";
 import axios from "axios";

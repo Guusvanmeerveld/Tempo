@@ -1,7 +1,6 @@
 <p align="center"><img src="src/img/logo-banner.png" width="400"></p>
 
-# Tempo-TS
-Tempo is a Discord music bot, written in TypeScript.
+<p align="center">Tempo is a Discord music bot, written in TypeScript.</p>
 
 ### Installation
 In order to compile the TypeScript to Javascript, you will need to have TypeScript installed. You can install it using the following command:

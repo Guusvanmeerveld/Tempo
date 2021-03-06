@@ -1,23 +1,30 @@
-import { Guild, Message, TextChannel, User, GuildChannel } from "discord.js-light";
+import { Guild, Message, TextChannel, GuildChannel } from "discord.js-light";
 
 import Bot from "./bot";
 import Long from "long";
 import Console from "./utils/console";
-import { DefaultEmbed } from "./models";
-
-const { prefix, role } = require(process.cwd() + "/src/config/settings.json");
+import { DefaultEmbed, Setting } from "./models";
 
 export async function handleMessage(msg: Message, client: Bot) {
-  if (msg.partial || msg.system || msg.author.id === msg.client.user!.id || msg.author.bot || !msg.guild) {
+  if (
+    msg.partial ||
+    msg.system ||
+    msg.author.id === msg.client.user!.id ||
+    msg.author.bot ||
+    !msg.guild ||
+    !msg.content
+  ) {
     return;
   }
 
-  if (!msg.content.startsWith(prefix)) {
+  let settings = client.settings.get(msg.guild.id);
+
+  if (!msg.content.startsWith(settings.prefix)) {
     return;
   }
 
   const channel = (await msg.channel.fetch()) as TextChannel;
-  const user = client.user as User;
+  const user = client.user!;
 
   let channelPerms = channel.permissionsFor(user);
 
@@ -25,7 +32,9 @@ export async function handleMessage(msg: Message, client: Bot) {
     return;
   }
 
-  const args: Array<string> = msg.content.slice(prefix.length).split(/ +/);
+  client.settings.set(msg.guild.id, Setting.Prefix, "-");
+
+  const args: Array<string> = msg.content.slice(settings.prefix.length).split(/ +/);
   const commandInput: string = args.shift()!.toLowerCase();
 
   const command =
@@ -38,7 +47,16 @@ export async function handleMessage(msg: Message, client: Bot) {
     return;
   }
 
-  if (command.requirements?.includes("ROLE") && !msg.member?.roles.cache.has(role)) {
+  if (
+    command.requirements?.includes("ROLE") &&
+    parseInt(settings.role) &&
+    !msg.member?.roles.cache.has(settings.role)
+  ) {
+    let role = msg.guild.roles.resolve(settings.role);
+
+    msg.channel.send(`You need to have the ${role?.toString()} role to use this command.`, {
+      allowedMentions: { users: [] },
+    });
     return;
   }
 
@@ -46,8 +64,7 @@ export async function handleMessage(msg: Message, client: Bot) {
 }
 
 export async function handleGuildJoin(guild: Guild) {
-  let user = guild.client.user as User;
-  if (!user) return;
+  let user = guild.client.user!;
 
   let channels = await guild.channels.fetch();
 

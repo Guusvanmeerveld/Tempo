@@ -1,5 +1,5 @@
 node_modules
 dist
-src/config/tokens.json
-src/config/mysql.json
+src/.env
+database
 logs

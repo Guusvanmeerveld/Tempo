@@ -1,5 +1,4 @@
-const { search_platform }: { search_platform: string } = require(process.cwd() + "/src/config/settings.json");
-
+const { search_platform } = require(process.cwd() + "/src/config/settings.json");
 import { Command, Song, DefaultEmbed, Requirement } from "../models";
 
 import Console from "../utils/console";
@@ -29,10 +28,10 @@ const spRegex = /^https?:\/\/(open\.spotify\.com\/track)\/(.*)$/;
 const audioPattern = /\.(?:wav|mp3)$/i;
 
 export class Play implements Command {
-  name: string;
-  aliases: Array<string>;
-  requirements: Array<Requirement>;
-  description: string;
+  public name: string;
+  public aliases: Array<string>;
+  public requirements: Array<Requirement>;
+  public description: string;
 
   constructor() {
     this.name = "play";

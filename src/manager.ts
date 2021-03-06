@@ -1,4 +1,4 @@
-const { discordToken } = require(process.cwd() + "/src/config/tokens.json");
+const discordToken = process.env.DISCORD;
 
 import { ShardingManager } from "discord.js-light";
 import Console from "./utils/console";

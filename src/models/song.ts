@@ -1,15 +1,15 @@
 import { User } from "discord.js";
 
 export interface Song {
-  platform: string;
+  platform: "soundcloud" | "youtube" | "spotify" | "audio";
   title: string;
   author: string;
   image: string;
   date: Date;
+  url: string;
   views?: number;
   likes?: number;
   dislikes?: number;
-  url: string;
   download?: string;
   requested?: User;
 }

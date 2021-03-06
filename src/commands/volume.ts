@@ -1,7 +1,7 @@
 import { Message } from "discord.js-light";
 import { Command, Requirement } from "../models";
 
-const MAX_VOLUME = 1000;
+export const MAX_VOLUME = 1000;
 
 export class Volume implements Command {
   name: string;
