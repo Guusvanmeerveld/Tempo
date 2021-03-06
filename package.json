@@ -5,7 +5,6 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev src/start.ts",
-    "slash": "ts-node-dev src/slash.ts",
     "build": "tsc",
     "start": "node . --production"
   },
