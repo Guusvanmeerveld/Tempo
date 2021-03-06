@@ -18,11 +18,11 @@ import {
   Settings,
   PlaySkip,
 } from "./commands";
-import Logger from "./utils/logger";
+// import Logger from "./utils/logger";
 import SettingsInterface from "./utils/settings";
 
 export default class Bot extends Client {
-  public logger: Logger;
+  // public logger: Logger;
   public settings: SettingsInterface;
   public commands: Collection<string, Command>;
   public queues: Collection<string, QueueList>;
@@ -37,7 +37,7 @@ export default class Bot extends Client {
     });
 
     this.settings = new SettingsInterface();
-    this.logger = new Logger();
+    // this.logger = new Logger();
     this.commands = new Collection();
     this.queues = new Collection();
 
