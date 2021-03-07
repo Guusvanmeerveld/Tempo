@@ -1,5 +1,11 @@
 <p align="center"><img src="src/img/logo-banner.png" width="400"></p>
 
+<p align="center">
+<img src="https://img.shields.io/website-up-down-green-red/https/tempo.g-vm.nl.svg">
+<img src="https://img.shields.io/github/license/Guusvanmeerveld/Tempo-TS.svg">
+<img src="https://img.shields.io/github/release/Guusvanmeerveld/Tempo-TS.svg">
+<img src="https://img.shields.io/discord/748833935886254171.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2">
+</p>
 <p align="center">Tempo is a Discord music bot, written in TypeScript.</p>
 
 ### Installation
