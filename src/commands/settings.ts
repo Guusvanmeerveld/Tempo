@@ -6,9 +6,9 @@ import { MAX_VOLUME } from "./volume";
 import fs from "fs";
 import { join } from "path";
 
-let languages: Array<String> = [];
+let languages: Array<string> = [];
 
-let files = fs.readdirSync(join(process.cwd(), "src/config/lang/"));
+const files = fs.readdirSync(join(process.cwd(), "src/config/lang/"));
 languages = files.map((g) => g.replace(".json", ""));
 
 export class Settings implements Command {
@@ -41,7 +41,9 @@ export class Settings implements Command {
         case Setting.Volume:
           value = parseInt(value.replace("%", ""));
           if (isNaN(value) || value < 0 || value > MAX_VOLUME) {
-            msg.channel.send(`❌  That is not a valid number. Please specify a number between 0 - ${MAX_VOLUME}.`);
+            msg.channel.send(
+              `❌  That is not a valid number. Please specify a number between 0 - ${MAX_VOLUME}.`
+            );
             return;
           }
 

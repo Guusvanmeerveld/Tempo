@@ -14,7 +14,17 @@ export class Invite implements Command {
 
   public run(msg: Message, args: Array<string>, client: Bot) {
     client
-      .generateInvite({ permissions: ["CONNECT", "SPEAK", "SEND_MESSAGES", "EMBED_LINKS", "ADD_REACTIONS"] })
-      .then((invite) => msg.channel.send(`Heres a link to invite me to a server: ${invite}`));
+      .generateInvite({
+        permissions: [
+          "CONNECT",
+          "SPEAK",
+          "SEND_MESSAGES",
+          "EMBED_LINKS",
+          "ADD_REACTIONS",
+        ],
+      })
+      .then((invite) =>
+        msg.channel.send(`Heres a link to invite me to a server: ${invite}`)
+      );
   }
 }

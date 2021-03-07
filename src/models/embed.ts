@@ -6,7 +6,7 @@ export class DefaultEmbed extends MessageEmbed {
     super();
 
     if (author) {
-      let avatarURL = author.avatarURL() as string;
+      const avatarURL = author.avatarURL() as string;
       this.setAuthor(`Requested by: ${author.username}`, avatarURL);
     }
 
@@ -17,12 +17,20 @@ export class DefaultEmbed extends MessageEmbed {
 
 export class PaginatedEmbed extends DefaultEmbed {
   page: number;
-  constructor({ author, args, fields }: { author: User; args: Array<string>; fields: Array<EmbedField | undefined> }) {
+  constructor({
+    author,
+    args,
+    fields,
+  }: {
+    author: User;
+    args: Array<string>;
+    fields: Array<EmbedField | undefined>;
+  }) {
     super(author);
 
     this.page = 1;
     if (fields.length > 0) {
-      let chunked = chunk(fields, 5);
+      const chunked = chunk(fields, 5);
 
       if (args.length > 0) {
         this.page = parseInt(args[0]);
@@ -33,7 +41,9 @@ export class PaginatedEmbed extends DefaultEmbed {
 
       this.setFooter(`Page ${this.page}/${chunked.length}`);
 
-      chunked[this.page - 1].forEach((item: EmbedField) => this.addField(item.name, item.value, item.inline));
+      chunked[this.page - 1].forEach((item: EmbedField) =>
+        this.addField(item.name, item.value, item.inline)
+      );
     }
   }
 }

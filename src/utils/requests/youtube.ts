@@ -1,8 +1,8 @@
 const youtubeToken = process.env.YOUTUBE;
 
 import { Song } from "../../models";
-import axios from "axios";
-import ytsr from "ytsr";
+import axios, { AxiosResponse } from "axios";
+import ytsr, { Result } from "ytsr";
 
 const request = axios.create({
   baseURL: "https://www.googleapis.com/youtube/v3/",
@@ -32,8 +32,8 @@ export default class Youtube {
    * @param query
    * @param limit
    */
-  public static async search(query: string, limit: number) {
-    let res = await ytsr(query, {
+  public static async search(query: string, limit: number): Promise<Result> {
+    const res = await ytsr(query, {
       limit,
     });
 
@@ -45,7 +45,7 @@ export default class Youtube {
    * @param url
    */
   public static id(url: string): string {
-    let match = url.match(regex);
+    const match = url.match(regex);
 
     if (match && match.length > 1) {
       return match[2];
@@ -59,15 +59,15 @@ export default class Youtube {
    * @param input
    */
   public static async info(input: string): Promise<Song> {
-    let id = this.id(input);
-    let data = await this.video(id);
+    const id = this.id(input);
+    const data = await this.video(id);
 
-    let video = data.items[0];
+    const video = data.items[0];
 
     if (!video) throw "Could not find any information about this video.";
 
-    let snippet = video.snippet;
-    let statistics = video.statistics;
+    const snippet = video.snippet;
+    const statistics = video.statistics;
 
     return {
       platform: "youtube",

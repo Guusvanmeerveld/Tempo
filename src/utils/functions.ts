@@ -10,9 +10,9 @@ const abs = ["K", "M", "B", "T"];
  * @returns Result
  */
 export function chunk(array: Array<any>, size: number) {
-  let chunked: Array<Array<any>> = new Array();
+  const chunked: Array<Array<any>> = [];
 
-  for (var i = 0; i < array.length; i += size) {
+  for (let i = 0; i < array.length; i += size) {
     chunked.push(array.slice(i, i + size));
   }
 
@@ -33,8 +33,8 @@ export function ucFirst(string: string) {
  * @param number
  */
 export function abbreviate(number: number): string | number {
-  for (var i = abs.length - 1; i >= 0; i--) {
-    let zero = Math.pow(1000, i) * 1000;
+  for (let i = abs.length - 1; i >= 0; i--) {
+    const zero = Math.pow(1000, i) * 1000;
     if (number >= zero) {
       return Math.floor(number / zero) + abs[i];
     }

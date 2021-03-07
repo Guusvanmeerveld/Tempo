@@ -2,7 +2,7 @@ const soundcloudToken = process.env.SOUNDCLOUD;
 
 import { Song } from "../../models";
 import axios from "axios";
-import m3u8stream from "m3u8stream";
+import m3u8stream, { Stream } from "m3u8stream";
 
 const request = axios.create({
   baseURL: "https://api-v2.soundcloud.com/",
@@ -31,15 +31,15 @@ export default class SoundCloud {
     ).data;
   }
 
-  public static async download(url: string | undefined) {
+  public static async download(url: string | undefined): Promise<Stream> {
     if (!url) throw "No url given";
-    let downloadURL = (await request(url)).data.url;
+    const downloadURL = (await request(url)).data.url;
 
     return m3u8stream(downloadURL);
   }
 
   public static async info(input: string): Promise<Song> {
-    let data = await this.track(input);
+    const data = await this.track(input);
 
     return {
       platform: "soundcloud",

@@ -17,14 +17,14 @@ export class Queue implements Command {
   }
 
   run(msg: Message, args: Array<string>, client: Bot) {
-    let queue = client.queues.get(msg.guild?.id ?? "");
+    const queue = client.queues.get(msg.guild?.id ?? "");
 
     if (!queue?.playing) {
       msg.channel.send("❌  Queue is empty.");
       return;
     }
 
-    let fields: Array<EmbedField> = new Array();
+    let fields: Array<EmbedField> = [];
     if (queue.songs.length > 0) {
       fields = queue.songs.map((song: Song, i) => {
         return {
@@ -35,10 +35,12 @@ export class Queue implements Command {
       });
     }
 
-    let embed = new PaginatedEmbed({ author: msg.author, args, fields });
+    const embed = new PaginatedEmbed({ author: msg.author, args, fields });
 
     embed.setDescription(
-      `Currently playing: \`${queue.playing?.title ?? "Nothing"}\` requested by ${queue.playing.requested?.toString()}`
+      `Currently playing: \`${
+        queue.playing?.title ?? "Nothing"
+      }\` requested by ${queue.playing.requested?.toString()}`
     );
 
     embed.setTitle("Songs in the queue");

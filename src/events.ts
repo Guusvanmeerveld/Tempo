@@ -17,7 +17,7 @@ export async function handleMessage(msg: Message, client: Bot) {
     return;
   }
 
-  let settings = client.settings.get(msg.guild.id);
+  const settings = client.settings.get(msg.guild.id);
 
   if (!msg.content.startsWith(settings.prefix)) {
     return;
@@ -26,24 +26,32 @@ export async function handleMessage(msg: Message, client: Bot) {
   const channel = (await msg.channel.fetch()) as TextChannel;
   const user = client.user!;
 
-  let channelPerms = channel.permissionsFor(user);
+  const channelPerms = channel.permissionsFor(user);
 
-  if (!channelPerms?.has("SEND_MESSAGES") || !channelPerms?.has("EMBED_LINKS")) {
+  if (
+    !channelPerms?.has("SEND_MESSAGES") ||
+    !channelPerms?.has("EMBED_LINKS")
+  ) {
     return;
   }
 
   client.settings.set(msg.guild.id, Setting.Prefix, "-");
 
-  const args: Array<string> = msg.content.slice(settings.prefix.length).split(/ +/);
+  const args: Array<string> = msg.content
+    .slice(settings.prefix.length)
+    .split(/ +/);
   const commandInput: string = args.shift()!.toLowerCase();
 
   const command =
-    client.commands.get(commandInput) || client.commands.find((cmd) => cmd.aliases?.includes(commandInput) ?? false);
+    client.commands.get(commandInput) ||
+    client.commands.find((cmd) => cmd.aliases?.includes(commandInput) ?? false);
 
   if (!command) return;
 
   if (command.requirements?.includes("VOICE") && !msg.member?.voice.channel) {
-    msg.channel.send("You need to be connected to a voice channel to use this command.");
+    msg.channel.send(
+      "You need to be connected to a voice channel to use this command."
+    );
     return;
   }
 
@@ -52,11 +60,14 @@ export async function handleMessage(msg: Message, client: Bot) {
     parseInt(settings.role) &&
     !msg.member?.roles.cache.has(settings.role)
   ) {
-    let role = msg.guild.roles.resolve(settings.role);
+    const role = msg.guild.roles.resolve(settings.role);
 
-    msg.channel.send(`You need to have the ${role?.toString()} role to use this command.`, {
-      allowedMentions: { users: [] },
-    });
+    msg.channel.send(
+      `You need to have the ${role?.toString()} role to use this command.`,
+      {
+        allowedMentions: { users: [] },
+      }
+    );
     return;
   }
 
@@ -64,29 +75,38 @@ export async function handleMessage(msg: Message, client: Bot) {
 }
 
 export async function handleGuildJoin(guild: Guild) {
-  let user = guild.client.user!;
+  const user = guild.client.user!;
 
-  let channels = await guild.channels.fetch();
+  const channels = await guild.channels.fetch();
 
-  let mainChannel: GuildChannel | undefined = channels
+  const mainChannel: GuildChannel | undefined = channels
     .filter((channel) => {
-      let permissions = channel.permissionsFor(user);
+      const permissions = channel.permissionsFor(user);
       if (!permissions) return false;
 
       return channel.type === "text" && permissions.has("SEND_MESSAGES");
     })
-    .sort((a, b) => a.position - b.position || Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber())
+    .sort(
+      (a, b) =>
+        a.position - b.position ||
+        Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber()
+    )
     .first();
 
   if (!mainChannel) {
-    Console.error("Was not able to find a channel where I could speak in guild: " + guild.name);
+    Console.error(
+      "Was not able to find a channel where I could speak in guild: " +
+        guild.name
+    );
     return;
   }
 
-  let embed = new DefaultEmbed();
+  const embed = new DefaultEmbed();
 
   embed.setTitle("Thanks for adding me!");
-  embed.setDescription("Below is a list of things you can check out when using the bot.");
+  embed.setDescription(
+    "Below is a list of things you can check out when using the bot."
+  );
 
   embed.addFields(
     {

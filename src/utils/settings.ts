@@ -1,6 +1,7 @@
 import { Collection } from "discord.js";
 
-const settings: GuildSettings = require(process.cwd() + "/src/config/settings.json");
+const settings: GuildSettings = require(process.cwd() +
+  "/src/config/settings.json");
 
 import { GuildSettings, Setting } from "../models";
 import Console from "./console";
@@ -19,13 +20,15 @@ export default class Settings {
   private db: low.LowdbSync<FileSchema>;
 
   constructor() {
-    const adapter = new FileSync<FileSchema>(join(process.cwd(), "database/guilds.json"));
+    const adapter = new FileSync<FileSchema>(
+      join(process.cwd(), "database/guilds.json")
+    );
     this.db = low(adapter);
     this.guilds = new Collection();
 
     this.db.defaults({ settings: {} }).write();
 
-    let settings = this.db.get("settings").value();
+    const settings = this.db.get("settings").value();
     for (const [key, value] of Object.entries(settings)) {
       this.guilds.set(key, value as GuildSettings);
     }
@@ -56,8 +59,8 @@ export default class Settings {
    * @param value - The new value of the setting
    */
   public set(id: string, setting: Setting, value: string | number) {
-    let currentSettings = this.get(id);
-    let newSettings: GuildSettings = { ...currentSettings, [setting]: value };
+    const currentSettings = this.get(id);
+    const newSettings: GuildSettings = { ...currentSettings, [setting]: value };
 
     if (isEqual(newSettings, settings)) {
       this.guilds.delete(id);

@@ -1,0 +1,11 @@
+dist
+node_modules
+logs
+database
+README.md
+.vscode
+package-lock.json
+LICENSE
+example.env
+.env
+.prettierrc.json

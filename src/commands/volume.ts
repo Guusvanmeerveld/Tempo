@@ -17,15 +17,19 @@ export class Volume implements Command {
   }
 
   run(msg: Message, args: Array<string>) {
-    let volume = parseInt(args[0]?.replace("%", ""));
+    const volume = parseInt(args[0]?.replace("%", ""));
 
     if (msg.guild?.voice?.connection?.dispatcher) {
       if (!volume) {
-        msg.channel.send(`The volume is set to ${msg.guild.voice.connection.dispatcher.volume}%`);
+        msg.channel.send(
+          `The volume is set to ${msg.guild.voice.connection.dispatcher.volume}%`
+        );
       }
 
       if (isNaN(volume) || volume < 0 || volume > MAX_VOLUME) {
-        msg.channel.send(`❌  That is not a valid number. Please specify a number between 0 - ${MAX_VOLUME}.`);
+        msg.channel.send(
+          `❌  That is not a valid number. Please specify a number between 0 - ${MAX_VOLUME}.`
+        );
         return;
       }
 

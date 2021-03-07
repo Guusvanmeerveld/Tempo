@@ -1,8 +1,8 @@
 {
-    "bot": {
-        "activity": {
-            "type": "LISTENING",
-            "text": "je moeder"
-        }
+  "bot": {
+    "activity": {
+      "type": "LISTENING",
+      "text": "je moeder"
     }
+  }
 }

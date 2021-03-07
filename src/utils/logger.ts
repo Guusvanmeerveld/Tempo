@@ -8,7 +8,7 @@ export default class Logger {
       emptyDir("./logs/");
     }
 
-    let file = `./logs/${new Date()}.log`;
+    const file = `./logs/${new Date()}.log`;
     this.file = file;
     writeFileSync(file, "");
   }

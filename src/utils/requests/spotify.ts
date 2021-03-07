@@ -26,7 +26,7 @@ export default class Spotify {
   oauth: OAuth;
   token: string;
   constructor() {
-    let tokenCombo = `${spotify.id}:${spotify.secret}`;
+    const tokenCombo = `${spotify.id}:${spotify.secret}`;
     this.token = Buffer.from(tokenCombo).toString("base64");
 
     this.oauth = {
@@ -40,12 +40,13 @@ export default class Spotify {
 
   private async getOAuth() {
     if (this.oauth.created) {
-      let expired = Date.now() - this.oauth.created > this.oauth.token.expires_in * 1000;
+      const expired =
+        Date.now() - this.oauth.created > this.oauth.token.expires_in * 1000;
 
       if (!expired) return;
     }
 
-    let data = (
+    const data = (
       await oauth.post("/token", "grant_type=client_credentials", {
         headers: {
           Authorization: `Basic ${this.token}`,
@@ -92,7 +93,7 @@ export default class Spotify {
   }
 
   public id(url: string) {
-    let match = url.match(regex);
+    const match = url.match(regex);
 
     if (match && match.length > 1) {
       return match[2];
@@ -102,9 +103,9 @@ export default class Spotify {
   }
 
   public async info(url: string): Promise<Song> {
-    let id = this.id(url);
+    const id = this.id(url);
 
-    let song = await this.track(id);
+    const song = await this.track(id);
 
     return {
       author: song.artists[0].name,

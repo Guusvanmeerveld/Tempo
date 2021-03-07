@@ -56,12 +56,14 @@ export default class Bot extends Client {
     this.commands.set("playskip", new PlaySkip());
   }
 
-  public start(token: string) {
+  public start(token: string): void {
     console.time();
     Console.info("Starting the bot");
 
     this.on("ready", () => {
-      this.user!.setActivity(lang.bot.activity.text ?? "", { type: lang.bot.activity.type ?? "PLAYING" });
+      this.user!.setActivity(lang.bot.activity.text ?? "", {
+        type: lang.bot.activity.type ?? "PLAYING",
+      });
     });
 
     this.login(token)

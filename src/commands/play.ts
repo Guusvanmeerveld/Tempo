@@ -1,4 +1,5 @@
-const { search_platform } = require(process.cwd() + "/src/config/settings.json");
+const { search_platform } = require(process.cwd() +
+  "/src/config/settings.json");
 import { Command, Song, DefaultEmbed, Requirement } from "../models";
 
 import Console from "../utils/console";
@@ -9,7 +10,7 @@ import youtube from "../utils/requests/youtube";
 import soundcloud from "../utils/requests/soundcloud";
 import Spotify from "../utils/requests/spotify";
 
-let spotify = new Spotify();
+const spotify = new Spotify();
 
 import { Join } from "./join";
 const join = new Join().run;
@@ -54,19 +55,23 @@ export class Play implements Command {
 
     await join(msg, args, client);
 
-    let queue = client.queues.get(msg.guild?.id ?? "");
+    const queue = client.queues.get(msg.guild?.id ?? "");
 
     this.info(msg, args)
       .then((info: Song) => {
-        let song: Song = { requested: msg.author, ...info };
-        let embed = new DefaultEmbed(msg.author);
+        const song: Song = { requested: msg.author, ...info };
+        const embed = new DefaultEmbed(msg.author);
 
         embed.setTitle(song?.title ?? "Unknown song");
         embed.setThumbnail(song?.image);
         embed.setURL(song?.url);
 
         embed.addFields(
-          { name: "Published", value: song?.date.toLocaleDateString() ?? "Unknown date", inline: true },
+          {
+            name: "Published",
+            value: song?.date.toLocaleDateString() ?? "Unknown date",
+            inline: true,
+          },
           { name: "Author", value: song?.author, inline: true },
           { name: "Platform", value: ucFirst(song.platform), inline: true },
           { name: "Streams", value: abbreviate(song?.views ?? 0), inline: true }
@@ -82,7 +87,9 @@ export class Play implements Command {
 
         if (queue?.playing) {
           queue.songs.push(song);
-          msg.channel.send(`🎵  Added \`${song.title}\` to the queue.`, { embed });
+          msg.channel.send(`🎵  Added \`${song.title}\` to the queue.`, {
+            embed,
+          });
 
           return;
         }
@@ -110,7 +117,7 @@ export class Play implements Command {
       return;
     }
 
-    let queue = client.queues.get(msg.guild?.id ?? "");
+    const queue = client.queues.get(msg.guild?.id ?? "");
     if (!queue) return;
 
     queue.playing = song;
@@ -120,7 +127,9 @@ export class Play implements Command {
         this.stream(msg, client, ytdl(song.url, { filter: "audioonly" }));
         break;
       case "soundcloud":
-        soundcloud.download(song.download).then((stream) => this.stream(msg, client, stream));
+        soundcloud
+          .download(song.download)
+          .then((stream) => this.stream(msg, client, stream));
         break;
     }
   }
@@ -136,12 +145,12 @@ export class Play implements Command {
       const connection = msg.guild.voice.connection;
 
       connection.play(stream).on("finish", () => {
-        let queue = client.queues.get(msg.guild?.id ?? "");
+        const queue = client.queues.get(msg.guild?.id ?? "");
 
         if (!queue) return;
 
         if (queue.songs.length > 0) {
-          let newSong = queue.songs.shift() as Song;
+          const newSong = queue.songs.shift() as Song;
 
           queue.playing = newSong;
           this.play(msg, client, newSong);
@@ -160,7 +169,7 @@ export class Play implements Command {
    * @param args
    */
   private async info(msg: Message, args: Array<string>): Promise<Song> {
-    let input = args[0];
+    const input = args[0];
     if (input.match(ytRegex)) {
       return await youtube.info(input);
     }
@@ -176,7 +185,7 @@ export class Play implements Command {
     if (input.match(audioPattern)) {
     }
 
-    let search = args.join(" ");
+    const search = args.join(" ");
 
     msg.channel.send(`🔍  Searching for \`${search}\`.`);
     return await this.search(search);
@@ -187,36 +196,37 @@ export class Play implements Command {
    * @param input
    */
   private async search(input: string): Promise<Song> {
-    let notFound = (platform: string) => `I was not able to find \`${input}\` on ${platform}.`;
+    const notFound = (platform: string) =>
+      `I was not able to find \`${input}\` on ${platform}.`;
     switch (search_platform) {
       case "soundcloud":
-        let tracks = await soundcloud.search(input, 1);
+        const tracks = await soundcloud.search(input, 1);
 
         if (tracks.collection.length < 1) {
           throw notFound("Soundcloud");
         }
 
-        let track = tracks.collection[0];
+        const track = tracks.collection[0];
 
         return await soundcloud.info(track.permalink_url);
       case "spotify":
-        let songs = (await spotify.search(input, 1)).tracks;
+        const songs = (await spotify.search(input, 1)).tracks;
 
         if (songs.items.length < 1) {
           throw notFound("Spotify");
         }
 
-        let song = songs.items[0];
+        const song = songs.items[0];
 
         return spotify.info(song.id);
       default:
-        let videos = await youtube.search(input, 1);
+        const videos = await youtube.search(input, 1);
 
         if (videos.items.length < 1) {
           throw notFound("Youtube");
         }
 
-        let video = videos.items[0] as Video;
+        const video = videos.items[0] as Video;
 
         return youtube.info(video?.id ?? "Unknown");
     }

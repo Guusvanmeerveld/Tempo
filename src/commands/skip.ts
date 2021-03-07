@@ -25,7 +25,7 @@ export class Skip implements Command {
       return;
     }
 
-    let queue = client.queues.get(msg.guild?.id ?? "");
+    const queue = client.queues.get(msg.guild?.id ?? "");
 
     if (!queue?.playing) {
       msg.channel.send("❌  There is nothing playing right now.");
@@ -39,7 +39,9 @@ export class Skip implements Command {
 
       if (queue.songs.length < count - 1 || count < 1) {
         msg.channel.send(
-          `That is not a valid number of songs to skip. Please specify a number between 1 - ${queue.songs.length + 1}`
+          `That is not a valid number of songs to skip. Please specify a number between 1 - ${
+            queue.songs.length + 1
+          }`
         );
         return;
       }

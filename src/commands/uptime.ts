@@ -16,7 +16,9 @@ export class Uptime implements Command {
   }
 
   run(msg: Message, args: Array<string>, client: Bot) {
-    let time = humanizeDuration(client.uptime ?? 0);
-    msg.channel.send(`Shard \`${msg.guild?.shardID ?? 0}\` has been online for ${time}.`);
+    const time = humanizeDuration(client.uptime ?? 0);
+    msg.channel.send(
+      `Shard \`${msg.guild?.shardID ?? 0}\` has been online for ${time}.`
+    );
   }
 }

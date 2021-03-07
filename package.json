@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev src/start.ts",
+    "pretify": "onchange '**/*' -- npx prettier --write --ignore-unknown {{changed}}",
     "build": "tsc",
     "start": "node . --production"
   },
@@ -14,6 +15,7 @@
     "@discordjs/opus": "^0.4.0",
     "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
+    "chalk": "^4.1.0",
     "discord.js-light": "3.5.3",
     "dotenv": "^8.2.0",
     "humanize-duration": "^3.25.1",
@@ -24,8 +26,7 @@
     "m3u8stream": "^0.8.3",
     "utf-8-validate": "^5.0.4",
     "ytdl-core": "^4.5.0",
-    "ytsr": "^3.3.0",
-    "chalk": "^4.1.0"
+    "ytsr": "^3.3.0"
   },
   "devDependencies": {
     "@types/humanize-duration": "^3.18.1",
@@ -33,8 +34,11 @@
     "@types/long": "^4.0.1",
     "@types/lowdb": "^1.0.7",
     "@types/node": "^14.14.27",
-    "@types/ws": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "onchange": "^7.1.0",
+    "prettier": "2.2.1",
     "ts-node-dev": "^1.1.1",
-    "typescript": "^4.1.3"
+    "typescript": "^4.2.3"
   }
 }
