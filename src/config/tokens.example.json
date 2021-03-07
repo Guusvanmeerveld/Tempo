@@ -1,9 +1,0 @@
-{
-    "discordToken": "Discord bot token",
-    "youtubeToken": "Youtube api token",
-    "soundcloudToken": "Soundcloud client id",
-    "spotify": {
-        "secret": "Spotify api secret",
-        "id": "Spotify api id"
-    }
-}

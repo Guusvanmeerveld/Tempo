@@ -25,7 +25,7 @@ npm run build
 
 ### Tokens
 
-To start the bot and connect to the Youtube or Soundcloud api, you will need a few tokens in the file `src/config/tokens.json`. To do so, you can rename the file `src/config/tokens.example.json` to `src/config/tokens.json` and fill in the necessary tokens/id's.
+To start the bot and connect to the Youtube or Soundcloud api, you will need a few tokens in the file `.env`. To do so, you can rename the file [`example.env`](example.env) to `.env` and fill in the necessary tokens/id's.
 
 ### Start
 
