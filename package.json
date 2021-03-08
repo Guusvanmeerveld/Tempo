@@ -5,6 +5,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"dev": "ts-node-dev src/start.ts",
+		"dev-full": "ts-node-dev index.ts",
 		"pretify": "prettier --write .",
 		"build": "tsc",
 		"start": "node . --production"
