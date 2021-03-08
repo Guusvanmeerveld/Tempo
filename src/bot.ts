@@ -20,10 +20,12 @@ import {
 } from './commands';
 // import Logger from "./utils/logger";
 import SettingsInterface from './utils/settings';
+import { Database } from './utils/database';
 
 export default class Bot extends Client {
 	// public logger: Logger;
 	public settings: SettingsInterface;
+	public database: Database;
 	public commands: Collection<string, Command>;
 	public queues: Collection<string, QueueList>;
 	constructor() {
@@ -37,6 +39,7 @@ export default class Bot extends Client {
 		});
 
 		this.settings = new SettingsInterface();
+		this.database = new Database();
 		// this.logger = new Logger();
 		this.commands = new Collection();
 		this.queues = new Collection();
@@ -57,6 +60,7 @@ export default class Bot extends Client {
 	}
 
 	public start(token?: string): void {
+		this.database.connect();
 		console.time();
 		Console.info('Starting the bot');
 
