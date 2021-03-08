@@ -25,9 +25,7 @@ export class Disconnect implements Command {
 
 		// client.queues.set(msg.guild?.id ?? "", { songs: [] });
 
-		msg.channel.send(
-			`🔈  Successfully disconnected from \`${channel?.name}\`.`
-		);
+		msg.channel.send(`🔈  Successfully disconnected from \`${channel?.name}\`.`);
 		voice?.connection?.disconnect();
 	}
 }

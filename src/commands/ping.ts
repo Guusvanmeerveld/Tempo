@@ -12,9 +12,7 @@ export class Ping implements Command {
 
 	run(msg: Message) {
 		msg.channel.send(`💤  Pinging...`).then((sent) => {
-			sent.edit(
-				`🏓  Pong! Took \`${sent.createdTimestamp - msg.createdTimestamp}ms\``
-			);
+			sent.edit(`🏓  Pong! Took \`${sent.createdTimestamp - msg.createdTimestamp}ms\``);
 		});
 	}
 }

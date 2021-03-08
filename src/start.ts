@@ -1,9 +1,8 @@
 require('dotenv').config();
 console.clear();
-// process.env.NODE_ENV = "development";
 
-const discordToken = process.env.DISCORD as string;
-import { handleGuildJoin, handleMessage } from './events';
+const discordToken = process.env.DISCORD;
+import { handleError, handleGuildJoin, handleMessage } from './events';
 
 import Bot from './bot';
 
@@ -13,3 +12,5 @@ bot.start(discordToken);
 
 bot.on('message', (msg) => handleMessage(msg, bot));
 bot.on('guildCreate', (guild) => handleGuildJoin(guild));
+bot.on('rateLimit', (rateLimit) => handleError(rateLimit, bot));
+bot.on('error', (error) => handleError(error, bot));

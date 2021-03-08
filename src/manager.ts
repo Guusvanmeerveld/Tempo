@@ -12,9 +12,7 @@ export default class Manager {
 	}
 
 	public start() {
-		this.manager.on('shardCreate', (shard) =>
-			Console.info(`Launched shard ${shard.id}`)
-		);
+		this.manager.on('shardCreate', (shard) => Console.info(`Launched shard ${shard.id}`));
 
 		this.manager.spawn();
 	}

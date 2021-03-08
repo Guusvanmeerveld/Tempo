@@ -3,10 +3,7 @@ const soundcloudToken = process.env.SOUNDCLOUD;
 import { Song } from '../../models';
 import axios from 'axios';
 import m3u8stream, { Stream } from 'm3u8stream';
-import {
-	SoundCloudSearchAPI,
-	SoundCloudTrackAPI,
-} from '../../models/soundcloud';
+import { SoundCloudSearchAPI, SoundCloudTrackAPI } from '../../models/soundcloud';
 
 const request = axios.create({
 	baseURL: 'https://api-v2.soundcloud.com/',
@@ -24,10 +21,7 @@ export default class SoundCloud {
 		).data;
 	}
 
-	public static async search(
-		entry: string,
-		limit: number
-	): Promise<SoundCloudSearchAPI> {
+	public static async search(entry: string, limit: number): Promise<SoundCloudSearchAPI> {
 		return (
 			await request('/search/tracks', {
 				params: {

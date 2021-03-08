@@ -1,5 +1,4 @@
-const { search_platform } = require(process.cwd() +
-	'/src/config/settings.json');
+const { search_platform } = require(process.cwd() + '/src/config/settings.json');
 import { Command, Song, DefaultEmbed, Requirement } from '../models';
 
 import Console from '../utils/console';
@@ -72,8 +71,16 @@ export class Play implements Command {
 						inline: true,
 					},
 					{ name: 'Author', value: song?.author, inline: true },
-					{ name: 'Platform', value: ucFirst(song.platform), inline: true },
-					{ name: 'Streams', value: abbreviate(song?.views ?? 0), inline: true }
+					{
+						name: 'Platform',
+						value: ucFirst(song.platform),
+						inline: true,
+					},
+					{
+						name: 'Streams',
+						value: abbreviate(song?.views ?? 0),
+						inline: true,
+					}
 				);
 
 				if (song?.likes) {

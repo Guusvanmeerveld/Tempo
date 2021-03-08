@@ -28,7 +28,11 @@ export class Help implements Command {
 			};
 		});
 
-		const embed = new PaginatedEmbed({ author: msg.author, args, fields });
+		const embed = new PaginatedEmbed({
+			author: msg.author,
+			args,
+			fields,
+		});
 		embed.setTitle('List of commands for Tempo');
 
 		msg.channel.send(embed);

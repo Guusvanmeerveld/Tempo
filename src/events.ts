@@ -28,18 +28,13 @@ export async function handleMessage(msg: Message, client: Bot) {
 
 	const channelPerms = channel.permissionsFor(user);
 
-	if (
-		!channelPerms?.has('SEND_MESSAGES') ||
-		!channelPerms?.has('EMBED_LINKS')
-	) {
+	if (!channelPerms?.has('SEND_MESSAGES') || !channelPerms?.has('EMBED_LINKS')) {
 		return;
 	}
 
 	client.settings.set(msg.guild.id, Setting.Prefix, '-');
 
-	const args: Array<string> = msg.content
-		.slice(settings.prefix.length)
-		.split(/ +/);
+	const args: Array<string> = msg.content.slice(settings.prefix.length).split(/ +/);
 	const commandInput: string = args.shift()!.toLowerCase();
 
 	const command =
@@ -49,9 +44,7 @@ export async function handleMessage(msg: Message, client: Bot) {
 	if (!command) return;
 
 	if (command.requirements?.includes('VOICE') && !msg.member?.voice.channel) {
-		msg.channel.send(
-			'You need to be connected to a voice channel to use this command.'
-		);
+		msg.channel.send('You need to be connected to a voice channel to use this command.');
 		return;
 	}
 
@@ -62,16 +55,23 @@ export async function handleMessage(msg: Message, client: Bot) {
 	) {
 		const role = msg.guild.roles.resolve(settings.role);
 
-		msg.channel.send(
-			`You need to have the ${role?.toString()} role to use this command.`,
-			{
-				allowedMentions: { users: [] },
-			}
-		);
+		msg.channel.send(`You need to have the ${role?.toString()} role to use this command.`, {
+			allowedMentions: { users: [] },
+		});
 		return;
 	}
 
-	command.run(msg, args, client);
+	try {
+		command.run(msg, args, client);
+	} catch (error) {
+		handleError(error, client);
+	}
+}
+
+export function handleError(error: Object, client: Bot) {
+	client.users
+		.fetch(process.env.OWNER ?? '')
+		.then((owner) => owner.send('```json\n' + JSON.stringify(error) + '```'));
 }
 
 export async function handleGuildJoin(guild: Guild) {
@@ -95,8 +95,7 @@ export async function handleGuildJoin(guild: Guild) {
 
 	if (!mainChannel) {
 		Console.error(
-			'Was not able to find a channel where I could speak in guild: ' +
-				guild.name
+			'Was not able to find a channel where I could speak in guild: ' + guild.name
 		);
 		return;
 	}
@@ -104,9 +103,7 @@ export async function handleGuildJoin(guild: Guild) {
 	const embed = new DefaultEmbed();
 
 	embed.setTitle('Thanks for adding me!');
-	embed.setDescription(
-		'Below is a list of things you can check out when using the bot.'
-	);
+	embed.setDescription('Below is a list of things you can check out when using the bot.');
 
 	embed.addFields(
 		{

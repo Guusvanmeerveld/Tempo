@@ -35,9 +35,7 @@ export default class Spotify {
 		const tokenCombo = `${spotify.id}:${spotify.secret}`;
 		this.token = Buffer.from(tokenCombo).toString('base64');
 
-		const adapter = new FileSync<Schema>(
-			join(process.cwd(), 'database/oauth.json')
-		);
+		const adapter = new FileSync<Schema>(join(process.cwd(), 'database/oauth.json'));
 
 		this.db = low(adapter);
 
@@ -58,8 +56,7 @@ export default class Spotify {
 
 	private async getOAuth() {
 		if (this.oauth.created) {
-			const expired =
-				Date.now() - this.oauth.created > this.oauth.expires * 1000;
+			const expired = Date.now() - this.oauth.created > this.oauth.expires * 1000;
 
 			if (!expired) return;
 		}
@@ -136,6 +133,7 @@ export default class Spotify {
 			image: song.album.images[0].url,
 			platform: 'spotify',
 			title: song.name,
+			// views: song,
 		};
 	}
 }

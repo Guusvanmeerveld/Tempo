@@ -56,7 +56,7 @@ export default class Bot extends Client {
 		this.commands.set('playskip', new PlaySkip());
 	}
 
-	public start(token: string): void {
+	public start(token?: string): void {
 		console.time();
 		Console.info('Starting the bot');
 

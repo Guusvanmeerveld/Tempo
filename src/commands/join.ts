@@ -18,10 +18,7 @@ export class Join implements Command {
 	public async run(msg: Message, args: Array<string>, client: Bot) {
 		const memberChannel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
 
-		if (
-			memberChannel.members.get(client.user?.id ?? '') &&
-			msg.guild?.voice?.connection
-		) {
+		if (memberChannel.members.get(client.user?.id ?? '') && msg.guild?.voice?.connection) {
 			const guildChannel = (await msg.guild?.voice?.channel?.fetch()) as VoiceChannel;
 			msg.channel.send(`🔈  Connected to \`${guildChannel.name}\``);
 			return;
@@ -32,9 +29,7 @@ export class Join implements Command {
 		const channelPerms = memberChannel?.permissionsFor(user);
 
 		if (!channelPerms?.has('CONNECT')) {
-			msg.channel.send(
-				'❌  I am not allowed to connect to your voice channel.'
-			);
+			msg.channel.send('❌  I am not allowed to connect to your voice channel.');
 			return;
 		}
 

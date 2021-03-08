@@ -35,7 +35,11 @@ export class Queue implements Command {
 			});
 		}
 
-		const embed = new PaginatedEmbed({ author: msg.author, args, fields });
+		const embed = new PaginatedEmbed({
+			author: msg.author,
+			args,
+			fields,
+		});
 
 		embed.setDescription(
 			`Currently playing: \`${

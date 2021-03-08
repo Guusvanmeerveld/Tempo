@@ -4,9 +4,7 @@ class Console {
 	private static log(type: string, msg: string) {
 		const time = new Date().toLocaleTimeString();
 
-		if (process.env.NODE_ENV !== 'production') {
-			console.log(`${chalk.gray(`[${time}]`)} ${type} ${msg}`);
-		}
+		console.log(`${chalk.gray(`[${time}]`)} ${type} ${msg}`);
 	}
 
 	public static success(msg: string) {
