@@ -6,7 +6,6 @@ import Console from '../utils/console';
 import { abbreviate, ucFirst } from '../utils/functions';
 
 import youtube from '../utils/requests/youtube';
-
 import soundcloud from '../utils/requests/soundcloud';
 import Spotify from '../utils/requests/spotify';
 
