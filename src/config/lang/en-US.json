@@ -1,13 +1,13 @@
 {
-  "bot": {
-    "activity": {
-      "type": "LISTENING",
-      "text": "-help"
-    }
-  },
-  "commands": {
-    "help": {
-      "description": "Get information about a specific command or just a general list of commands."
-    }
-  }
+	"bot": {
+		"activity": {
+			"type": "LISTENING",
+			"text": "-help"
+		}
+	},
+	"commands": {
+		"help": {
+			"description": "Get information about a specific command or just a general list of commands."
+		}
+	}
 }

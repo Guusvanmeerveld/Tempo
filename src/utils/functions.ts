@@ -1,7 +1,7 @@
-import fs from "fs";
-import Console from "./console";
+import fs from 'fs';
+import Console from './console';
 
-const abs = ["K", "M", "B", "T"];
+const abs = ['K', 'M', 'B', 'T'];
 
 /**
  * Chunk an array into a new array that contains arrays with a set size
@@ -10,13 +10,13 @@ const abs = ["K", "M", "B", "T"];
  * @returns Result
  */
 export function chunk(array: Array<any>, size: number) {
-  const chunked: Array<Array<any>> = [];
+	const chunked: Array<Array<any>> = [];
 
-  for (let i = 0; i < array.length; i += size) {
-    chunked.push(array.slice(i, i + size));
-  }
+	for (let i = 0; i < array.length; i += size) {
+		chunked.push(array.slice(i, i + size));
+	}
 
-  return chunked;
+	return chunked;
 }
 
 /**
@@ -25,7 +25,7 @@ export function chunk(array: Array<any>, size: number) {
  * @returns {string} Result
  */
 export function ucFirst(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 /**
@@ -33,14 +33,14 @@ export function ucFirst(string: string) {
  * @param number
  */
 export function abbreviate(number: number): string | number {
-  for (let i = abs.length - 1; i >= 0; i--) {
-    const zero = Math.pow(1000, i) * 1000;
-    if (number >= zero) {
-      return Math.floor(number / zero) + abs[i];
-    }
-  }
+	for (let i = abs.length - 1; i >= 0; i--) {
+		const zero = Math.pow(1000, i) * 1000;
+		if (number >= zero) {
+			return Math.floor(number / zero) + abs[i];
+		}
+	}
 
-  return number;
+	return number;
 }
 
 /**
@@ -48,22 +48,22 @@ export function abbreviate(number: number): string | number {
  * @param path
  */
 export function emptyDir(path: string) {
-  if (fs.existsSync(path)) {
-    const files = fs.readdirSync(path);
+	if (fs.existsSync(path)) {
+		const files = fs.readdirSync(path);
 
-    if (files.length > 0) {
-      files.forEach(function (filename) {
-        if (fs.statSync(path + "/" + filename).isDirectory()) {
-          emptyDir(path + "/" + filename);
-        } else {
-          fs.unlinkSync(path + "/" + filename);
-        }
-      });
-    } else {
-      Console.error("No files found in the directory.");
-    }
-  } else {
-    Console.info(`Directory path "${path}" not found, creating one...`);
-    fs.mkdir(path, () => {});
-  }
+		if (files.length > 0) {
+			files.forEach(function (filename) {
+				if (fs.statSync(path + '/' + filename).isDirectory()) {
+					emptyDir(path + '/' + filename);
+				} else {
+					fs.unlinkSync(path + '/' + filename);
+				}
+			});
+		} else {
+			Console.error('No files found in the directory.');
+		}
+	} else {
+		Console.info(`Directory path "${path}" not found, creating one...`);
+		fs.mkdir(path, () => {});
+	}
 }

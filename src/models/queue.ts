@@ -1,6 +1,6 @@
-import { Song } from "./song";
+import { Song } from './song';
 
 export interface QueueList {
-  songs: Array<Song>;
-  playing?: Song;
+	songs: Array<Song>;
+	playing?: Song;
 }
