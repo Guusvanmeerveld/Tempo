@@ -47,6 +47,16 @@ export class Play implements Command {
 	 */
 	public async run(msg: Message, args: Array<string>, client: Bot) {
 		if (args.length < 1) {
+			if (msg.attachments) {
+				const first = msg.attachments.first();
+				if (!first) return;
+
+				await join(msg, args, client);
+				this.stream(msg, client, first.attachment.toString());
+				msg.channel.send('🎵  Now playing');
+				return;
+			}
+
 			msg.channel.send('Please enter a link/search entry.');
 			return;
 		}
