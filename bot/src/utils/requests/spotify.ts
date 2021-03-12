@@ -3,7 +3,7 @@ const spotify = {
 	secret: process.env.SPOTIFY_SECRET,
 };
 
-import { Song } from '@models';
+import { Song } from '../../models';
 import axios from 'axios';
 import Console from '../console';
 import { SpotifySearchAPI, SpotifyTrackAPI } from '../../models/requests';

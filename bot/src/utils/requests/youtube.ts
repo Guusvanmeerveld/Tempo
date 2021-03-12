@@ -3,7 +3,7 @@ const youtubeToken = process.env.YOUTUBE;
 import { Song } from '../../models';
 import axios from 'axios';
 import ytsr, { Result } from 'ytsr';
-import { YoutubeVideoAPI } from '../../models/requests/';
+import { YoutubeVideoAPI } from '../../models/requests';
 
 const request = axios.create({
 	baseURL: 'https://www.googleapis.com/youtube/v3/',

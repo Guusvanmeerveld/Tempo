@@ -1,5 +1,4 @@
-const { search_platform } = require(process.cwd() + '/src/config/settings.json');
-import { Command, Song, DefaultEmbed, Requirement } from '../models';
+import { Command, Song, DefaultEmbed, Requirement, Setting } from '../models';
 
 import Console from '../utils/console';
 import { abbreviate, ucFirst } from '../utils/functions';
@@ -65,7 +64,7 @@ export class Play implements Command {
 
 		const queue = client.queues.get(msg.guild?.id ?? '');
 
-		this.info(msg, args)
+		this.info(msg, args, client)
 			.then((info: Song) => {
 				const song: Song = { requested: msg.author, ...info };
 				const embed = new DefaultEmbed(msg.author);
@@ -189,7 +188,7 @@ export class Play implements Command {
 	 * @param msg
 	 * @param args
 	 */
-	private async info(msg: Message, args: Array<string>): Promise<Song> {
+	private async info(msg: Message, args: Array<string>, client: Bot): Promise<Song> {
 		const input = args[0];
 		if (input.match(ytRegex)) {
 			return await youtube.info(input);
@@ -209,16 +208,18 @@ export class Play implements Command {
 		const search = args.join(' ');
 
 		msg.channel.send(`🔍  Searching for \`${search}\`.`);
-		return await this.search(search);
+		return await this.search(search, msg, client);
 	}
 
 	/**
 	 * Search on a given platform for a user input
 	 * @param input
 	 */
-	private async search(input: string): Promise<Song> {
+	private async search(input: string, msg: Message, client: Bot): Promise<Song> {
 		const notFound = (platform: string) =>
 			`I was not able to find \`${input}\` on ${platform}.`;
+
+		const search_platform = client.settings.get(msg.guild!.id, Setting.Search_Platform);
 
 		switch (search_platform) {
 			case 'soundcloud':

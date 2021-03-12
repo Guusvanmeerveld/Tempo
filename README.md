@@ -34,7 +34,7 @@ To start the bot and connect to the Youtube or Soundcloud api, you will need a f
 To start the bot, simply run the following command:
 
 ```
-npm start
+npm run bot
 ```
 
 ### Configuration
