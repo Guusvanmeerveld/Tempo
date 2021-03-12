@@ -64,7 +64,7 @@ export interface SpotifySearchAPI {
 
 export interface Tracks {
 	href: string;
-	items: Item[];
+	items: SpotifyItem[];
 	limit: number;
 	next: string;
 	offset: number;
@@ -72,7 +72,7 @@ export interface Tracks {
 	total: number;
 }
 
-export interface Item {
+export interface SpotifyItem {
 	album: Album;
 	artists: Artist[];
 	available_markets: string[];

@@ -32,8 +32,6 @@ export async function handleMessage(msg: Message, client: Bot) {
 		return;
 	}
 
-	client.settings.set(msg.guild.id, Setting.Prefix, '-');
-
 	const args: Array<string> = msg.content.slice(settings.prefix.length).split(/ +/);
 	const commandInput: string = args.shift()!.toLowerCase();
 

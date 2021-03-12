@@ -40,7 +40,7 @@ export default class Bot extends Client {
 
 		this.settings = new SettingsInterface();
 		this.database = new Database();
-		// this.logger = new Logger();
+
 		this.commands = new Collection();
 		this.queues = new Collection();
 
@@ -60,7 +60,6 @@ export default class Bot extends Client {
 	}
 
 	public start(token?: string): void {
-		this.database.connect();
 		console.time();
 		Console.info('Starting the bot');
 

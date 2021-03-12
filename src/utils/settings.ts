@@ -6,31 +6,20 @@ import { GuildSettings, Setting } from '../models';
 import Console from './console';
 import { isEqual } from 'lodash';
 
-import low from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync.js';
-import { join } from 'path';
-
-interface FileSchema {
-	settings: { [id: string]: GuildSettings };
-}
+import { Database } from './database';
 
 export default class Settings {
 	private guilds: Collection<string, GuildSettings>;
-	private db: low.LowdbSync<FileSchema>;
+	private db: Database;
 
 	constructor() {
-		const adapter = new FileSync<FileSchema>(join(process.cwd(), 'database/guilds.json'));
-		this.db = low(adapter);
+		this.db = new Database();
 		this.guilds = new Collection();
 
-		this.db.defaults({ settings: {} }).write();
-
-		const settings = this.db.get('settings').value();
-		for (const [key, value] of Object.entries(settings)) {
-			this.guilds.set(key, value as GuildSettings);
-		}
-
-		Console.success('Retrieved data from database!');
+		this.db.get().then((guilds) => {
+			guilds.forEach((guild) => this.guilds.set(guild.id, guild));
+			Console.success('Retrieved data from database!');
+		});
 	}
 
 	/**
@@ -62,12 +51,14 @@ export default class Settings {
 			[setting]: value,
 		};
 
+		delete newSettings.id;
+
 		if (isEqual(newSettings, settings)) {
 			this.guilds.delete(id);
-			this.db.get('settings').unset(id).write();
+			this.db.delete(id);
 		} else {
 			this.guilds.set(id, newSettings);
-			this.db.get('settings').set(id, newSettings).write();
+			this.db.set(id, newSettings);
 		}
 	}
 }

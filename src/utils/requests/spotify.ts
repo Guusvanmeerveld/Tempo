@@ -3,23 +3,15 @@ const spotify = {
 	secret: process.env.SPOTIFY_SECRET,
 };
 
-import { Song } from '../../models';
+import { Song } from '@models';
 import axios from 'axios';
 import Console from '../console';
-import { SpotifySearchAPI, SpotifyTrackAPI } from '../../models/spotify';
-
-import low, { LowdbSync } from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync';
-import { join } from 'path';
+import { SpotifySearchAPI, SpotifyTrackAPI } from '../../models/requests';
 
 interface OAuth {
 	token: string;
 	created: number;
 	expires: number;
-}
-
-interface Schema {
-	oauth: OAuth;
 }
 
 const oauth = axios.create({ baseURL: 'https://accounts.spotify.com/api' });
@@ -30,28 +22,15 @@ const regex = /(open\.spotify\.com\/track\/)([0-9A-Za-z_-]{22})/;
 export default class Spotify {
 	oauth: OAuth;
 	token: string;
-	db: LowdbSync<Schema>;
 	constructor() {
 		const tokenCombo = `${spotify.id}:${spotify.secret}`;
 		this.token = Buffer.from(tokenCombo).toString('base64');
 
-		const adapter = new FileSync<Schema>(join(process.cwd(), 'database/oauth.json'));
-
-		this.db = low(adapter);
-
-		this.db
-			.defaults({
-				oauth: {
-					token: {
-						access_token: '',
-						expires_in: 0,
-					},
-					created: 0,
-				},
-			})
-			.write();
-
-		this.oauth = this.db.get('oauth').value();
+		this.oauth = {
+			token: '',
+			expires: 0,
+			created: 0,
+		};
 	}
 
 	private async getOAuth() {
@@ -79,7 +58,6 @@ export default class Spotify {
 		};
 
 		this.oauth = oauthToken;
-		this.db.set('oauth', oauthToken).write();
 	}
 
 	public async search(input: string, limit: number): Promise<SpotifySearchAPI> {

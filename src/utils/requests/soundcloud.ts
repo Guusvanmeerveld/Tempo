@@ -1,9 +1,9 @@
 const soundcloudToken = process.env.SOUNDCLOUD;
 
-import { Song } from '../../models';
+import { Song } from '@models';
 import axios from 'axios';
 import m3u8stream, { Stream } from 'm3u8stream';
-import { SoundCloudSearchAPI, SoundCloudTrackAPI } from '../../models/soundcloud';
+import { SoundCloudSearchAPI, SoundCloudTrackAPI } from '../../models/requests';
 
 const request = axios.create({
 	baseURL: 'https://api-v2.soundcloud.com/',

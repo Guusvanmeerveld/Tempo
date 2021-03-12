@@ -45,7 +45,7 @@ export class Play implements Command {
 	 * @param args
 	 * @param client
 	 */
-	public async run(msg: Message, args: Array<string>, client: Bot) {
+	public async run(msg: Message, args: Array<string>, client: Bot, playskip?: boolean) {
 		if (args.length < 1) {
 			if (msg.attachments) {
 				const first = msg.attachments.first();
@@ -101,7 +101,7 @@ export class Play implements Command {
 					embed.addField('Dislikes', abbreviate(song?.dislikes ?? 0), true);
 				}
 
-				if (queue?.playing) {
+				if (queue?.playing && !playskip) {
 					queue.songs.push(song);
 					msg.channel.send(`🎵  Added \`${song.title}\` to the queue.`, {
 						embed,

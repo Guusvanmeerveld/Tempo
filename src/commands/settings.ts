@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import Bot from '../bot';
-import { Command, Setting } from '../models';
+import { Command, Requirement, Setting } from '../models';
 import { MAX_VOLUME } from './volume';
 
 import fs from 'fs';
@@ -15,11 +15,13 @@ export class Settings implements Command {
 	name: string;
 	description: string;
 	aliases: Array<string>;
+	requirements: Array<Requirement>;
 
 	constructor() {
 		this.name = 'settings';
 		this.description = 'Change the way the bot behaves.';
 		this.aliases = ['set'];
+		this.requirements = ['ROLE'];
 	}
 
 	run(msg: Message, args: Array<string>, client: Bot) {
