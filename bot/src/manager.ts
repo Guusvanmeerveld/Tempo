@@ -6,7 +6,7 @@ import Console from './utils/console';
 export default class Manager {
 	manager: ShardingManager;
 	constructor() {
-		this.manager = new ShardingManager('./dist/src/start.js', {
+		this.manager = new ShardingManager('./dist/bot/src/start.js', {
 			token: discordToken,
 		});
 	}
