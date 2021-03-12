@@ -4,11 +4,11 @@
 	"description": "A simple Discord music bot that can play Soundcloud, Youtube or Spotify tracks.",
 	"main": "dist/index.js",
 	"scripts": {
-		"bot-dev": "ts-node-dev bot/src/start.ts",
-		"bot-dev-full": "ts-node-dev bot/index.ts",
+		"dev": "ts-node-dev src/start.ts",
+		"dev-full": "ts-node-dev index.ts",
 		"pretify": "prettier --write .",
 		"build": "tsc",
-		"bot": "node ./dist/bot/index.js --production"
+		"start": "node . --production"
 	},
 	"author": "Guus van Meerveld",
 	"license": "MIT",

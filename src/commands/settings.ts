@@ -8,7 +8,7 @@ import { join } from 'path';
 
 let languages: Array<string> = [];
 
-const files = fs.readdirSync(join(process.cwd(), 'bot/src/config/lang/'));
+const files = fs.readdirSync(join(process.cwd(), 'src/config/lang/'));
 languages = files.map((g) => g.replace('.json', ''));
 
 export class Settings implements Command {

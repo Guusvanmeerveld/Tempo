@@ -1,6 +1,6 @@
 import { Collection } from 'discord.js';
 
-const settings: GuildSettings = require(process.cwd() + '/bot/src/config/settings.json');
+const settings: GuildSettings = require(process.cwd() + '/src/config/settings.json');
 
 import { GuildSettings, Setting } from '../models';
 import Console from './console';
