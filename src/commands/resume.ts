@@ -15,10 +15,17 @@ export class Resume implements Command {
 	}
 
 	run(msg: Message) {
-		const dispatcher = msg.guild?.voice?.connection?.dispatcher;
+		const connection = msg.guild?.voice?.connection;
+
+		if (!connection) {
+			msg.channel.send("❌  I'm not connected to a voice channel.");
+			return;
+		}
+
+		const dispatcher = connection?.dispatcher;
 
 		if (!dispatcher) {
-			msg.channel.send("❌  I'm not connected to a voice channel.");
+			msg.channel.send('There is nothing playing right now.');
 			return;
 		}
 

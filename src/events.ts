@@ -70,7 +70,7 @@ export async function handleMessage(msg: Message, client: Bot) {
 export function handleError(error: Object, client: Bot) {
 	client.users
 		.fetch(process.env.OWNER ?? '')
-		.then((owner) => owner.send('```json\n' + JSON.stringify(error) + '```'));
+		.then((owner) => owner.send('```json\n' + error + '```'));
 }
 
 export async function handleGuildJoin(guild: Guild) {
