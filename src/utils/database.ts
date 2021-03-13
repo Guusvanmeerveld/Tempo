@@ -9,6 +9,7 @@ export interface RawDBData {
 
 export class Database {
 	private pool: Pool;
+
 	constructor() {
 		this.pool = new Pool({
 			connectionString: process.env.DATABASE_URL,
@@ -22,16 +23,29 @@ export class Database {
 		});
 	}
 
+	/**
+	 * Get every guild from the database
+	 * @returns Raw database information
+	 */
 	public async get(): Promise<Array<RawDBData>> {
 		const query = await this.pool.query(`SELECT * FROM guilds`);
 
 		return query.rows;
 	}
 
+	/**
+	 * Delete a guild from the database
+	 * @param id - The guild's id to be removed
+	 */
 	public delete(id: string): void {
 		this.pool.query(`DELETE FROM guilds WHERE id = $1`, [id]);
 	}
 
+	/**
+	 * Set new settings in the database for a guild
+	 * @param id - The guild's id to be updated / set
+	 * @param settings - The new settings
+	 */
 	public set(id: string, settings: GuildSettings): void {
 		const query: QueryConfig = {
 			name: 'insert/update-guild',
