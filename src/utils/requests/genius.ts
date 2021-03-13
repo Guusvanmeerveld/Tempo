@@ -43,22 +43,11 @@ export default class Genius {
 
 		const $ = cio.load(data);
 
-		let lyrics = $('div[class="lyrics"]').text().trim();
-
-		if (!lyrics) {
-			$('div[class^="Lyrics__Container"]').each((i, elem) => {
-				if ($(elem).text().length !== 0) {
-					let snippet = $(elem)
-						.html()
-						?.replace(/<br>/g, '\n')
-						.replace(/<(?!\s*br\s*\/?)[^>]+>/gi, '');
-
-					if (!snippet) return;
-
-					lyrics += $('<textarea/>').html(snippet).text().trim() + '\n\n';
-				}
-			});
-		}
+		let lyrics = $('[class*=Lyrics__Root], .lyrics')
+			.html()
+			?.replace(/\n/g, '')
+			.replace(/<br>/g, '\n')
+			.replace(/<(?:.|\n)*?>/gm, '');
 
 		if (!lyrics || lyrics.length >= 2048) return;
 
