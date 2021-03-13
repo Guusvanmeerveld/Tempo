@@ -11,3 +11,4 @@ export * from './stop';
 export * from './invite';
 export * from './settings';
 export * from './playskip';
+export * from './lyrics';

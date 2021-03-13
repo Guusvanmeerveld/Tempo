@@ -17,6 +17,7 @@ import {
 	Invite,
 	Settings,
 	PlaySkip,
+	Lyrics,
 } from './commands';
 
 import SettingsInterface from './utils/settings';
@@ -54,6 +55,7 @@ export default class Bot extends Client {
 		this.commands.set('invite', new Invite());
 		this.commands.set('settings', new Settings());
 		this.commands.set('playskip', new PlaySkip());
+		this.commands.set('lyrics', new Lyrics());
 	}
 
 	public start(token?: string): void {
