@@ -223,9 +223,9 @@ export class Play implements Command {
 		const notFound = (platform: string) =>
 			`I was not able to find \`${input}\` on ${platform}.`;
 
-		const search_platform = client.settings.get(msg.guild!.id, Setting.Search_Platform);
+		const settings = client.settings.get(msg.guild!.id);
 
-		switch (search_platform) {
+		switch (settings.search_platform) {
 			case 'soundcloud':
 				const tracks = await soundcloud.search(input, 1);
 
