@@ -49,7 +49,9 @@ export default class Genius {
 			.replace(/<br>/g, '\n')
 			.replace(/<(?:.|\n)*?>/gm, '');
 
-		if (!lyrics || lyrics.length >= 2048) return;
+		if (!lyrics) return;
+
+		if (lyrics.length >= 2048) lyrics = lyrics.slice(0, 2048);
 
 		return lyrics;
 	}

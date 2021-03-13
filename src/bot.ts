@@ -18,6 +18,7 @@ import {
 	Settings,
 	PlaySkip,
 	Lyrics,
+	Resume,
 } from './commands';
 
 import SettingsInterface from './utils/settings';
@@ -52,6 +53,7 @@ export default class Bot extends Client {
 		this.commands.set('skip', new Skip());
 		this.commands.set('queue', new Queue());
 		this.commands.set('stop', new Stop());
+		this.commands.set('resume', new Resume());
 		this.commands.set('invite', new Invite());
 		this.commands.set('settings', new Settings());
 		this.commands.set('playskip', new PlaySkip());

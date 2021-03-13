@@ -1,17 +1,17 @@
 import { Message } from 'discord.js-light';
 import { Command, Requirement } from '../models';
 
-export class Stop implements Command {
+export class Resume implements Command {
 	name: string;
 	description: string;
 	requirements: Array<Requirement>;
 	aliases: Array<string>;
 
 	constructor() {
-		this.name = 'stop';
-		this.description = 'Stop the music.';
+		this.name = 'resume';
+		this.description = 'Resume the music.';
 		this.requirements = ['VOICE'];
-		this.aliases = ['st'];
+		this.aliases = ['re'];
 	}
 
 	run(msg: Message) {
@@ -22,12 +22,12 @@ export class Stop implements Command {
 			return;
 		}
 
-		if (dispatcher.paused) {
-			msg.channel.send('Already stopped.');
+		if (!dispatcher.paused) {
+			msg.channel.send('Already resumed.');
 			return;
 		}
 
-		dispatcher.pause();
-		msg.channel.send('Stopped the music.');
+		dispatcher.resume();
+		msg.channel.send('Resumed the music.');
 	}
 }

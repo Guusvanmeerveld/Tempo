@@ -3,7 +3,7 @@ import { Guild, Message, TextChannel, GuildChannel } from 'discord.js-light';
 import Bot from './bot';
 import Long from 'long';
 import Console from './utils/console';
-import { DefaultEmbed, Setting } from './models';
+import { DefaultEmbed } from './models';
 
 export async function handleMessage(msg: Message, client: Bot) {
 	if (

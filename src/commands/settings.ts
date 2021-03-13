@@ -69,7 +69,7 @@ export class Settings implements Command {
 		const input = args[0] as Setting;
 		if (Object.values(Setting).includes(input)) {
 			if (args.length < 2) {
-				msg.channel.send('no new value');
+				msg.channel.send('Please re-enter with a new value.');
 				return;
 			}
 
@@ -102,6 +102,6 @@ export class Settings implements Command {
 			return;
 		}
 
-		msg.channel.send('no valid setting');
+		msg.channel.send('❌  That is not a valid setting.');
 	}
 }
