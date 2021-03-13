@@ -133,6 +133,7 @@ export class Play implements Command {
 		}
 
 		const queue = client.queues.get(msg.guild?.id ?? '');
+
 		if (!queue) return;
 
 		queue.playing = song;
@@ -164,7 +165,10 @@ export class Play implements Command {
 		if (msg.guild?.voice?.connection) {
 			const connection = msg.guild.voice.connection;
 
-			connection.play(stream).on('finish', () => {
+			const settings = client.settings.get(msg.guild!.id);
+			const volume = settings.volume;
+
+			connection.play(stream, { volume: volume / 100 }).on('finish', () => {
 				const queue = client.queues.get(msg.guild?.id ?? '');
 
 				if (!queue) return;

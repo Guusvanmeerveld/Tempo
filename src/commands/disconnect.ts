@@ -10,7 +10,7 @@ export class Disconnect implements Command {
 	constructor() {
 		this.name = 'disconnect';
 		this.aliases = ['dis', 'd', 'l', 'leave'];
-		this.requirements = ['VOICE'];
+		this.requirements = ['VOICE', 'ROLE'];
 		this.description = 'Disconnect the bot from the voice channel.';
 	}
 
@@ -23,9 +23,7 @@ export class Disconnect implements Command {
 			return;
 		}
 
-		// client.queues.set(msg.guild?.id ?? "", { songs: [] });
-
 		msg.channel.send(`🔈  Successfully disconnected from \`${channel?.name}\`.`);
-		voice?.connection?.disconnect();
+		voice?.channel?.leave();
 	}
 }

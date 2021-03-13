@@ -56,6 +56,7 @@ export async function handleMessage(msg: Message, client: Bot) {
 		msg.channel.send(`You need to have the ${role?.toString()} role to use this command.`, {
 			allowedMentions: { users: [] },
 		});
+
 		return;
 	}
 

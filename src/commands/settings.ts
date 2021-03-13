@@ -1,10 +1,11 @@
 import { Message } from 'discord.js';
 import Bot from '../bot';
-import { Command, Requirement, Setting } from '../models';
+import { Command, DefaultEmbed, Requirement, Setting } from '../models';
 import { MAX_VOLUME } from './volume';
 
 import fs from 'fs';
 import { join } from 'path';
+import { ucFirst } from '../utils/functions';
 
 let languages: Array<string> = [];
 
@@ -26,7 +27,42 @@ export class Settings implements Command {
 
 	run(msg: Message, args: Array<string>, client: Bot) {
 		if (args.length < 1) {
-			msg.channel.send('show current settings');
+			const settings = client.settings.get(msg.guild!.id);
+			const embed = new DefaultEmbed(msg.author);
+
+			embed.setTitle(`🛠️  Current settings for \`${msg.guild!.name}\``);
+
+			const role = msg.guild?.roles.resolve(settings.role)?.toString() ?? 'None';
+
+			embed.addFields(
+				{
+					name: 'Prefix',
+					value: `\`${settings.prefix}\``,
+					inline: true,
+				},
+				{
+					name: 'Language',
+					value: `${settings.language}`,
+					inline: true,
+				},
+				{
+					name: 'Search platform',
+					value: `${ucFirst(settings.search_platform)}`,
+					inline: true,
+				},
+				{
+					name: 'Role',
+					value: `${role}`,
+					inline: true,
+				},
+				{
+					name: 'Volume',
+					value: `${settings.volume}%`,
+					inline: true,
+				}
+			);
+
+			msg.channel.send({ allowedMentions: { users: [] }, embed });
 			return;
 		}
 
@@ -44,7 +80,7 @@ export class Settings implements Command {
 					value = parseInt(value.replace('%', ''));
 					if (isNaN(value) || value < 0 || value > MAX_VOLUME) {
 						msg.channel.send(
-							`❌  That is not a valid number. Please specify a number between 0 - ${MAX_VOLUME}.`
+							`❌  That is not a valid number. Please specify a number between 0% - ${MAX_VOLUME}%.`
 						);
 						return;
 					}

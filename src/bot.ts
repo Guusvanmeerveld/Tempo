@@ -18,16 +18,14 @@ import {
 	Settings,
 	PlaySkip,
 } from './commands';
-// import Logger from "./utils/logger";
+
 import SettingsInterface from './utils/settings';
-import { Database } from './utils/database';
 
 export default class Bot extends Client {
-	// public logger: Logger;
 	public settings: SettingsInterface;
-	public database: Database;
 	public commands: Collection<string, Command>;
 	public queues: Collection<string, QueueList>;
+
 	constructor() {
 		super({
 			cacheGuilds: true,
@@ -39,7 +37,6 @@ export default class Bot extends Client {
 		});
 
 		this.settings = new SettingsInterface();
-		this.database = new Database();
 
 		this.commands = new Collection();
 		this.queues = new Collection();

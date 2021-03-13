@@ -12,7 +12,7 @@ export class Volume implements Command {
 	constructor() {
 		this.name = 'volume';
 		this.aliases = ['v', 'vol'];
-		this.requirements = ['VOICE'];
+		this.requirements = ['VOICE', 'ROLE'];
 		this.description = 'Set the bots volume.';
 	}
 

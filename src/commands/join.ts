@@ -11,7 +11,7 @@ export class Join implements Command {
 	constructor() {
 		this.name = 'join';
 		this.aliases = ['j', 'summon', 'connect'];
-		this.requirements = ['VOICE'];
+		this.requirements = ['VOICE', 'ROLE'];
 		this.description = 'Make the bot join the voice channel.';
 	}
 

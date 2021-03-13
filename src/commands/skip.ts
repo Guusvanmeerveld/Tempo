@@ -14,7 +14,7 @@ export class Skip implements Command {
 	constructor() {
 		this.player = new Play();
 		this.name = 'skip';
-		this.requirements = ['VOICE'];
+		this.requirements = ['VOICE', 'ROLE'];
 		this.aliases = ['s'];
 		this.description = 'Skip the current song.';
 	}
