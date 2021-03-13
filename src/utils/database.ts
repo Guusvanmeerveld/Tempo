@@ -1,16 +1,11 @@
-import { Pool } from 'pg';
+import { Pool, QueryConfig } from 'pg';
 import { GuildSettings } from '../models';
 import Console from './console';
 
-export interface DbData extends GuildSettings {
+export interface RawDBData {
 	id: string;
+	settings: GuildSettings;
 }
-
-const INSERT_GUILDS =
-	'INSERT INTO guilds(id, prefix, search_platform, volume, role, language) VALUES($1, $2, $4, $6, $5, $3)';
-
-const ON_CONFLICT =
-	'ON CONFLICT (id) DO UPDATE SET id=$1, prefix=$2, search_platform=$4, volume=$6, role=$5, language=$3';
 
 export class Database {
 	private pool: Pool;
@@ -27,7 +22,7 @@ export class Database {
 		});
 	}
 
-	public async get(): Promise<Array<DbData>> {
+	public async get(): Promise<Array<RawDBData>> {
 		const query = await this.pool.query(`SELECT * FROM guilds`);
 
 		return query.rows;
@@ -38,12 +33,10 @@ export class Database {
 	}
 
 	public set(id: string, settings: GuildSettings): void {
-		const newSettings = [id, ...Object.values(settings)];
-
-		const query = {
+		const query: QueryConfig = {
 			name: 'insert/update-guild',
-			text: `${INSERT_GUILDS} ${ON_CONFLICT}`,
-			values: newSettings,
+			text: `INSERT INTO guilds(id, settings) VALUES($1, $2) ON CONFLICT (id) DO UPDATE SET id = $1, settings = $2`,
+			values: [id, settings],
 		};
 
 		this.pool.query(query);

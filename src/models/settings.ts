@@ -4,7 +4,6 @@ export interface GuildSettings {
 	search_platform: string;
 	role: string;
 	language: string;
-	id?: string;
 }
 
 export enum Setting {

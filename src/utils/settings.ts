@@ -6,7 +6,7 @@ import { GuildSettings, Setting } from '../models';
 import Console from './console';
 import { isEqual } from 'lodash';
 
-import { Database } from './database';
+import { Database, RawDBData } from './database';
 
 export default class Settings {
 	private guilds: Collection<string, GuildSettings>;
@@ -17,7 +17,10 @@ export default class Settings {
 		this.guilds = new Collection();
 
 		this.db.get().then((guilds) => {
-			guilds.forEach((guild) => this.guilds.set(guild.id, guild));
+			guilds.forEach((guild: RawDBData) => {
+				this.guilds.set(guild.id ?? '', guild.settings);
+			});
+
 			Console.success('Retrieved data from database!');
 		});
 	}
@@ -50,8 +53,6 @@ export default class Settings {
 			...currentSettings,
 			[setting]: value,
 		};
-
-		delete newSettings.id;
 
 		if (isEqual(newSettings, settings)) {
 			this.guilds.delete(id);
