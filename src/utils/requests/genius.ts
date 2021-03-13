@@ -14,6 +14,7 @@ export interface SearchHit {
 		api_path: string;
 		full_title: string;
 		url: string;
+		header_image_thumbnail_url: string;
 	};
 }
 
@@ -35,7 +36,12 @@ export default class Genius {
 
 		const lyrics = await this.lyrics(url);
 
-		return { lyrics, url, title: song.result.full_title };
+		return {
+			lyrics,
+			url,
+			title: song.result.full_title,
+			image: song.result.header_image_thumbnail_url,
+		};
 	}
 
 	private static async lyrics(url: string) {

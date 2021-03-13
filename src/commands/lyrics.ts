@@ -33,6 +33,7 @@ export class Lyrics implements Command {
 						embed.setTitle('Lyrics for: ' + info.title);
 						embed.setDescription(info.lyrics ?? '❌  Error parsing lyrics');
 						embed.setURL(info.url);
+						embed.setThumbnail(info.image);
 
 						embed.setFooter('Lyrics provided by Genius.com');
 
