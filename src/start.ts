@@ -1,5 +1,5 @@
 require('dotenv').config();
-// console.clear();
+if (process.env.NODE_ENV !== 'production') console.clear();
 
 const discordToken = process.env.DISCORD;
 import Events from './events';

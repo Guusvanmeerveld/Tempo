@@ -32,7 +32,7 @@ export class Join implements Command {
 			return;
 		}
 
-		client.queues.set(msg.guild?.id ?? '', { songs: [] });
+		client.queues.set(msg.guild?.id ?? '', { songs: [], loop: false });
 
 		await memberChannel?.join();
 

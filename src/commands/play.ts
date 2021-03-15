@@ -167,6 +167,11 @@ export class Play implements Command {
 
 				if (!queue) return;
 
+				if (queue.loop) {
+					this.play(msg, client, queue.playing);
+					return;
+				}
+
 				if (queue.songs.length > 0) {
 					const newSong = queue.songs.shift() as Song;
 
