@@ -25,7 +25,7 @@ export function chunk(array: Array<any>, size: number) {
  * @returns {string} Result
  */
 export function ucFirst(string: string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
+	return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 /**

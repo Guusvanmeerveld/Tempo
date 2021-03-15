@@ -3,7 +3,7 @@ import Bot from '../bot';
 
 export interface Command {
 	name: string;
-	description?: string;
+	description: string;
 	usage?: string;
 	aliases?: Array<string>;
 	requirements?: Array<Requirement>;
