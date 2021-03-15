@@ -7,6 +7,7 @@ import Genius from '../utils/requests/genius';
 export class Lyrics implements Command {
 	name = 'lyrics';
 	description = 'Search for any songs lyrics.';
+	usage = 'lyrics [name of song]';
 	aliases = ['ly'];
 
 	run(msg: Message, args: Array<string>) {

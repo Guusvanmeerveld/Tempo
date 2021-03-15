@@ -4,6 +4,7 @@ import { Command, Requirement } from '../models';
 export class Stop implements Command {
 	name = 'stop';
 	description = 'Stop the music.';
+	usage = 'stop';
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 	aliases = ['st'];
 

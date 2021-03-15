@@ -5,6 +5,7 @@ import Bot from '../bot';
 export class Join implements Command {
 	name = 'join';
 	aliases = ['j', 'summon', 'connect'];
+	usage = 'join';
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 	description = 'Make the bot join the voice channel.';
 

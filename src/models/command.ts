@@ -4,7 +4,7 @@ import Bot from '../bot';
 export interface Command {
 	name: string;
 	description: string;
-	usage?: string;
+	usage: string;
 	aliases?: Array<string>;
 	requirements?: Array<Requirement>;
 	run: (msg: Message, args: Array<string>, client: Bot) => void;

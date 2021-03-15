@@ -4,6 +4,7 @@ import { Command } from '../models';
 export class Invite implements Command {
 	name = 'invite';
 	description = 'Generate a link to invite this bot to a server.';
+	usage = 'invite';
 	aliases = ['inv'];
 
 	public run(msg: Message) {

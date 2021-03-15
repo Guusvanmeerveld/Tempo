@@ -7,6 +7,7 @@ import { Play } from './play';
 export class Skip implements Command {
 	player = new Play();
 	name = 'skip';
+	usage = 'skip [amount of songs to skip]';
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 	aliases = ['s'];
 	description = 'Skip the current song.';

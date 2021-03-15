@@ -28,6 +28,7 @@ const audioPattern = /\.(?:wav|mp3)$/i;
 export class Play implements Command {
 	name = 'play';
 	aliases = ['p'];
+	usage = 'play [name of song / link to song]';
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 	description = 'Play a song via a link or a search request.';
 

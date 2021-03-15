@@ -6,8 +6,9 @@ import Bot from '../bot';
 
 export class Uptime implements Command {
 	name = 'uptime';
-	aliases = ['up'];
 	description = 'Get the uptime of the bot.';
+	usage = 'uptime';
+	aliases = ['up'];
 
 	run(msg: Message, args: Array<string>, client: Bot) {
 		const time = humanizeDuration(client.uptime ?? 0);

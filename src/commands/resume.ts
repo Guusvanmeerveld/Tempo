@@ -4,6 +4,7 @@ import { Command, Requirement } from '../models';
 export class Resume implements Command {
 	name = 'resume';
 	description = 'Resume the music.';
+	usage = 'resume';
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 	aliases = ['re'];
 

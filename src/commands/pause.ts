@@ -4,6 +4,7 @@ import { Command, Requirement } from '../models';
 export class Pause implements Command {
 	name = 'pause';
 	requirements: Array<Requirement> = ['VOICE', 'ROLE'];
+	usage = 'pause';
 	description = 'Pause or play the music';
 
 	run(msg: Message) {

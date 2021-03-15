@@ -3,6 +3,7 @@ import { Command } from '../models';
 
 export class Ping implements Command {
 	name = 'ping';
+	usage = 'ping';
 	description = 'Ping the bot to get the latency.';
 
 	run(msg: Message) {

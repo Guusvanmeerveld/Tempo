@@ -5,6 +5,7 @@ export class Disconnect implements Command {
 	name = 'disconnect';
 	aliases = ['dis', 'd', 'l', 'leave'];
 	description = 'Disconnect the bot from the voice channel.';
+	usage = 'disconnect';
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 
 	public async run(msg: Message) {

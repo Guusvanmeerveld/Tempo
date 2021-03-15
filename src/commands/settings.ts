@@ -15,6 +15,7 @@ languages = files.map((g) => g.replace('.json', ''));
 export class Settings implements Command {
 	name = 'settings';
 	description = 'Change the way the bot behaves.';
+	usage = 'settings [setting to change] [new value of the setting]';
 	aliases = ['set'];
 	requirements: Requirement[] = ['ROLE'];
 

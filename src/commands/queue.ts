@@ -6,6 +6,7 @@ import { Command, PaginatedEmbed, Requirement, Song } from '../models';
 export class Queue implements Command {
 	name = 'queue';
 	aliases = ['q'];
+	usage = 'queue';
 	requirements: Requirement[] = ['VOICE'];
 	description = 'Gives a list of all the songs currently in the queue.';
 

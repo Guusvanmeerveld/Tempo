@@ -7,6 +7,7 @@ import { Play } from './index';
 export class PlaySkip implements Command {
 	name = 'playskip';
 	description = 'Skip and play a new song.';
+	usage = 'playskip [name of song / link to song]';
 	aliases = ['ps'];
 	requirements: Requirement[] = ['ROLE', 'VOICE'];
 
