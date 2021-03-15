@@ -19,7 +19,11 @@ export class Help implements Command {
 			embed = new DefaultEmbed(msg.author);
 
 			embed.setTitle('Showing all commands for Tempo');
-			embed.setDescription(`The prefix for Tempo is \`${settings.prefix}\`.`);
+			embed.setDescription(
+				`The current prefix for Tempo in \`${msg.guild!.name}\` is \`${
+					settings.prefix
+				}\`.`
+			);
 
 			commands.forEach((cmd) =>
 				embed.addField(ucFirst(cmd.name), cmd.description ?? '', true)
