@@ -14,5 +14,4 @@ const events = new Events(bot);
 
 bot.on('message', (msg) => events.message(msg));
 bot.on('guildCreate', (guild) => events.guildJoin(guild));
-bot.on('rateLimit', (err) => events.error(err));
 bot.on('error', (err) => events.error(err));
