@@ -4,17 +4,10 @@ import Bot from '../bot';
 import { Command, PaginatedEmbed, Requirement, Song } from '../models';
 
 export class Queue implements Command {
-	name: string;
-	aliases: Array<string>;
-	description: string;
-	requirements: Array<Requirement>;
-
-	constructor() {
-		this.name = 'queue';
-		this.aliases = ['q'];
-		this.requirements = ['VOICE'];
-		this.description = 'Gives a list of all the songs currently in the queue.';
-	}
+	name = 'queue';
+	aliases = ['q'];
+	requirements: Requirement[] = ['VOICE'];
+	description = 'Gives a list of all the songs currently in the queue.';
 
 	run(msg: Message, args: Array<string>, client: Bot) {
 		const queue = client.queues.get(msg.guild?.id ?? '');

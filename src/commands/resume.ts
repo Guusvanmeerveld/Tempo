@@ -2,17 +2,10 @@ import { Message } from 'discord.js-light';
 import { Command, Requirement } from '../models';
 
 export class Resume implements Command {
-	name: string;
-	description: string;
-	requirements: Array<Requirement>;
-	aliases: Array<string>;
-
-	constructor() {
-		this.name = 'resume';
-		this.description = 'Resume the music.';
-		this.requirements = ['VOICE', 'ROLE'];
-		this.aliases = ['re'];
-	}
+	name = 'resume';
+	description = 'Resume the music.';
+	requirements: Requirement[] = ['VOICE', 'ROLE'];
+	aliases = ['re'];
 
 	run(msg: Message) {
 		const connection = msg.guild?.voice?.connection;

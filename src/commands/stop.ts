@@ -2,17 +2,10 @@ import { Message } from 'discord.js-light';
 import { Command, Requirement } from '../models';
 
 export class Stop implements Command {
-	name: string;
-	description: string;
-	requirements: Array<Requirement>;
-	aliases: Array<string>;
-
-	constructor() {
-		this.name = 'stop';
-		this.description = 'Stop the music.';
-		this.requirements = ['VOICE', 'ROLE'];
-		this.aliases = ['st'];
-	}
+	name = 'stop';
+	description = 'Stop the music.';
+	requirements: Requirement[] = ['VOICE', 'ROLE'];
+	aliases = ['st'];
 
 	run(msg: Message) {
 		const connection = msg.guild?.voice?.connection;

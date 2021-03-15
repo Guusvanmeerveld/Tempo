@@ -5,17 +5,10 @@ import { Command, Requirement, Setting } from '../models';
 export const MAX_VOLUME = 1000;
 
 export class Volume implements Command {
-	name: string;
-	aliases: Array<string>;
-	requirements: Array<Requirement>;
-	description: string;
-
-	constructor() {
-		this.name = 'volume';
-		this.aliases = ['v', 'vol'];
-		this.requirements = ['ROLE'];
-		this.description = 'Set the bots volume.';
-	}
+	name = 'volume';
+	aliases = ['v', 'vol'];
+	requirements: Requirement[] = ['ROLE'];
+	description = 'Set the bots volume.';
 
 	run(msg: Message, args: Array<string>, client: Bot) {
 		const volume = parseInt(args[0]?.replace('%', ''));

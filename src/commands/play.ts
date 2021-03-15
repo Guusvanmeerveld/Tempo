@@ -26,17 +26,10 @@ const spRegex = /^https?:\/\/(open\.spotify\.com\/track)\/(.*)$/;
 const audioPattern = /\.(?:wav|mp3)$/i;
 
 export class Play implements Command {
-	public name: string;
-	public aliases: Array<string>;
-	public requirements: Array<Requirement>;
-	public description: string;
-
-	constructor() {
-		this.name = 'play';
-		this.aliases = ['p'];
-		this.requirements = ['VOICE', 'ROLE'];
-		this.description = 'Play a song via a link or a search request.';
-	}
+	name = 'play';
+	aliases = ['p'];
+	requirements: Requirement[] = ['VOICE', 'ROLE'];
+	description = 'Play a song via a link or a search request.';
 
 	/**
 	 * Join the voice channel, get info about the song and play it.

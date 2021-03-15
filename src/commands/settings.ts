@@ -13,17 +13,10 @@ const files = fs.readdirSync(join(process.cwd(), 'src/config/lang/'));
 languages = files.map((g) => g.replace('.json', ''));
 
 export class Settings implements Command {
-	name: string;
-	description: string;
-	aliases: Array<string>;
-	requirements: Array<Requirement>;
-
-	constructor() {
-		this.name = 'settings';
-		this.description = 'Change the way the bot behaves.';
-		this.aliases = ['set'];
-		this.requirements = ['ROLE'];
-	}
+	name = 'settings';
+	description = 'Change the way the bot behaves.';
+	aliases = ['set'];
+	requirements: Requirement[] = ['ROLE'];
 
 	run(msg: Message, args: Array<string>, client: Bot) {
 		if (args.length < 1) {

@@ -5,19 +5,11 @@ import { Command, Requirement } from '../models';
 import { Play } from './play';
 
 export class Skip implements Command {
-	name: string;
-	aliases: Array<string>;
-	player: Play;
-	requirements: Array<Requirement>;
-	description: string;
-
-	constructor() {
-		this.player = new Play();
-		this.name = 'skip';
-		this.requirements = ['VOICE', 'ROLE'];
-		this.aliases = ['s'];
-		this.description = 'Skip the current song.';
-	}
+	player = new Play();
+	name = 'skip';
+	requirements: Requirement[] = ['VOICE', 'ROLE'];
+	aliases = ['s'];
+	description = 'Skip the current song.';
 
 	run(msg: Message, args: Array<string>, client: Bot) {
 		if (!msg.guild?.voice?.connection) {

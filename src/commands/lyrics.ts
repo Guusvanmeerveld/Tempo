@@ -5,15 +5,9 @@ import Console from '../utils/console';
 import Genius from '../utils/requests/genius';
 
 export class Lyrics implements Command {
-	name: string;
-	description: string;
-	aliases: Array<string>;
-
-	constructor() {
-		this.name = 'lyrics';
-		this.description = 'Search for any songs lyrics.';
-		this.aliases = ['ly'];
-	}
+	name = 'lyrics';
+	description = 'Search for any songs lyrics.';
+	aliases = ['ly'];
 
 	run(msg: Message, args: Array<string>) {
 		if (args.length < 1) {

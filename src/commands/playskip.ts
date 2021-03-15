@@ -5,20 +5,12 @@ import { Command, Requirement } from '../models';
 import { Play } from './index';
 
 export class PlaySkip implements Command {
-	name: string;
-	description: string;
-	aliases: Array<string>;
-	play: Play;
-	requirements: Array<Requirement>;
+	name = 'playskip';
+	description = 'Skip and play a new song.';
+	aliases = ['ps'];
+	requirements: Requirement[] = ['ROLE', 'VOICE'];
 
-	constructor() {
-		this.name = 'playskip';
-		this.description = 'Skip and play a new song.';
-		this.aliases = ['ps'];
-		this.requirements = ['ROLE', 'VOICE'];
-
-		this.play = new Play();
-	}
+	play = new Play();
 
 	run(msg: Message, args: Array<string>, client: Bot) {
 		this.play.run(msg, args, client, true);
