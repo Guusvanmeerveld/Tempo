@@ -10,7 +10,7 @@ export class Resume implements Command {
 	constructor() {
 		this.name = 'resume';
 		this.description = 'Resume the music.';
-		this.requirements = ['VOICE'];
+		this.requirements = ['VOICE', 'ROLE'];
 		this.aliases = ['re'];
 	}
 

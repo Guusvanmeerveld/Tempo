@@ -10,7 +10,7 @@ export class Stop implements Command {
 	constructor() {
 		this.name = 'stop';
 		this.description = 'Stop the music.';
-		this.requirements = ['VOICE'];
+		this.requirements = ['VOICE', 'ROLE'];
 		this.aliases = ['st'];
 	}
 
