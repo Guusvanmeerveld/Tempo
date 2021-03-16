@@ -1,5 +1,7 @@
 import { Guild, Message, TextChannel, GuildChannel } from 'discord.js-light';
 
+const { prefix } = require('./config/settings.json');
+
 import Bot from './bot';
 import Long from 'long';
 import Console from './utils/console';
@@ -112,7 +114,9 @@ export default class Events {
 		const embed = new DefaultEmbed();
 
 		embed.setTitle('Thanks for adding me!');
-		embed.setDescription('Below is a list of things you can check out when using the bot.');
+		embed.setDescription(
+			`My default prefix is \`${prefix}\`.\n Below is a list of things you can check out when using the bot.`
+		);
 
 		embed.addFields(
 			{
@@ -130,6 +134,10 @@ export default class Events {
 			{
 				name: 'Report bugs',
 				value: 'https://tempo.g-vm.nl/bugs',
+			},
+			{
+				name: 'Source code',
+				value: 'https://github.com/guusvanmeerveld/tempo-ts/',
 			}
 		);
 
