@@ -10,9 +10,9 @@ export class Join implements Command {
 	description = 'Make the bot join the voice channel.';
 
 	public async run(msg: Message, args: Array<string>, client: Bot) {
-		const memberChannel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
+		const channel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
 
-		if (memberChannel.members.get(client.user?.id ?? '') && msg.guild?.voice?.connection) {
+		if (channel.members.get(client.user?.id ?? '') && msg.guild?.voice?.connection) {
 			const guildChannel = (await msg.guild?.voice?.channel?.fetch()) as VoiceChannel;
 			msg.channel.send(`🔈  Connected to \`${guildChannel.name}\``);
 			return;
@@ -20,7 +20,7 @@ export class Join implements Command {
 
 		const user = msg.client.user as User;
 
-		const channelPerms = memberChannel?.permissionsFor(user);
+		const channelPerms = channel?.permissionsFor(user);
 
 		if (!channelPerms?.has('CONNECT')) {
 			msg.channel.send('❌  I am not allowed to connect to your voice channel.');
@@ -32,12 +32,15 @@ export class Join implements Command {
 			return;
 		}
 
+		if (channel.userLimit <= channel.members.array().length) {
+			msg.channel.send('❌  Your channel is too full for me to join.');
+			return;
+		}
+
 		client.queues.set(msg.guild?.id ?? '', { songs: [], loop: false });
 
-		await memberChannel?.join();
+		await channel?.join().catch();
 
-		msg.channel.send(
-			`🔈  Successfully joined \`${memberChannel.name ?? 'Unknown channel'}\`.`
-		);
+		msg.channel.send(`🔈  Successfully joined \`${channel.name ?? 'Unknown channel'}\`.`);
 	}
 }
