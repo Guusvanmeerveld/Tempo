@@ -32,15 +32,16 @@ export class Join implements Command {
 			return;
 		}
 
-		if (channel.userLimit <= channel.members.array().length) {
+		if (channel.userLimit && channel.userLimit <= channel.members.array().length) {
 			msg.channel.send('❌  Your channel is too full for me to join.');
 			return;
 		}
 
 		client.queues.set(msg.guild?.id ?? '', { songs: [], loop: false });
 
-		await channel?.join().catch();
-
+		await channel?.join();
 		msg.channel.send(`🔈  Successfully joined \`${channel.name ?? 'Unknown channel'}\`.`);
+
+		return true;
 	}
 }
