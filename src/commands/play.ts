@@ -116,14 +116,14 @@ export class Play implements Command {
 	 * @param song
 	 */
 	public play(msg: Message, client: Bot, song: Song | undefined) {
+		const queue = client.queues.get(msg.guild!.id);
+		if (!queue) return;
+
 		if (!song) {
+			queue.playing = undefined;
 			msg.guild?.voice?.channel?.leave();
 			return;
 		}
-
-		const queue = client.queues.get(msg.guild?.id ?? '');
-
-		if (!queue) return;
 
 		queue.playing = song;
 
@@ -154,7 +154,7 @@ export class Play implements Command {
 			const volume = settings.volume;
 
 			connection.play(stream, { volume: volume / 100 }).on('finish', () => {
-				const queue = client.queues.get(msg.guild?.id ?? '');
+				const queue = client.queues.get(msg.guild!.id);
 
 				if (!queue) return;
 
@@ -172,8 +172,8 @@ export class Play implements Command {
 					return;
 				}
 
-				msg.guild?.voice?.channel?.leave();
 				queue.playing = undefined;
+				msg.guild?.voice?.channel?.leave();
 			});
 		}
 	}

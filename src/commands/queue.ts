@@ -15,7 +15,7 @@ export class Queue implements Command {
 
 		if (!queue) return;
 
-		if (queue.songs.length < 1) {
+		if (queue.songs.length < 1 && !queue.playing) {
 			msg.channel.send('❌  Queue is empty.');
 			return;
 		}

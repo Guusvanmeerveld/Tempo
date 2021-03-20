@@ -12,10 +12,10 @@ export class Join implements Command {
 	public async run(msg: Message, args: Array<string>, client: Bot) {
 		const channel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
 
-		if (channel.members.get(client.user?.id ?? '') && msg.guild?.voice?.connection) {
+		if (channel.members.get(client.user!.id) && msg.guild?.voice?.connection) {
 			const guildChannel = (await msg.guild?.voice?.channel?.fetch()) as VoiceChannel;
 			msg.channel.send(`🔈  Connected to \`${guildChannel.name}\``);
-			return;
+			return true;
 		}
 
 		const user = msg.client.user as User;
