@@ -16,10 +16,7 @@ import Manager from './src/manager';
 import WebServer from './src/web';
 
 const manager = new Manager();
-
-if (process.env.NODE_ENV === 'production') {
-	manager.start();
-}
+manager.start();
 
 const webserver = new WebServer();
 webserver.start();
