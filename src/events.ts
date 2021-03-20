@@ -98,7 +98,8 @@ export default class Events {
 				return channel.type === 'text' && permissions.has('SEND_MESSAGES');
 			})
 			.sort(
-				(a, b) => a.position - b.position || Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber()
+				(a, b) =>
+					a.position - b.position || Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber()
 			)
 			.first();
 

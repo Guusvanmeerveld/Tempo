@@ -20,14 +20,10 @@ export class Help implements Command {
 
 			embed.setTitle('Showing all commands for Tempo');
 			embed.setDescription(
-				`The current prefix for Tempo in \`${msg.guild!.name}\` is \`${
-					settings.prefix
-				}\`.`
+				`The current prefix for Tempo in \`${msg.guild!.name}\` is \`${settings.prefix}\`.`
 			);
 
-			commands.forEach((cmd) =>
-				embed.addField(ucFirst(cmd.name), cmd.description ?? '', true)
-			);
+			commands.forEach((cmd) => embed.addField(ucFirst(cmd.name), cmd.description ?? '', true));
 		} else if (parseInt(args[0])) {
 			const fields: Array<EmbedField> = commands.map((cmd: Command) => {
 				return {
@@ -52,9 +48,7 @@ export class Help implements Command {
 
 			const name = ucFirst(command?.name ?? '');
 			const aliases = command?.aliases?.join(', ');
-			const requirements = command?.requirements
-				?.map((g) => `\`${ucFirst(g)}\``)
-				.join(' & ');
+			const requirements = command?.requirements?.map((g) => `\`${ucFirst(g)}\``).join(' & ');
 
 			embed = new DefaultEmbed(msg.author);
 
