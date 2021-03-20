@@ -40,7 +40,7 @@ export class Skip implements Command {
 			}
 		}
 
-		msg.channel.send('✅  Successfully skipped the song.');
+		msg.channel.send('⏩  Successfully skipped the song.');
 		this.player.play(msg, client, queue.songs[count - 1]);
 		queue?.songs.splice(0, count);
 	}

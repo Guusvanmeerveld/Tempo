@@ -10,8 +10,8 @@ const request = axios.create({
 	params: { key: youtubeToken },
 });
 
-const video = /(youtube\.com\/watch\?v=|youtu\.be\/)([0-9A-Za-z_-]{10}[048AEIMQUYcgkosw])$/g;
-const playlist = /^(youtube\.com\/playlist\?list=)([0-9A-Za-z_-]{34})$/g;
+const video = /^(https:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([0-9A-Za-z_-]{10}[048AEIMQUYcgkosw])$/;
+const playlist = /^(https:\/\/)?(www\.)?(youtube\.com\/playlist\?list=)([0-9A-Za-z_-]{34})$/g;
 
 export default class Youtube {
 	/**
@@ -61,7 +61,7 @@ export default class Youtube {
 		let match = url.match(video);
 
 		if (match && match.length > 1) {
-			return match[2];
+			return match[4];
 		}
 
 		match = url.match(playlist);

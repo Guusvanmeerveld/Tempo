@@ -7,7 +7,7 @@ export class DefaultEmbed extends MessageEmbed {
 
 		if (author) {
 			const avatarURL = author.avatarURL() as string;
-			this.setAuthor(`Requested by: ${author.username}`, avatarURL);
+			this.setAuthor(`Requested by ${author.username}`, avatarURL);
 		}
 
 		this.setColor('#007AFF');

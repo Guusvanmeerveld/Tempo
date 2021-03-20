@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cio from 'cheerio';
+import { SearchHit } from '../../models/requests';
 
 const request = axios.create({
 	baseURL: 'https://api.genius.com',
@@ -7,16 +8,6 @@ const request = axios.create({
 		access_token: process.env.GENIUS,
 	},
 });
-
-export interface SearchHit {
-	type: string;
-	result: {
-		api_path: string;
-		full_title: string;
-		url: string;
-		header_image_thumbnail_url: string;
-	};
-}
 
 export default class Genius {
 	public static async search(entry: string) {

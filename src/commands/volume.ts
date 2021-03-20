@@ -32,6 +32,6 @@ export class Volume implements Command {
 		}
 
 		client.settings.set(msg.guild!.id, Setting.Volume, volume);
-		msg.channel.send(`🔈  Set the volume to \`${volume}%\``);
+		msg.channel.send(`🔊  Set the volume to \`${volume}%\``);
 	}
 }
