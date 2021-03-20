@@ -66,8 +66,6 @@ export default class Youtube {
 
 		match = url.match(playlist);
 
-		console.log(match);
-
 		return url;
 	}
 

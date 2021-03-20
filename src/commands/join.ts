@@ -22,18 +22,31 @@ export class Join implements Command {
 
 		const channelPerms = channel?.permissionsFor(user);
 
-		if (!channelPerms?.has('CONNECT')) {
-			msg.channel.send('❌  I am not allowed to connect to your voice channel.');
-			return;
-		}
+		if (!channel.joinable) {
+			if (!channelPerms?.has('VIEW_CHANNEL')) {
+				msg.channel.send('❌  I am not allowed to view to your voice channel.');
+				return;
+			}
 
-		if (!channelPerms?.has('SPEAK')) {
-			msg.channel.send('❌  I am not allowed to speak in your voice channel.');
-			return;
-		}
+			if (!channelPerms?.has('CONNECT')) {
+				msg.channel.send('❌  I am not allowed to connect to your voice channel.');
+				return;
+			}
 
-		if (channel.userLimit && channel.userLimit <= channel.members.array().length) {
-			msg.channel.send('❌  Your channel is too full for me to join.');
+			if (!channelPerms?.has('SPEAK')) {
+				msg.channel.send('❌  I am not allowed to speak in your voice channel.');
+				return;
+			}
+
+			if (channel.userLimit && channel.userLimit <= channel.members.array().length) {
+				msg.channel.send('❌  Your channel is too full for me to join.');
+				return;
+			}
+
+			msg.channel.send(
+				'❌  An unknown error occured while trying to join. Please try again later.'
+			);
+
 			return;
 		}
 
