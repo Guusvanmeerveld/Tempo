@@ -14,10 +14,9 @@ import { Message } from 'discord.js';
 import Bot from '../bot';
 
 const YOUTUBE = /^(https?:\/\/)?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/.+$/g;
-const PLAYLIST = /^.*(list=)([^#\&\?]*).*$/g;
 const SOUNDCLOUD = /^https?:\/\/(soundcloud\.com)\/(.*)$/g;
 const SPOTIFY = /^https?:\/\/(open\.spotify\.com\/track)\/(.*)$/g;
-const AUDIO = /\.(?:wav|mp3)$/g;
+const AUDIO = /^\.(?:wav|mp3)$/g;
 
 export class Play implements Command {
 	name = 'play';
@@ -136,11 +135,7 @@ export class Play implements Command {
 				client.request.soundcloud
 					.download(song.download)
 					.then((stream) => this.stream(msg, client, stream))
-					.catch(() =>
-						msg.channel.send(
-							'❌  Soundcloud song does not have a downloadable url'
-						)
-					);
+					.catch(() => msg.channel.send('❌  Soundcloud song does not have a downloadable url'));
 				break;
 		}
 	}
@@ -216,8 +211,7 @@ export class Play implements Command {
 	 * @param input
 	 */
 	private async search(input: string, msg: Message, client: Bot): Promise<Song> {
-		const notFound = (platform: string) =>
-			`I was not able to find \`${input}\` on ${platform}.`;
+		const notFound = (platform: string) => `I was not able to find \`${input}\` on ${platform}.`;
 
 		const settings = client.settings.get(msg.guild!.id);
 
