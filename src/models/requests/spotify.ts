@@ -20,7 +20,7 @@ export interface SpotifyTrackAPI {
 	uri: string;
 }
 
-export interface Album {
+interface Album {
 	album_type: string;
 	artists: Artist[];
 	available_markets: string[];
@@ -35,7 +35,7 @@ export interface Album {
 	uri: string;
 }
 
-export interface Artist {
+interface Artist {
 	external_urls: ExternalUrls;
 	href: string;
 	id: string;
@@ -44,17 +44,17 @@ export interface Artist {
 	uri: string;
 }
 
-export interface ExternalUrls {
+interface ExternalUrls {
 	spotify: string;
 }
 
-export interface Image {
+interface Image {
 	height: number;
 	url: string;
 	width: number;
 }
 
-export interface ExternalIDS {
+interface ExternalIDS {
 	isrc: string;
 }
 
@@ -62,7 +62,7 @@ export interface SpotifySearchAPI {
 	tracks: Tracks;
 }
 
-export interface Tracks {
+interface Tracks {
 	href: string;
 	items: SpotifyTrackAPI[];
 	limit: number;
@@ -94,7 +94,7 @@ export interface SpotifyAlbumAPI {
 	uri: string;
 }
 
-export interface Copyright {
+interface Copyright {
 	text: string;
 	type: string;
 }
