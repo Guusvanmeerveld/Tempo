@@ -1,13 +1,7 @@
-import { Command, Song, DefaultEmbed, Requirement, Setting } from '../models';
+import { Command, Song, DefaultEmbed, Requirement } from '../models';
 
 import Console from '../utils/console';
 import { abbreviate, ucFirst } from '../utils/functions';
-
-import youtube from '../utils/requests/youtube';
-import soundcloud from '../utils/requests/soundcloud';
-import Spotify from '../utils/requests/spotify';
-
-const spotify = new Spotify();
 
 import { Join } from './join';
 const join = new Join().run;
@@ -19,11 +13,11 @@ import { Video } from 'ytsr';
 import { Message } from 'discord.js';
 import Bot from '../bot';
 
-const ytRegex = /^(https?:\/\/)?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/.+$/gi;
-const playlistPattern = /^.*(list=)([^#\&\?]*).*/gi;
-const scRegex = /^https?:\/\/(soundcloud\.com)\/(.*)$/;
-const spRegex = /^https?:\/\/(open\.spotify\.com\/track)\/(.*)$/;
-const audioPattern = /\.(?:wav|mp3)$/i;
+const YOUTUBE = /^(https?:\/\/)?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/.+$/g;
+const PLAYLIST = /^.*(list=)([^#\&\?]*).*$/g;
+const SOUNDCLOUD = /^https?:\/\/(soundcloud\.com)\/(.*)$/g;
+const SPOTIFY = /^https?:\/\/(open\.spotify\.com\/track)\/(.*)$/g;
+const AUDIO = /\.(?:wav|mp3)$/g;
 
 export class Play implements Command {
 	name = 'play';
@@ -40,7 +34,7 @@ export class Play implements Command {
 	 */
 	public async run(msg: Message, args: Array<string>, client: Bot, playskip?: boolean) {
 		if (args.length < 1) {
-			if (msg.attachments) {
+			if (msg.attachments.array().length) {
 				const first = msg.attachments.first();
 				if (!first) return;
 
@@ -54,9 +48,11 @@ export class Play implements Command {
 			return;
 		}
 
-		await join(msg, args, client);
+		const joined = await join(msg, args, client);
 
-		const queue = client.queues.get(msg.guild?.id ?? '');
+		if (!joined) return;
+
+		const queue = client.queues.get(msg.guild!.id);
 
 		this.info(msg, args, client)
 			.then((info: Song) => {
@@ -137,7 +133,7 @@ export class Play implements Command {
 				this.stream(msg, client, ytdl(song.url, { filter: 'audioonly' }));
 				break;
 			case 'soundcloud':
-				soundcloud
+				client.request.soundcloud
 					.download(song.download)
 					.then((stream) => this.stream(msg, client, stream))
 					.catch(() =>
@@ -182,6 +178,7 @@ export class Play implements Command {
 				}
 
 				msg.guild?.voice?.channel?.leave();
+				queue.playing = undefined;
 			});
 		}
 	}
@@ -193,19 +190,19 @@ export class Play implements Command {
 	 */
 	private async info(msg: Message, args: Array<string>, client: Bot): Promise<Song> {
 		const input = args[0];
-		if (input.match(ytRegex)) {
-			return await youtube.info(input);
+		if (input.match(YOUTUBE)) {
+			return await client.request.youtube.info(input);
 		}
 
-		if (input.match(scRegex)) {
-			return await soundcloud.info(input);
+		if (input.match(SOUNDCLOUD)) {
+			return await client.request.soundcloud.info(input);
 		}
 
-		if (input.match(spRegex)) {
-			return await spotify.info(input);
+		if (input.match(SPOTIFY)) {
+			return await client.request.spotify.info(input);
 		}
 
-		if (input.match(audioPattern)) {
+		if (input.match(AUDIO)) {
 		}
 
 		const search = args.join(' ');
@@ -226,6 +223,7 @@ export class Play implements Command {
 
 		switch (settings.search_platform) {
 			case 'soundcloud':
+				const soundcloud = client.request.soundcloud;
 				const tracks = await soundcloud.search(input, 1);
 
 				if (tracks.collection.length < 1) {
@@ -236,6 +234,7 @@ export class Play implements Command {
 
 				return await soundcloud.info(track.permalink_url);
 			case 'spotify':
+				const spotify = client.request.spotify;
 				const songs = (await spotify.search(input, 1)).tracks;
 
 				if (songs.items.length < 1) {
@@ -246,6 +245,7 @@ export class Play implements Command {
 
 				return spotify.info(song.id);
 			default:
+				const youtube = client.request.youtube;
 				const videos = await youtube.search(input, 1);
 
 				if (videos.items.length < 1) {

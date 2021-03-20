@@ -37,8 +37,6 @@ export class Join implements Command {
 			return;
 		}
 
-		client.queues.set(msg.guild?.id ?? '', { songs: [], loop: false });
-
 		await channel?.join();
 		msg.channel.send(`🔈  Successfully joined \`${channel.name ?? 'Unknown channel'}\`.`);
 

@@ -62,12 +62,9 @@ export default class Events {
 		) {
 			const role = msg.guild.roles.resolve(settings.role);
 
-			msg.channel.send(
-				`You need to have the ${role?.toString()} role to use this command.`,
-				{
-					allowedMentions: { users: [] },
-				}
-			);
+			msg.channel.send(`You need to have the ${role?.toString()} role to use this command.`, {
+				allowedMentions: { users: [] },
+			});
 
 			return;
 		}
@@ -77,6 +74,9 @@ export default class Events {
 		} catch (error) {
 			this.error(error);
 		}
+
+		if (!this.client.queues.has(msg.guild!.id))
+			this.client.queues.set(msg.guild!.id, { songs: [], loop: false });
 	}
 
 	public error(error: Object) {
@@ -98,16 +98,12 @@ export default class Events {
 				return channel.type === 'text' && permissions.has('SEND_MESSAGES');
 			})
 			.sort(
-				(a, b) =>
-					a.position - b.position ||
-					Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber()
+				(a, b) => a.position - b.position || Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber()
 			)
 			.first();
 
 		if (!mainChannel) {
-			Console.error(
-				'Was not able to find a channel where I could speak in guild: ' + guild.name
-			);
+			Console.error('Was not able to find a channel where I could speak in guild: ' + guild.name);
 			return;
 		}
 

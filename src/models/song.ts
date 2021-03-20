@@ -13,3 +13,14 @@ export interface Song {
 	download?: string;
 	requested?: User;
 }
+
+export interface Album {
+	date: Date;
+	image: string;
+	name: string;
+	author: string[];
+	platform: 'spotify' | 'youtube';
+	url: string;
+	genres?: string[];
+	songs: Song[];
+}
