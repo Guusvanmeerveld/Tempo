@@ -2,9 +2,7 @@ import { Message } from 'discord.js';
 import Bot from '../bot';
 import { Album, Command, DefaultEmbed, Requirement, Song } from '../models';
 
-const SPOTIFY_PLAYLIST = /^https?:\/\/(open\.spotify\.com\/playlist)\/(.*)$/g;
 export const SPOTIFY_ALBUM = /^https?:\/\/(open\.spotify\.com\/album)\/(.*)$/g;
-
 export const YOUTUBE_PLAYLIST = /^(https?:)\/\/?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/(playlist\?list=)(.*)$/g;
 
 export class PlayList implements Command {
