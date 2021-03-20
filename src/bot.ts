@@ -21,14 +21,24 @@ import {
 	Resume,
 	Pause,
 	Loop,
+	PlayList,
 } from './commands';
 
 import SettingsInterface from './utils/settings';
+import Spotify from './utils/requests/spotify';
+import Youtube from './utils/requests/youtube';
+import SoundCloud from './utils/requests/soundcloud';
 
 export default class Bot extends Client {
 	public settings: SettingsInterface;
 	public commands: Collection<string, Command>;
 	public queues: Collection<string, QueueList>;
+
+	public request: {
+		spotify: Spotify;
+		youtube: Youtube;
+		soundcloud: SoundCloud;
+	};
 
 	constructor() {
 		super({
@@ -39,6 +49,12 @@ export default class Bot extends Client {
 			cacheEmojis: false,
 			cachePresences: false,
 		});
+
+		this.request = {
+			spotify: new Spotify(),
+			youtube: new Youtube(),
+			soundcloud: new SoundCloud(),
+		};
 
 		this.settings = new SettingsInterface();
 
@@ -62,6 +78,7 @@ export default class Bot extends Client {
 		this.commands.set('playskip', new PlaySkip());
 		this.commands.set('lyrics', new Lyrics());
 		this.commands.set('loop', new Loop());
+		this.commands.set('playlist', new PlayList());
 	}
 
 	public start(token?: string): void {

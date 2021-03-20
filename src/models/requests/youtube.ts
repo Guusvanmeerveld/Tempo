@@ -5,7 +5,7 @@ export interface YoutubeVideoAPI {
 	pageInfo: PageInfo;
 }
 
-export interface Item {
+interface Item {
 	kind: string;
 	etag: string;
 	id: string;
@@ -13,7 +13,7 @@ export interface Item {
 	statistics: Statistics;
 }
 
-export interface Snippet {
+interface Snippet {
 	publishedAt: string;
 	channelId: string;
 	title: string;
@@ -27,25 +27,25 @@ export interface Snippet {
 	defaultAudioLanguage: string;
 }
 
-export interface Localized {
+interface Localized {
 	title: string;
 	description: string;
 }
 
-export interface Thumbnails {
+interface Thumbnails {
 	default: Default;
 	medium: Default;
 	high: Default;
 	standard: Default;
 }
 
-export interface Default {
+interface Default {
 	url: string;
 	width: number;
 	height: number;
 }
 
-export interface Statistics {
+interface Statistics {
 	viewCount: string;
 	likeCount: string;
 	dislikeCount: string;
@@ -53,7 +53,7 @@ export interface Statistics {
 	commentCount: string;
 }
 
-export interface PageInfo {
+interface PageInfo {
 	totalResults: number;
 	resultsPerPage: number;
 }

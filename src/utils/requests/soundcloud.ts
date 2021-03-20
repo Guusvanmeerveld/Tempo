@@ -11,7 +11,7 @@ const request = axios.create({
 });
 
 export default class SoundCloud {
-	public static async track(url: string): Promise<SoundCloudTrackAPI> {
+	public async track(url: string): Promise<SoundCloudTrackAPI> {
 		return (
 			await request('/resolve', {
 				params: {
@@ -21,7 +21,7 @@ export default class SoundCloud {
 		).data;
 	}
 
-	public static async search(entry: string, limit: number): Promise<SoundCloudSearchAPI> {
+	public async search(entry: string, limit: number): Promise<SoundCloudSearchAPI> {
 		return (
 			await request('/search/tracks', {
 				params: {
@@ -32,14 +32,14 @@ export default class SoundCloud {
 		).data;
 	}
 
-	public static async download(url: string | undefined): Promise<Stream> {
+	public async download(url: string | undefined): Promise<Stream> {
 		if (!url) throw 'No url given';
 		const downloadURL = (await request(url)).data.url;
 
 		return m3u8stream(downloadURL);
 	}
 
-	public static async info(input: string): Promise<Song> {
+	public async info(input: string): Promise<Song> {
 		const data = await this.track(input);
 
 		return {

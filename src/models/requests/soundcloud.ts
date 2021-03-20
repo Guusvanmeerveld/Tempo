@@ -46,11 +46,7 @@ export interface SoundCloudTrackAPI {
 	user?: User;
 }
 
-export interface Media {
-	transcodings: Array<Transcoding>;
-}
-
-export interface Transcoding {
+interface Transcoding {
 	url: string;
 	preset: string;
 	duration: number;
@@ -59,7 +55,7 @@ export interface Transcoding {
 	quality: string;
 }
 
-export interface PublisherMetadata {
+interface PublisherMetadata {
 	id: number;
 	urn: string;
 	artist: string;
@@ -75,7 +71,7 @@ export interface PublisherMetadata {
 	release_title: string;
 }
 
-export interface User {
+interface User {
 	avatar_url: string;
 	city: string;
 	comments_count: number;
@@ -108,17 +104,11 @@ export interface User {
 	badges: Badges;
 }
 
-export interface Badges {
-	pro: boolean;
-	pro_unlimited: boolean;
-	verified: boolean;
-}
-
-export interface CreatorSubscription {
+interface CreatorSubscription {
 	product: null[];
 }
 
-export interface Visuals {
+interface Visuals {
 	urn: string;
 	enabled: boolean;
 	visuals: null[];
@@ -132,7 +122,7 @@ export interface SoundCloudSearchAPI {
 	query_urn: string;
 }
 
-export interface Collection {
+interface Collection {
 	artwork_url: null | string;
 	caption: null;
 	commentable: boolean;
@@ -180,90 +170,66 @@ export interface Collection {
 	user: User;
 }
 
-export enum EmbeddableBy {
+enum EmbeddableBy {
 	All = 'all',
 }
 
-export enum CollectionKind {
+enum CollectionKind {
 	Track = 'track',
 }
 
-export enum License {
+enum License {
 	AllRightsReserved = 'all-rights-reserved',
 }
 
-export interface Media {
+interface Media {
 	transcodings: Transcoding[];
 }
 
-export interface Format {
+interface Format {
 	protocol: Protocol;
 	mime_type: MIMEType;
 }
 
-export enum MIMEType {
+enum MIMEType {
 	AudioMPEG = 'audio/mpeg',
 	AudioOggCodecsOpus = 'audio/ogg; codecs="opus"',
 }
 
-export enum Protocol {
+enum Protocol {
 	HLS = 'hls',
 	Progressive = 'progressive',
 }
 
-export enum Preset {
-	Mp30_0 = 'mp3_0_0',
-	Mp30_1 = 'mp3_0_1',
-	Opus0_0 = 'opus_0_0',
-}
-
-export enum Quality {
-	Sq = 'sq',
-}
-
-export enum MonetizationModel {
+enum MonetizationModel {
 	Blackbox = 'BLACKBOX',
 	NotApplicable = 'NOT_APPLICABLE',
 }
 
-export enum Policy {
+enum Policy {
 	Allow = 'ALLOW',
 	Monetize = 'MONETIZE',
 }
 
-export enum Sharing {
+enum Sharing {
 	Public = 'public',
 }
 
-export enum State {
+enum State {
 	Finished = 'finished',
 }
 
-export enum TrackFormat {
+enum TrackFormat {
 	SingleTrack = 'single-track',
 }
 
-export interface Badges {
+interface Badges {
 	pro: boolean;
 	pro_unlimited: boolean;
 	verified: boolean;
 }
 
-export interface Product {
-	id: ID;
-}
-
-export enum ID {
+enum ID {
 	CreatorProUnlimited = 'creator-pro-unlimited',
 	Free = 'free',
-}
-
-export enum UserKind {
-	User = 'user',
-}
-
-export interface Visual {
-	urn: string;
-	entry_time: number;
-	visual_url: string;
 }

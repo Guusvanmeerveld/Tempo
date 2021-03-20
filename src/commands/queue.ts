@@ -11,9 +11,11 @@ export class Queue implements Command {
 	description = 'Gives a list of all the songs currently in the queue.';
 
 	run(msg: Message, args: Array<string>, client: Bot) {
-		const queue = client.queues.get(msg.guild?.id ?? '');
+		const queue = client.queues.get(msg.guild!.id);
 
-		if (!queue?.playing) {
+		if (!queue) return;
+
+		if (queue.songs.length < 1) {
 			msg.channel.send('❌  Queue is empty.');
 			return;
 		}
@@ -35,11 +37,12 @@ export class Queue implements Command {
 			fields,
 		});
 
-		embed.setDescription(
-			`Currently playing: \`${
-				queue.playing?.title ?? 'Nothing'
-			}\` requested by ${queue.playing.requested?.toString()}`
-		);
+		if (queue.playing)
+			embed.setDescription(
+				`Currently playing: \`${
+					queue.playing?.title ?? 'Nothing'
+				}\` requested by ${queue.playing.requested?.toString()}`
+			);
 
 		embed.setTitle('Songs in the queue');
 

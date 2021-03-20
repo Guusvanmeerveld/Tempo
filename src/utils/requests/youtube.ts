@@ -10,22 +10,34 @@ const request = axios.create({
 	params: { key: youtubeToken },
 });
 
-const regex = /(youtube\.com\/watch\?v=|youtu\.be\/)([0-9A-Za-z_-]{10}[048AEIMQUYcgkosw])/;
+const video = /(youtube\.com\/watch\?v=|youtu\.be\/)([0-9A-Za-z_-]{10}[048AEIMQUYcgkosw])$/g;
+const playlist = /^(youtube\.com\/playlist\?list=)([0-9A-Za-z_-]{34})$/g;
 
 export default class Youtube {
 	/**
 	 * Get information about a video on Youtube.
 	 * @param id
 	 */
-	public static async video(id: string): Promise<YoutubeVideoAPI> {
-		return (
-			await request('videos', {
-				params: {
-					part: 'snippet,statistics',
-					id,
-				},
-			})
-		).data;
+	public async video(id: string): Promise<YoutubeVideoAPI> {
+		const { data } = await request('videos', {
+			params: {
+				part: 'snippet,statistics',
+				id,
+			},
+		});
+
+		return data;
+	}
+
+	public async playlist(id: string) {
+		const { data } = await request('playlists', {
+			params: {
+				part: 'snippet',
+				id,
+			},
+		});
+
+		return data;
 	}
 
 	/**
@@ -33,24 +45,28 @@ export default class Youtube {
 	 * @param query
 	 * @param limit
 	 */
-	public static async search(query: string, limit: number): Promise<Result> {
-		const res = await ytsr(query, {
+	public async search(query: string, limit: number): Promise<Result> {
+		const data = await ytsr(query, {
 			limit,
 		});
 
-		return res;
+		return data;
 	}
 
 	/**
 	 * Get the video id from a youtube url.
 	 * @param url
 	 */
-	public static id(url: string): string {
-		const match = url.match(regex);
+	public id(url: string): string {
+		let match = url.match(video);
 
 		if (match && match.length > 1) {
 			return match[2];
 		}
+
+		match = url.match(playlist);
+
+		console.log(match);
 
 		return url;
 	}
@@ -59,7 +75,7 @@ export default class Youtube {
 	 * Get info about a song on Youtube.
 	 * @param input
 	 */
-	public static async info(input: string): Promise<Song> {
+	public async info(input: string): Promise<Song> {
 		const id = this.id(input);
 		const data = await this.video(id);
 
