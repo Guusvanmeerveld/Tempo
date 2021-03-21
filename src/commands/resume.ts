@@ -19,16 +19,16 @@ export class Resume implements Command {
 		const dispatcher = connection?.dispatcher;
 
 		if (!dispatcher) {
-			msg.channel.send('There is nothing playing right now.');
+			msg.channel.send('❌  There is nothing playing right now.');
 			return;
 		}
 
 		if (!dispatcher.paused) {
-			msg.channel.send('Already resumed.');
+			msg.channel.send('⏯️  Already resumed.');
 			return;
 		}
 
 		dispatcher.resume();
-		msg.channel.send('Resumed the music.');
+		msg.channel.send('⏯️  Resumed the music.');
 	}
 }

@@ -84,6 +84,7 @@ export class PlayList implements Command {
 					image,
 					platform: 'spotify',
 					url: g.external_urls.spotify,
+					length: g.duration_ms,
 				};
 			});
 

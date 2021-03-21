@@ -52,6 +52,7 @@ export default class SoundCloud {
 			download: data.media?.transcodings[0].url,
 			likes: data.likes_count,
 			views: data.playback_count,
+			length: data.duration,
 		};
 	}
 }

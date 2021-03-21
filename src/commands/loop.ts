@@ -4,7 +4,7 @@ import Bot from '../bot';
 
 export class Loop implements Command {
 	name = 'loop';
-	usage = 'loop [amount of times to loop]';
+	usage = 'loop';
 	description = 'Loops the current song until you turn it off.';
 	requirements: Requirement[] = ['ROLE', 'VOICE'];
 

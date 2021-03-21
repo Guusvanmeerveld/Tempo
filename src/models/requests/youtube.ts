@@ -10,11 +10,24 @@ interface Item {
 	etag: string;
 	id: string;
 	snippet: Snippet;
+	contentDetails: ContentDetails;
 	statistics: Statistics;
 }
 
+interface ContentDetails {
+	duration: string;
+	dimension: string;
+	definition: string;
+	caption: string;
+	licensedContent: boolean;
+	contentRating: ContentRating;
+	projection: string;
+}
+
+interface ContentRating {}
+
 interface Snippet {
-	publishedAt: string;
+	publishedAt: Date;
 	channelId: string;
 	title: string;
 	description: string;

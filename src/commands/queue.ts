@@ -15,7 +15,7 @@ export class Queue implements Command {
 
 		if (!queue) return;
 
-		if (queue.songs.length < 1 && !queue.playing) {
+		if (queue.songs.length < 1) {
 			msg.channel.send('❌  Queue is empty.');
 			return;
 		}
@@ -37,12 +37,12 @@ export class Queue implements Command {
 			fields,
 		});
 
-		if (queue.playing)
-			embed.setDescription(
-				`Currently playing: \`${
-					queue.playing?.title ?? 'Nothing'
-				}\` requested by ${queue.playing.requested?.toString()}`
-			);
+		// if (queue.playing)
+		// 	embed.setDescription(
+		// 		`Currently playing: \`${
+		// 			queue.playing?.title ?? 'Nothing'
+		// 		}\` requested by ${queue.playing.requested?.toString()}`
+		// 	);
 
 		embed.setTitle('Songs in the queue');
 

@@ -1,7 +1,6 @@
-import { Command, Song, DefaultEmbed, Requirement } from '../models';
+import { Command, Song, Requirement, SongEmbed } from '../models';
 
 import Console from '../utils/console';
-import { abbreviate, ucFirst } from '../utils/functions';
 
 import { Join } from './join';
 const join = new Join().run;
@@ -56,38 +55,7 @@ export class Play implements Command {
 		this.info(msg, args, client)
 			.then((info: Song) => {
 				const song: Song = { requested: msg.author, ...info };
-				const embed = new DefaultEmbed(msg.author);
-
-				embed.setTitle(song?.title ?? 'Unknown song');
-				embed.setThumbnail(song?.image);
-				embed.setURL(song?.url);
-
-				embed.addFields(
-					{
-						name: 'Published',
-						value: song?.date.toLocaleDateString() ?? 'Unknown date',
-						inline: true,
-					},
-					{ name: 'Author', value: song?.author, inline: true },
-					{
-						name: 'Platform',
-						value: ucFirst(song.platform),
-						inline: true,
-					},
-					{
-						name: 'Streams',
-						value: abbreviate(song?.views ?? 0),
-						inline: true,
-					}
-				);
-
-				if (song?.likes) {
-					embed.addField('Likes', abbreviate(song?.likes ?? 0), true);
-				}
-
-				if (song?.dislikes) {
-					embed.addField('Dislikes', abbreviate(song?.dislikes ?? 0), true);
-				}
+				const embed = new SongEmbed({ author: msg.author, song });
 
 				if (queue?.playing && !playskip) {
 					queue.songs.push(song);

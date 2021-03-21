@@ -9,8 +9,8 @@ const abs = ['K', 'M', 'B', 'T'];
  * @param size - The size of the contained arrays
  * @returns Result
  */
-export function chunk(array: Array<any>, size: number) {
-	const chunked: Array<Array<any>> = [];
+export function chunk(array: Array<any>, size: number): Array<Array<any>> {
+	const chunked = [];
 
 	for (let i = 0; i < array.length; i += size) {
 		chunked.push(array.slice(i, i + size));
@@ -45,9 +45,9 @@ export function abbreviate(number: number): string | number {
 
 /**
  * Remove every file from a given directory
- * @param path
+ * @param path - The path to the folder te be removed
  */
-export function emptyDir(path: string) {
+export function emptyDir(path: string): void {
 	if (fs.existsSync(path)) {
 		const files = fs.readdirSync(path);
 
@@ -66,4 +66,42 @@ export function emptyDir(path: string) {
 		Console.info(`Directory path "${path}" not found, creating one...`);
 		fs.mkdir(path, () => {});
 	}
+}
+
+/**
+ * Give a duration formatted by YouTube and convert it to seconds.
+ * Stolen from https://gist.github.com/jrtaylor-com/42883b0e28a45b8362e7
+ * @param duration - The duration to convert
+ * @returns The duration in seconds
+ */
+export function ytDurationToMs(duration: string): number {
+	let hours = 0;
+	let minutes = 0;
+	let seconds = 0;
+
+	// Remove PT from string ref: https://developers.google.com/youtube/v3/docs/videos#contentDetails.duration
+	duration = duration.replace('PT', '');
+
+	// If the string contains hours parse it and remove it from our duration string
+	if (duration.indexOf('H') > -1) {
+		const hours_split = duration.split('H');
+		hours = parseInt(hours_split[0]);
+		duration = hours_split[1];
+	}
+
+	// If the string contains minutes parse it and remove it from our duration string
+	if (duration.indexOf('M') > -1) {
+		const minutes_split = duration.split('M');
+		minutes = parseInt(minutes_split[0]);
+		duration = minutes_split[1];
+	}
+
+	// If the string contains seconds parse it and remove it from our duration string
+	if (duration.indexOf('S') > -1) {
+		const seconds_split = duration.split('S');
+		seconds = parseInt(seconds_split[0]);
+	}
+
+	// Math the values to return seconds
+	return (hours * 60 * 60 + minutes * 60 + seconds) * 1000;
 }

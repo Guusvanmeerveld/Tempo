@@ -16,3 +16,4 @@ export * from './playskip';
 export * from './lyrics';
 export * from './loop';
 export * from './playlist';
+export * from './nowplaying';

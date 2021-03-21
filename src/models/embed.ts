@@ -1,5 +1,7 @@
 import { EmbedField, MessageEmbed, User } from 'discord.js-light';
-import { chunk } from '../utils/functions';
+import humanizeDuration from 'humanize-duration';
+import { chunk, abbreviate, ucFirst } from '../utils/functions';
+import { Song } from './song';
 
 export class DefaultEmbed extends MessageEmbed {
 	constructor(author?: User) {
@@ -12,6 +14,48 @@ export class DefaultEmbed extends MessageEmbed {
 
 		this.setColor('#007AFF');
 		this.setTimestamp();
+	}
+}
+
+export class SongEmbed extends DefaultEmbed {
+	constructor({ author, song }: { author: User; song: Song }) {
+		super(author);
+
+		this.setTitle(`Now playing: ${song?.title ?? 'Unknown song'}`);
+		this.setThumbnail(song?.image);
+		this.setURL(song?.url);
+
+		this.addFields(
+			{
+				name: 'Published',
+				value: song?.date.toLocaleDateString() ?? 'Unknown date',
+				inline: true,
+			},
+			{ name: 'Author', value: song?.author, inline: true },
+			{
+				name: 'Platform',
+				value: ucFirst(song.platform),
+				inline: true,
+			},
+			{
+				name: 'Length',
+				value: humanizeDuration(song.length),
+				inline: true,
+			},
+			{
+				name: 'Streams',
+				value: abbreviate(song?.views ?? 0),
+				inline: true,
+			}
+		);
+
+		if (song?.likes) {
+			this.addField('Likes', abbreviate(song?.likes ?? 0), true);
+		}
+
+		if (song?.dislikes) {
+			this.addField('Dislikes', abbreviate(song?.dislikes ?? 0), true);
+		}
 	}
 }
 

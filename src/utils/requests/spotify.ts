@@ -118,6 +118,7 @@ export default class Spotify {
 			image: song.album.images[0].url,
 			platform: 'spotify',
 			title: song.name,
+			length: song.duration_ms,
 			// views: song,
 		};
 	}
