@@ -19,8 +19,8 @@ npm i -g typescript
 Then, install Tempo using the following commands:
 
 ```
-git clone https://github.com/guusvanmeerveld/tempo-ts/
-cd tempo-ts
+git clone https://github.com/guusvanmeerveld/tempo/
+cd tempo
 npm install --production
 npm run build
 ```

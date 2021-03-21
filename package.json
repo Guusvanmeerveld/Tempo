@@ -1,5 +1,5 @@
 {
-	"name": "tempo-ts",
+	"name": "tempo",
 	"version": "0.1.0",
 	"description": "A simple Discord music bot that can play Soundcloud, Youtube or Spotify tracks.",
 	"main": "dist/index.js",

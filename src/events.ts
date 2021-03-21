@@ -146,7 +146,7 @@ export default class Events {
 			},
 			{
 				name: 'Source code',
-				value: 'https://github.com/guusvanmeerveld/tempo-ts/',
+				value: 'https://github.com/guusvanmeerveld/tempo/',
 			}
 		);
 
