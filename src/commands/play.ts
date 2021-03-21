@@ -120,7 +120,6 @@ export class Play implements Command {
 		if (!queue) return;
 
 		if (!song) {
-			queue.playing = undefined;
 			msg.guild?.voice?.channel?.leave();
 			return;
 		}
@@ -172,7 +171,6 @@ export class Play implements Command {
 					return;
 				}
 
-				queue.playing = undefined;
 				msg.guild?.voice?.channel?.leave();
 			});
 		}
