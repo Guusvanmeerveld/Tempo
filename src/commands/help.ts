@@ -57,12 +57,12 @@ export class Help implements Command {
 			embed.addFields(
 				{
 					name: 'Aliases',
-					value: `\`${aliases}\``,
+					value: `\`${aliases ?? 'None'}\``,
 					inline: true,
 				},
 				{
 					name: 'Requirements',
-					value: `Requires ${requirements}`,
+					value: `Requires ${requirements ?? '`None`'}`,
 					inline: true,
 				},
 				{
