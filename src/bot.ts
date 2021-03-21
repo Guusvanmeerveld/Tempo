@@ -22,6 +22,7 @@ import {
 	Pause,
 	Loop,
 	PlayList,
+	NowPlaying,
 } from './commands';
 
 import SettingsInterface from './utils/settings';
@@ -79,6 +80,7 @@ export default class Bot extends Client {
 		this.commands.set('lyrics', new Lyrics());
 		this.commands.set('loop', new Loop());
 		this.commands.set('playlist', new PlayList());
+		this.commands.set('nowplaying', new NowPlaying());
 	}
 
 	public start(token?: string): void {

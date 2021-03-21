@@ -19,16 +19,16 @@ export class Stop implements Command {
 		const dispatcher = connection?.dispatcher;
 
 		if (!dispatcher) {
-			msg.channel.send('There is nothing playing right now.');
+			msg.channel.send('❌  There is nothing playing right now.');
 			return;
 		}
 
 		if (dispatcher.paused) {
-			msg.channel.send('Already stopped.');
+			msg.channel.send('⏸️  Already stopped.');
 			return;
 		}
 
 		dispatcher.pause();
-		msg.channel.send('Stopped the music.');
+		msg.channel.send('⏸️  Stopped the music.');
 	}
 }

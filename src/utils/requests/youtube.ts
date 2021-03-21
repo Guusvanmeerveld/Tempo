@@ -4,6 +4,7 @@ import { Song } from '../../models';
 import axios from 'axios';
 import ytsr, { Result } from 'ytsr';
 import { YoutubeVideoAPI } from '../../models/requests';
+import { ytDurationToMs } from '../functions';
 
 const request = axios.create({
 	baseURL: 'https://www.googleapis.com/youtube/v3/',
@@ -21,7 +22,7 @@ export default class Youtube {
 	public async video(id: string): Promise<YoutubeVideoAPI> {
 		const { data } = await request('videos', {
 			params: {
-				part: 'snippet,statistics',
+				part: 'snippet,statistics,contentDetails',
 				id,
 			},
 		});
@@ -83,6 +84,7 @@ export default class Youtube {
 
 		const snippet = video.snippet;
 		const statistics = video.statistics;
+		const contentDetails = video.contentDetails;
 
 		return {
 			platform: 'youtube',
@@ -94,6 +96,7 @@ export default class Youtube {
 			likes: parseInt(statistics.likeCount),
 			dislikes: parseInt(statistics.dislikeCount),
 			url: `https://youtu.be/${video.id}`,
+			length: ytDurationToMs(contentDetails.duration),
 		};
 	}
 }
