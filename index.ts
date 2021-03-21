@@ -9,18 +9,14 @@ if (existsSync('.env')) {
 	config();
 	Console.success('Found environmental variables in .env file!');
 } else {
-	Console.error('Could not locate .env file! Did you remember to create one?');
-	process.exit();
+	Console.info('Could not locate .env file! Did you remember to create one?');
 }
 
 import Manager from './src/manager';
 import WebServer from './src/web';
 
 const manager = new Manager();
-
-if (process.env.NODE_ENV === 'production') {
-	manager.start();
-}
+manager.start();
 
 const webserver = new WebServer();
 webserver.start();

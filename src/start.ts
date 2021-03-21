@@ -15,3 +15,4 @@ const events = new Events(bot);
 bot.on('message', (msg) => events.message(msg));
 bot.on('guildCreate', (guild) => events.guildJoin(guild));
 bot.on('error', (err) => events.error(err));
+bot.on('voiceStateUpdate', (oldState, newState) => events.voice(oldState, newState));

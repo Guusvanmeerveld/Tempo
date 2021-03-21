@@ -1,4 +1,4 @@
-import { Guild, Message, TextChannel, GuildChannel } from 'discord.js-light';
+import { Guild, Message, TextChannel, GuildChannel, VoiceState } from 'discord.js-light';
 
 const { prefix } = require(process.cwd() + '/src/config/settings.json');
 
@@ -8,13 +8,17 @@ import Console from './utils/console';
 import { DefaultEmbed } from './models';
 
 export default class Events {
-	client: Bot;
+	private client: Bot;
 
 	constructor(client: Bot) {
 		this.client = client;
 	}
 
-	public async message(msg: Message) {
+	/**
+	 * Runs when the bot detects a message that was sent
+	 * @param msg - The message that was sent
+	 */
+	public async message(msg: Message): Promise<void> {
 		if (
 			msg.partial ||
 			msg.system ||
@@ -79,13 +83,21 @@ export default class Events {
 			this.client.queues.set(msg.guild!.id, { songs: [], loop: false });
 	}
 
+	/**
+	 * Runs when the bot encounters an error
+	 * @param error - The error that occured
+	 */
 	public error(error: Object) {
 		this.client.users
 			.fetch(process.env.OWNER ?? '')
 			.then((owner) => owner.send('```json\n' + error + '```'));
 	}
 
-	public async guildJoin(guild: Guild) {
+	/**
+	 * Runs when the bot joins a new guild
+	 * @param guild - The guild the bot has joined
+	 */
+	public async guildJoin(guild: Guild): Promise<void> {
 		const user = guild.client.user!;
 
 		const channels = await guild.channels.fetch();
@@ -141,5 +153,28 @@ export default class Events {
 		embed.setFooter('Made with ❤️ by Xeeon#7590');
 
 		(mainChannel as TextChannel).send(embed);
+	}
+
+	/**
+	 * Runs when there is a voice state update
+	 * @param oldState - The old state
+	 * @param newState - The new state
+	 */
+	public voice(oldState: VoiceState, newState: VoiceState): void {
+		if (oldState && oldState.member === oldState.guild.me) {
+			if (oldState && !newState) this.disconnect(oldState.guild);
+		}
+	}
+
+	/**
+	 * Runs when bot gets disconnected from a voice channel
+	 * @param guild - The guild the bot was disconnected from
+	 */
+	private disconnect(guild: Guild): void {
+		const queue = this.client.queues.get(guild.id);
+		if (!queue) return;
+
+		queue.songs.length = 0;
+		delete queue.playing;
 	}
 }
