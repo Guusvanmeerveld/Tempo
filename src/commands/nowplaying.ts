@@ -23,7 +23,7 @@ export class NowPlaying implements Command {
 
 		const embed = new SongEmbed({ author: msg.author, song: queue.playing });
 
-		const time = msg.guild?.voice?.connection?.dispatcher.streamTime ?? 0;
+		const time = msg.guild?.voice?.connection?.dispatcher?.streamTime ?? 0;
 		const length = queue.playing.length;
 
 		const progressBar = this.createProgressBar(time, length);

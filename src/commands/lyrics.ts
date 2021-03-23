@@ -1,4 +1,5 @@
 import { Message } from 'discord.js';
+import Bot from '../bot';
 import { Command, DefaultEmbed } from '../models';
 import Console from '../utils/console';
 
@@ -10,13 +11,19 @@ export class Lyrics implements Command {
 	usage = 'lyrics [name of song]';
 	aliases = ['ly'];
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>, client: Bot) {
+		let entry: string;
 		if (args.length < 1) {
-			msg.channel.send('Please enter a song name to search for.');
-			return;
-		}
+			const queue = client.queues.get(msg.guild!.id);
+			if (!queue?.playing) {
+				msg.channel.send('Please enter a song name to search for.');
+				return;
+			}
 
-		const entry = args.join(' ');
+			entry = queue.playing.title;
+		} else {
+			entry = args.join(' ');
+		}
 
 		msg.channel
 			.send(`🔍  Searching lyrics for \`${entry}\`. This might take a while...`)
