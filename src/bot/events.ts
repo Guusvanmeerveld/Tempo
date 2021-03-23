@@ -1,6 +1,6 @@
 import { Guild, Message, TextChannel, GuildChannel, VoiceState } from 'discord.js-light';
 
-const { prefix } = require(process.cwd() + '/src/config/settings.json');
+const { prefix } = require(process.cwd() + '/src/bot/config/settings.json');
 
 import Bot from './bot';
 import Long from 'long';

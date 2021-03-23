@@ -3,7 +3,7 @@ console.clear();
 import { config } from 'dotenv';
 
 import { existsSync } from 'fs';
-import Console from './src/utils/console';
+import Console from './bot/utils/console';
 
 if (existsSync('.env')) {
 	config();
@@ -12,8 +12,8 @@ if (existsSync('.env')) {
 	Console.info('Could not locate .env file! Did you remember to create one?');
 }
 
-import Manager from './src/manager';
-import WebServer from './src/web';
+import Manager from './manager';
+import WebServer from './web';
 
 const manager = new Manager();
 manager.start();

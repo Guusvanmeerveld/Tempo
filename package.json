@@ -2,11 +2,11 @@
 	"name": "tempo",
 	"version": "0.1.0",
 	"description": "A simple Discord music bot that can play Soundcloud, Youtube or Spotify tracks.",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"main": "dist/src/index.js",
+	"types": "dist/src/index.d.ts",
 	"scripts": {
-		"bot": "ts-node-dev src/start.ts",
-		"web": "ts-node-dev index.ts",
+		"bot": "ts-node-dev src/bot/start.ts",
+		"web": "ts-node-dev src/index.ts",
 		"pretify": "prettier --write .",
 		"build": "tsc",
 		"start": "node . --production"

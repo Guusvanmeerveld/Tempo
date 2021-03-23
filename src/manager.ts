@@ -1,13 +1,13 @@
 const discordToken = process.env.DISCORD;
 
 import { ShardingManager } from 'discord.js-light';
-import Console from './utils/console';
+import Console from './bot/utils/console';
 import WebSocket from 'ws';
 
 export default class Manager {
 	private manager: ShardingManager;
 	constructor() {
-		this.manager = new ShardingManager('./dist/src/start.js', {
+		this.manager = new ShardingManager('./dist/src/bot/start.js', {
 			token: discordToken,
 		});
 	}
