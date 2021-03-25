@@ -2,14 +2,16 @@
 	"name": "tempo",
 	"version": "0.1.0",
 	"description": "A simple Discord music bot that can play Soundcloud, Youtube or Spotify tracks.",
-	"main": "dist/src/index.js",
-	"types": "dist/src/index.d.ts",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"scripts": {
-		"bot": "ts-node-dev src/bot/start.ts",
-		"web": "ts-node-dev src/index.ts",
 		"pretify": "prettier --write .",
+		"bot-dev": "ts-node-dev src/bot",
+		"web-dev": "ts-node-dev src/web",
 		"build": "tsc",
-		"start": "node . --production"
+		"bot": "node . --production",
+		"web": "node dist/web/index.js",
+		"start": "npm run bot"
 	},
 	"author": "Guus van Meerveld",
 	"license": "MIT",

@@ -29,11 +29,15 @@ import SettingsInterface from './utils/settings';
 import Spotify from './utils/requests/spotify';
 import Youtube from './utils/requests/youtube';
 import SoundCloud from './utils/requests/soundcloud';
+import WebSocket from 'ws';
+import Socket from './socket';
 
 export default class Bot extends Client {
 	public settings: SettingsInterface;
 	public commands: Collection<string, Command>;
 	public queues: Collection<string, QueueList>;
+
+	public socket: WebSocket;
 
 	public request: {
 		spotify: Spotify;
@@ -50,6 +54,8 @@ export default class Bot extends Client {
 			cacheEmojis: false,
 			cachePresences: false,
 		});
+
+		this.socket = new Socket(this);
 
 		this.request = {
 			spotify: new Spotify(),
@@ -84,7 +90,7 @@ export default class Bot extends Client {
 	}
 
 	public start(token?: string): void {
-		console.time();
+		console.time('connect-discord');
 		Console.info('Starting the bot');
 
 		this.on('ready', () => {
@@ -96,6 +102,6 @@ export default class Bot extends Client {
 		this.login(token)
 			.then(() => Console.success('Connected with Discord!'))
 			.catch(() => Console.error('Failed to connect with Discord!'))
-			.finally(console.timeEnd);
+			.finally(() => console.timeEnd('connect-discord'));
 	}
 }

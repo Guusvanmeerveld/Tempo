@@ -13,12 +13,6 @@ if (existsSync('.env')) {
 }
 
 import Manager from './manager';
-import WebServer from './web';
 
 const manager = new Manager();
 manager.start();
-
-const webserver = new WebServer();
-webserver.start();
-
-webserver.on('message', manager.ws);
