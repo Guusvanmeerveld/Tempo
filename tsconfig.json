@@ -16,9 +16,10 @@
 		// "outFile": "./dist/index.js",                       /* Concatenate and emit output to single file. */
 		"outDir": "dist" /* Redirect output structure to the directory. */,
 		"rootDir": "./src" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
-		"baseUrl": "./src/",
+		"baseUrl": "src",
 		"paths": {
-			"@config/*": ["bot/config/*"]
+			"@config/*": ["bot/config/*"],
+			"@utils/*": ["bot/utils/*"]
 		},
 		// "composite": true,                     /* Enable project compilation */
 		// "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
