@@ -6,12 +6,11 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"pretify": "prettier --write .",
-		"bot-dev": "ts-node-dev src/bot",
-		"web-dev": "ts-node-dev src/web",
+		"update": "ts-node-dev src/slash",
+		"dev": "ts-node-dev src/bot",
+		"dev-full": "ts-node-dev src",
 		"build": "tsc",
-		"bot": "node . --production",
-		"web": "node dist/web/index.js",
-		"start": "npm run bot"
+		"start": "node . --production"
 	},
 	"author": "Guus van Meerveld",
 	"license": "MIT",

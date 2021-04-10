@@ -5,6 +5,7 @@ import Console from './utils/console';
 export interface WsMsgData {
 	type: 'guilds';
 	content: any;
+	id?: number;
 }
 
 interface Message {
@@ -26,7 +27,7 @@ export default class Socket extends WebSocket {
 		this.client = client;
 
 		this.addEventListener('error', (err) =>
-			Console.error(`Failed to connected to local websocket server: ${JSON.stringify(err.message)}`)
+			Console.error(`Failed to connect to local websocket server: ${JSON.stringify(err.message)}`)
 		);
 
 		this.addEventListener('open', () =>
@@ -51,7 +52,7 @@ export default class Socket extends WebSocket {
 		switch (data.type) {
 			case 'guilds':
 				this.fetchGuild(content)
-					.then((guild) => this.msg({ content: guild, type: 'guilds' }))
+					.then((guild) => this.msg({ content: guild, type: 'guilds', id: guild.shardID }))
 					.catch((err) => this.msg({ content: err, type: 'guilds' }));
 
 				break;

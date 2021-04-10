@@ -26,9 +26,11 @@ import {
 } from './commands';
 
 import SettingsInterface from './utils/settings';
+
 import Spotify from './utils/requests/spotify';
 import Youtube from './utils/requests/youtube';
 import SoundCloud from './utils/requests/soundcloud';
+
 import WebSocket from 'ws';
 import Socket from './socket';
 

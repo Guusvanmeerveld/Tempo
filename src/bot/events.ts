@@ -1,4 +1,11 @@
-import { Guild, Message, TextChannel, GuildChannel, VoiceState } from 'discord.js-light';
+import {
+	Guild,
+	Message,
+	TextChannel,
+	GuildChannel,
+	VoiceState,
+	MessageEmbed,
+} from 'discord.js-light';
 
 const { prefix } = require(process.cwd() + '/src/bot/config/settings.json');
 
@@ -6,6 +13,8 @@ import Bot from './bot';
 import Long from 'long';
 import Console from './utils/console';
 import { DefaultEmbed } from './models';
+import { InteractionCreate } from './models/requests';
+import Discord from './utils/requests/discord';
 
 export default class Events {
 	private client: Bot;
@@ -153,6 +162,10 @@ export default class Events {
 		embed.setFooter('Made with ❤️ by Xeeon#7590');
 
 		(mainChannel as TextChannel).send(embed);
+	}
+
+	public slash(interaction: InteractionCreate) {
+		// Discord.interactions(interaction.id, interaction.token, {});
 	}
 
 	/**

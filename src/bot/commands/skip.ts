@@ -5,12 +5,13 @@ import { Command, Requirement } from '../models';
 import { Play } from './play';
 
 export class Skip implements Command {
-	player = new Play();
 	name = 'skip';
 	usage = 'skip [amount of songs to skip]';
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 	aliases = ['s'];
 	description = 'Skip the current song.';
+
+	private play = new Play();
 
 	run(msg: Message, args: Array<string>, client: Bot) {
 		if (!msg.guild?.voice?.connection) {
@@ -41,7 +42,7 @@ export class Skip implements Command {
 		}
 
 		msg.channel.send('⏩  Successfully skipped the song.');
-		this.player.play(msg, client, queue.songs[count - 1]);
+		this.play.play(msg, client, queue.songs[count - 1]);
 		queue?.songs.splice(0, count);
 	}
 }
