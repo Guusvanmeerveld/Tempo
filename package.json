@@ -4,6 +4,8 @@
 	"description": "A simple Discord music bot that can play Soundcloud, Youtube or Spotify tracks.",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"homepage": "https://tempo.g-vm.nl",
+	"markdown": "github",
 	"scripts": {
 		"pretify": "prettier --write .",
 		"update": "ts-node-dev src/slash",

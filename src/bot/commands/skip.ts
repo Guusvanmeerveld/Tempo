@@ -11,15 +11,20 @@ export class Skip implements Command {
 	aliases = ['s'];
 	description = 'Skip the current song.';
 
-	private play = new Play();
+	client;
+	private play;
+	constructor(client: Bot) {
+		this.client = client;
+		this.play = new Play(client);
+	}
 
-	run(msg: Message, args: Array<string>, client: Bot) {
+	run(msg: Message, args: Array<string>) {
 		if (!msg.guild?.voice?.connection) {
 			msg.channel.send("❌  I'm not connected to a voice channel.");
 			return;
 		}
 
-		const queue = client.queues.get(msg.guild?.id ?? '');
+		const queue = this.client.queues.get(msg.guild?.id ?? '');
 
 		if (!queue?.playing) {
 			msg.channel.send('❌  There is nothing playing right now.');
@@ -42,7 +47,7 @@ export class Skip implements Command {
 		}
 
 		msg.channel.send('⏩  Successfully skipped the song.');
-		this.play.play(msg, client, queue.songs[count - 1]);
+		this.play.play(msg, queue.songs[count - 1]);
 		queue?.songs.splice(0, count);
 	}
 }

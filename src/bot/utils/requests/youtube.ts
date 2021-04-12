@@ -1,9 +1,10 @@
 const youtubeToken = process.env.YOUTUBE;
 
-import { Song } from '../../models';
+import { Song } from '@models/index';
+import { YoutubeVideoAPI } from '@models/requests';
+
 import axios from 'axios';
 import ytsr, { Result } from 'ytsr';
-import { YoutubeVideoAPI } from '../../models/requests';
 import { ytDurationToMs } from '../functions';
 
 const request = axios.create({
@@ -72,7 +73,7 @@ export default class Youtube {
 
 	/**
 	 * Get info about a song on Youtube.
-	 * @param input
+	 * @param input The youtube video link
 	 */
 	public async info(input: string): Promise<Song> {
 		const id = this.id(input);

@@ -8,8 +8,13 @@ export class Loop implements Command {
 	description = 'Loops the current song until you turn it off.';
 	requirements: Requirement[] = ['ROLE', 'VOICE'];
 
-	run(msg: Message, args: Array<string>, client: Bot) {
-		const queue = client.queues.get(msg.guild!.id);
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	run(msg: Message, args: Array<string>) {
+		const queue = this.client.queues.get(msg.guild!.id);
 		if (!queue) {
 			msg.channel.send("❌  I'm not connected to a voice channel");
 			return;

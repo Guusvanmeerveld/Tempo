@@ -5,9 +5,10 @@ const spotify = {
 
 import axios from 'axios';
 
-import { Song } from '../../models';
+import { Song } from '@models/index';
+import { SpotifyAlbumAPI, SpotifySearchAPI, SpotifyTrackAPI } from '@models/requests';
+
 import Console from '../console';
-import { SpotifyAlbumAPI, SpotifySearchAPI, SpotifyTrackAPI } from '../../models/requests';
 
 interface OAuth {
 	token: string;

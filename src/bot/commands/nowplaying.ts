@@ -13,8 +13,13 @@ export class NowPlaying implements Command {
 	description = 'Displays the song that is currently playing';
 	usage = 'nowplaying';
 
-	public run(msg: Message, args: Array<string>, client: Bot) {
-		const queue = client.queues.get(msg.guild!.id);
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	public run(msg: Message, args: Array<string>) {
+		const queue = this.client.queues.get(msg.guild!.id);
 
 		if (!queue?.playing) {
 			msg.channel.send('❌  There is nothing playing right now.');

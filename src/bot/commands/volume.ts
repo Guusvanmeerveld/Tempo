@@ -11,7 +11,12 @@ export class Volume implements Command {
 	aliases = ['v', 'vol'];
 	requirements: Requirement[] = ['ROLE'];
 
-	run(msg: Message, args: Array<string>, client: Bot) {
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	run(msg: Message, args: Array<string>) {
 		const volume = parseInt(args[0]?.replace('%', ''));
 
 		if (isNaN(volume) || volume < 0 || volume > MAX_VOLUME) {
@@ -22,7 +27,7 @@ export class Volume implements Command {
 		}
 
 		if (!volume) {
-			const settings = client.settings.get(msg.guild!.id);
+			const settings = this.client.settings.get(msg.guild!.id);
 
 			msg.channel.send(`The volume is set to ${settings.volume}%`);
 		}
@@ -31,7 +36,7 @@ export class Volume implements Command {
 			msg.guild.voice.connection.dispatcher.setVolume(volume / 100);
 		}
 
-		client.settings.set(msg.guild!.id, Setting.Volume, volume);
+		this.client.settings.set(msg.guild!.id, Setting.Volume, volume);
 		msg.channel.send(`🔊  Set the volume to \`${volume}%\``);
 	}
 }

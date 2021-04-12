@@ -3,29 +3,9 @@ import { QueueList, Command } from './models';
 import Console from './utils/console';
 import lang from './utils/language';
 
-import {
-	Disconnect,
-	Help,
-	Join,
-	Play,
-	Ping,
-	Volume,
-	Uptime,
-	Skip,
-	Queue,
-	Stop,
-	Invite,
-	Settings,
-	PlaySkip,
-	Lyrics,
-	Resume,
-	Pause,
-	Loop,
-	PlayList,
-	NowPlaying,
-} from './commands';
-
 import SettingsInterface from './utils/settings';
+
+import * as commands from './commands';
 
 import Spotify from './utils/requests/spotify';
 import Youtube from './utils/requests/youtube';
@@ -70,25 +50,8 @@ export default class Bot extends Client {
 		this.commands = new Collection();
 		this.queues = new Collection();
 
-		this.commands.set('help', new Help());
-		this.commands.set('join', new Join());
-		this.commands.set('disconnect', new Disconnect());
-		this.commands.set('play', new Play());
-		this.commands.set('ping', new Ping());
-		this.commands.set('volume', new Volume());
-		this.commands.set('uptime', new Uptime());
-		this.commands.set('skip', new Skip());
-		this.commands.set('queue', new Queue());
-		this.commands.set('stop', new Stop());
-		this.commands.set('resume', new Resume());
-		this.commands.set('pause', new Pause());
-		this.commands.set('invite', new Invite());
-		this.commands.set('settings', new Settings());
-		this.commands.set('playskip', new PlaySkip());
-		this.commands.set('lyrics', new Lyrics());
-		this.commands.set('loop', new Loop());
-		this.commands.set('playlist', new PlayList());
-		this.commands.set('nowplaying', new NowPlaying());
+		const commandArray = Object.values(commands);
+		commandArray.forEach((Command) => this.commands.set(Command.name, new Command(this)));
 	}
 
 	public start(token?: string): void {

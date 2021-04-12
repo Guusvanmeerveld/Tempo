@@ -1,5 +1,6 @@
+import { InteractionCallback, SlashCommand } from '@models/requests';
+
 import axios from 'axios';
-import { InteractionCallback, SlashCommand } from 'bot/models/requests';
 
 const request = axios.create({
 	baseURL: 'https://discord.com/api/v8/',
@@ -21,21 +22,6 @@ class Discord {
 		const { data } = await request(`interactions/${id}/${token}/callback`, {
 			data: body,
 			method: 'POST',
-		});
-
-		return data;
-	}
-
-	/**
-	 * Request all slash commands.
-	 * @returns Array with all commands
-	 */
-	public async requestCommands(): Promise<Array<any>> {
-		const { data } = await request(`applications/${this.id}/commands`, {
-			method: 'GET',
-			headers: {
-				Authorization: `Bot ${this.token}`,
-			},
 		});
 
 		return data;

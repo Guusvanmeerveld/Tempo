@@ -3,7 +3,6 @@ import { Command, Song, Requirement, SongEmbed } from '../models';
 import Console from '../utils/console';
 
 import { Join } from './join';
-const join = new Join().run;
 
 import ytdl from 'ytdl-core';
 
@@ -24,35 +23,31 @@ export class Play implements Command {
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 	description = 'Play a song via a link or a search request.';
 
+	client;
+	join;
+	constructor(client: Bot) {
+		this.client = client;
+		this.join = new Join(client).run;
+	}
+
 	/**
 	 * Join the voice channel, get info about the song and play it.
 	 * @param msg
 	 * @param args
 	 * @param client
 	 */
-	public async run(msg: Message, args: Array<string>, client: Bot, playskip?: boolean) {
+	public async run(msg: Message, args: Array<string>, playskip?: boolean) {
 		if (args.length < 1) {
-			if (msg.attachments.array().length) {
-				const first = msg.attachments.first();
-				if (!first) return;
-
-				await join(msg, args, client);
-				this.stream(msg, client, first.attachment.toString());
-				msg.channel.send('🎵  Now playing');
-				return;
-			}
-
-			msg.channel.send('Please enter a link/search entry.');
-			return;
+			this.playAttachment(msg);
 		}
 
-		const joined = await join(msg, args, client);
+		const joined = await this.join(msg);
 
 		if (!joined) return;
 
-		const queue = client.queues.get(msg.guild!.id);
+		const queue = this.client.queues.get(msg.guild!.id);
 
-		this.info(msg, args, client)
+		this.info(msg, args)
 			.then((info: Song) => {
 				const song: Song = { requested: msg.author, ...info };
 				const embed = new SongEmbed({ author: msg.author, song });
@@ -68,7 +63,7 @@ export class Play implements Command {
 
 				msg.channel.send('🎵  Now playing:', { embed });
 
-				this.play(msg, client, song);
+				this.play(msg, song);
 			})
 			.catch((error) => {
 				Console.error(error);
@@ -83,8 +78,8 @@ export class Play implements Command {
 	 * @param client
 	 * @param song
 	 */
-	public play(msg: Message, client: Bot, song: Song | undefined) {
-		const queue = client.queues.get(msg.guild!.id);
+	public async play(msg: Message, song: Song | undefined, seek?: number) {
+		const queue = this.client.queues.get(msg.guild!.id);
 		if (!queue) return;
 
 		if (!song) {
@@ -94,17 +89,22 @@ export class Play implements Command {
 
 		queue.playing = song;
 
+		let stream: Readable | string;
+
 		switch (song.platform) {
-			case 'youtube':
-				this.stream(msg, client, ytdl(song.url, { filter: 'audioonly' }));
+			default:
+				stream = ytdl(song.url, { filter: 'audioonly' });
 				break;
 			case 'soundcloud':
-				client.request.soundcloud
-					.download(song.download)
-					.then((stream) => this.stream(msg, client, stream))
-					.catch(() => msg.channel.send('❌  Soundcloud song does not have a downloadable url'));
+				stream = await this.client.request.soundcloud.download(song.download);
+
+				if (!stream) {
+					msg.channel.send('❌  Soundcloud song does not have a downloadable url');
+				}
 				break;
 		}
+
+		this.stream(msg, stream, seek);
 	}
 
 	/**
@@ -113,20 +113,20 @@ export class Play implements Command {
 	 * @param client
 	 * @param stream
 	 */
-	private stream(msg: Message, client: Bot, stream: Readable | string) {
+	private stream(msg: Message, stream: Readable | string, seek?: number) {
 		if (msg.guild?.voice?.connection) {
 			const connection = msg.guild.voice.connection;
 
-			const settings = client.settings.get(msg.guild!.id);
+			const settings = this.client.settings.get(msg.guild!.id);
 			const volume = settings.volume;
 
-			connection.play(stream, { volume: volume / 100 }).on('finish', () => {
-				const queue = client.queues.get(msg.guild!.id);
+			connection.play(stream, { volume: volume / 100, seek }).on('finish', () => {
+				const queue = this.client.queues.get(msg.guild!.id);
 
 				if (!queue) return;
 
 				if (queue.loop) {
-					this.play(msg, client, queue.playing);
+					this.play(msg, queue.playing);
 					return;
 				}
 
@@ -134,7 +134,7 @@ export class Play implements Command {
 					const newSong = queue.songs.shift() as Song;
 
 					queue.playing = newSong;
-					this.play(msg, client, newSong);
+					this.play(msg, newSong);
 
 					return;
 				}
@@ -149,18 +149,18 @@ export class Play implements Command {
 	 * @param msg
 	 * @param args
 	 */
-	private async info(msg: Message, args: Array<string>, client: Bot): Promise<Song> {
+	private async info(msg: Message, args: Array<string>): Promise<Song> {
 		const input = args[0];
 		if (input.match(YOUTUBE)) {
-			return await client.request.youtube.info(input);
+			return await this.client.request.youtube.info(input);
 		}
 
 		if (input.match(SOUNDCLOUD)) {
-			return await client.request.soundcloud.info(input);
+			return await this.client.request.soundcloud.info(input);
 		}
 
 		if (input.match(SPOTIFY)) {
-			return await client.request.spotify.info(input);
+			return await this.client.request.spotify.info(input);
 		}
 
 		if (input.match(AUDIO)) {
@@ -169,21 +169,21 @@ export class Play implements Command {
 		const search = args.join(' ');
 
 		msg.channel.send(`🔍  Searching for \`${search}\`.`);
-		return await this.search(search, msg, client);
+		return await this.search(search, msg);
 	}
 
 	/**
 	 * Search on a given platform for a user input
 	 * @param input
 	 */
-	private async search(input: string, msg: Message, client: Bot): Promise<Song> {
+	private async search(input: string, msg: Message): Promise<Song> {
 		const notFound = (platform: string) => `I was not able to find \`${input}\` on ${platform}.`;
 
-		const settings = client.settings.get(msg.guild!.id);
+		const settings = this.client.settings.get(msg.guild!.id);
 
 		switch (settings.search_platform) {
 			case 'soundcloud':
-				const soundcloud = client.request.soundcloud;
+				const soundcloud = this.client.request.soundcloud;
 				const tracks = await soundcloud.search(input, 1);
 
 				if (tracks.collection.length < 1) {
@@ -194,7 +194,7 @@ export class Play implements Command {
 
 				return await soundcloud.info(track.permalink_url);
 			case 'spotify':
-				const spotify = client.request.spotify;
+				const spotify = this.client.request.spotify;
 				const songs = (await spotify.search(input, 1)).tracks;
 
 				if (songs.items.length < 1) {
@@ -205,7 +205,7 @@ export class Play implements Command {
 
 				return spotify.info(song.id);
 			default:
-				const youtube = client.request.youtube;
+				const youtube = this.client.request.youtube;
 				const videos = await youtube.search(input, 1);
 
 				if (videos.items.length < 1) {
@@ -216,5 +216,20 @@ export class Play implements Command {
 
 				return youtube.info(video?.id ?? 'Unknown');
 		}
+	}
+
+	private async playAttachment(msg: Message) {
+		if (msg.attachments.array().length) {
+			const first = msg.attachments.first();
+			if (!first) return;
+
+			await this.join(msg);
+			this.stream(msg, first.attachment.toString());
+			msg.channel.send('🎵  Now playing');
+			return;
+		}
+
+		msg.channel.send('Please enter a link/search entry.');
+		return;
 	}
 }

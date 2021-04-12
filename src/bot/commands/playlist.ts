@@ -12,10 +12,15 @@ export class PlayList implements Command {
 	usage = 'playlist [link to playlist]';
 	aliases = ['pl'];
 
-	public run(msg: Message, args: Array<string>, client: Bot) {
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	public run(msg: Message, args: Array<string>) {
 		const input = args[0];
 
-		this.album(input, client).then((album) => {
+		this.album(input).then((album) => {
 			if (!album) {
 				msg.channel.send(
 					`❌  Something went wrong looking up that playlist/album. Please try again later.`
@@ -49,7 +54,7 @@ export class PlayList implements Command {
 
 			msg.channel.send(embed);
 
-			const queue = client.queues.get(msg.guild!.id);
+			const queue = this.client.queues.get(msg.guild!.id);
 			if (!queue) return;
 
 			Array.prototype.push.apply(
@@ -64,9 +69,9 @@ export class PlayList implements Command {
 		});
 	}
 
-	private async album(input: string, client: Bot): Promise<Album | undefined> {
+	private async album(input: string): Promise<Album | undefined> {
 		if (input.match(SPOTIFY_ALBUM)) {
-			const spotify = client.request.spotify;
+			const spotify = this.client.request.spotify;
 			const id = spotify.id(input);
 
 			const album = await spotify.get('albums', id);

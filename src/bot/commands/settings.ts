@@ -5,11 +5,14 @@ import { MAX_VOLUME } from './volume';
 
 import fs from 'fs';
 import { join } from 'path';
+const path = process.cwd();
+
 import { ucFirst } from '../utils/functions';
+import { SlashOptionType } from '../models/requests';
 
 let languages: Array<string> = [];
 
-const files = fs.readdirSync(join(process.cwd(), 'src/bot/config/lang/'));
+const files = fs.readdirSync(join(path, 'src/bot/config/lang/'));
 languages = files.map((g) => g.replace('.json', ''));
 
 export class Settings implements Command {
@@ -18,10 +21,30 @@ export class Settings implements Command {
 	usage = 'settings [setting to change] [new value of the setting]';
 	aliases = ['set'];
 	requirements: Requirement[] = ['ROLE'];
+	// options = [
+	// 	{
+	// 		type: SlashOptionType.STRING,
+	// 		name: 'setting',
+	// 		description: 'The prefix for the current server.',
+	// 		choices: [
+	// 			{
+	// 				name: 'prefix',
+	// 				value: 'prefix',
+	// 			},
+	// 		],
+	// 	},
+	// 	{
+	// 	}
+	// ];
 
-	run(msg: Message, args: Array<string>, client: Bot) {
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	run(msg: Message, args: Array<string>) {
 		if (args.length < 1) {
-			const settings = client.settings.get(msg.guild!.id);
+			const settings = this.client.settings.get(msg.guild!.id);
 			const embed = new DefaultEmbed(msg.author);
 
 			embed.setTitle(`🛠️  Current settings for \`${msg.guild!.name}\``);
@@ -90,7 +113,7 @@ export class Settings implements Command {
 					break;
 			}
 
-			client.settings.set(msg.guild!.id, input, value);
+			this.client.settings.set(msg.guild!.id, input, value);
 
 			msg.channel.send(`✅  Set the setting \`${input}\` to \`${value}\`.`);
 			return;

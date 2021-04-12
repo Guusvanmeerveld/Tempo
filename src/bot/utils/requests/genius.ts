@@ -1,6 +1,7 @@
 import axios from 'axios';
 import cio from 'cheerio';
-import { SearchHit } from '../../models/requests';
+
+import { SearchHit } from '@models/requests';
 
 const request = axios.create({
 	baseURL: 'https://api.genius.com',

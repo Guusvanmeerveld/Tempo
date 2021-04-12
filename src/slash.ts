@@ -6,8 +6,8 @@ import Discord from './bot/utils/requests/discord';
 const discord = new Discord();
 
 import * as commands from './bot/commands';
-import { Command } from 'bot/models';
-import { SlashCommand } from 'bot/models/requests';
+import { Command } from './bot/models';
+import { SlashCommand } from './bot/models/requests';
 
 import Console from './bot/utils/console';
 
@@ -20,6 +20,7 @@ const main = async () => {
 
 		slashCommands.push({
 			description: command.description,
+			options: command.options,
 			name,
 		});
 	});

@@ -11,9 +11,14 @@ export class PlaySkip implements Command {
 	aliases = ['ps'];
 	requirements: Requirement[] = ['ROLE', 'VOICE'];
 
-	private play = new Play();
+	client;
+	private play;
+	constructor(client: Bot) {
+		this.client = client;
+		this.play = new Play(client);
+	}
 
-	run(msg: Message, args: Array<string>, client: Bot) {
-		this.play.run(msg, args, client, true);
+	run(msg: Message, args: Array<string>) {
+		this.play.run(msg, args, true);
 	}
 }

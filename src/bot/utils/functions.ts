@@ -1,3 +1,4 @@
+import { VoiceConnection } from 'discord.js';
 import fs from 'fs';
 import Console from './console';
 
@@ -104,4 +105,31 @@ export function ytDurationToMs(duration: string): number {
 
 	// Math the values to return seconds
 	return (hours * 60 * 60 + minutes * 60 + seconds) * 1000;
+}
+
+interface ConnectionStatus {
+	connected: boolean;
+	connection?: VoiceConnection;
+	error?: string;
+}
+
+/**
+ * Check if there is a voice connection and if there is a stream playing in the voice connection.
+ * @param connection The connection that needs to be checked
+ */
+export function checkConnection(connection?: VoiceConnection | null): ConnectionStatus {
+	if (!connection) {
+		return {
+			connected: false,
+			error: "❌  I'm not connected to a voice channel.",
+		};
+	}
+
+	const dispatcher = connection?.dispatcher;
+
+	if (!dispatcher) {
+		return { connected: false, error: '❌  There is nothing playing right now.' };
+	}
+
+	return { connected: true, connection };
 }

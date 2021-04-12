@@ -9,10 +9,15 @@ export class Join implements Command {
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 	description = 'Make the bot join the voice channel.';
 
-	public async run(msg: Message, args: Array<string>, client: Bot): Promise<boolean | void> {
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	public async run(msg: Message): Promise<boolean | void> {
 		const channel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
 
-		if (channel.members.get(client.user!.id) && msg.guild?.voice?.connection) {
+		if (channel.members.get(this.client.user!.id) && msg.guild?.voice?.connection) {
 			const voiceChannel = (await msg.guild?.voice?.channel?.fetch()) as VoiceChannel;
 			msg.channel.send(`🔈  Connected to \`${voiceChannel.name}\``);
 			return true;

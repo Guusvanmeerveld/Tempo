@@ -11,10 +11,16 @@ export class Lyrics implements Command {
 	usage = 'lyrics [name of song]';
 	aliases = ['ly'];
 
-	run(msg: Message, args: Array<string>, client: Bot) {
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	run(msg: Message, args: Array<string>) {
 		let entry: string;
+
 		if (args.length < 1) {
-			const queue = client.queues.get(msg.guild!.id);
+			const queue = this.client.queues.get(msg.guild!.id);
 			if (!queue?.playing) {
 				msg.channel.send('Please enter a song name to search for.');
 				return;

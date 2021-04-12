@@ -9,9 +9,14 @@ export class Help implements Command {
 	usage = 'help [page / command]';
 	description = 'Get information about a specific command or just a general list of commands.';
 
-	public run(msg: Message, args: Array<string>, client: Bot) {
-		const commands = client.commands.array();
-		const settings = client.settings.get(msg.guild?.id ?? '');
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	public run(msg: Message, args: Array<string>) {
+		const commands = this.client.commands.array();
+		const settings = this.client.settings.get(msg.guild?.id ?? '');
 
 		let embed: DefaultEmbed | PaginatedEmbed;
 
@@ -23,7 +28,9 @@ export class Help implements Command {
 				`The current prefix for Tempo in \`${msg.guild!.name}\` is \`${settings.prefix}\`.`
 			);
 
-			commands.forEach((cmd) => embed.addField(ucFirst(cmd.name), cmd.description ?? '', true));
+			commands.forEach((cmd) => {
+				embed.addField(ucFirst(cmd.name), cmd.description ?? '', true);
+			});
 		} else if (parseInt(args[0])) {
 			const fields: Array<EmbedField> = commands.map((cmd: Command) => {
 				return {

@@ -10,8 +10,13 @@ export class Queue implements Command {
 	requirements: Requirement[] = ['VOICE'];
 	description = 'Gives a list of all the songs currently in the queue.';
 
-	run(msg: Message, args: Array<string>, client: Bot) {
-		const queue = client.queues.get(msg.guild!.id);
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	run(msg: Message, args: Array<string>) {
+		const queue = this.client.queues.get(msg.guild!.id);
 
 		if (!queue) return;
 

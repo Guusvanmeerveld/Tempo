@@ -18,8 +18,7 @@
 		"rootDir": "./src" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
 		"baseUrl": "src",
 		"paths": {
-			"@config/*": ["bot/config/*"],
-			"@utils/*": ["bot/utils/*"]
+			"@models/*": ["bot/models/*"]
 		},
 		// "composite": true,                     /* Enable project compilation */
 		// "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
