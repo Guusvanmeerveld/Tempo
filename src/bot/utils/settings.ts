@@ -1,6 +1,9 @@
 import { Collection } from 'discord.js';
 
-const settings: GuildSettings = require(process.cwd() + '//src/bot/config/settings.json');
+import { join } from 'path';
+const path = process.cwd();
+
+const settings: GuildSettings = require(join(path, '/src/bot/config/settings.json'));
 
 import { GuildSettings, Setting } from '../models';
 import Console from './console';
@@ -25,14 +28,14 @@ export default class Settings {
 		});
 	}
 
+	get(id: string, setting: Setting): number | string;
+	get(id: string): GuildSettings;
+
 	/**
 	 * Get the current settings for a certain guild, or get a specific guild settings value
 	 * @param id - The guild id
 	 * @param setting - [Optional] The setting to retrieve
 	 */
-	get(id: string, setting: Setting): number | string;
-	get(id: string): GuildSettings;
-
 	public get(id: string, setting?: Setting) {
 		if (this.guilds.has(id)) {
 			return this.guilds.get(id)!;

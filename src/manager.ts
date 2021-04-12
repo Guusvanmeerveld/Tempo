@@ -11,7 +11,7 @@ export default class Manager {
 		});
 	}
 
-	public start() {
+	public start(): void {
 		this.manager.on('shardCreate', (shard) => Console.info(`Launched shard ${shard.id}`));
 
 		this.manager.spawn();

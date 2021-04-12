@@ -9,6 +9,7 @@ export interface Command {
 	aliases?: Array<string>;
 	requirements?: Array<Requirement>;
 	options?: Array<CommandOption>;
+	client?: Bot;
 	run: (msg: Message, args: Array<string>) => void;
 }
 

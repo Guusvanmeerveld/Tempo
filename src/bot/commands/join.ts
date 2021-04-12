@@ -23,7 +23,7 @@ export class Join implements Command {
 			return true;
 		}
 
-		const user = msg.client.user as User;
+		const user = msg.client.user!;
 
 		const channelPerms = channel?.permissionsFor(user);
 

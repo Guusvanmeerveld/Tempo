@@ -1,9 +1,10 @@
+import { updateSlash } from '../slash';
 import WebSocket from 'ws';
 import Bot from './bot';
 import Console from './utils/console';
 
 export interface WsMsgData {
-	type: 'guilds';
+	type: 'guilds' | 'update';
 	content: any;
 	id?: number;
 }
@@ -55,6 +56,9 @@ export default class Socket extends WebSocket {
 					.then((guild) => this.msg({ content: guild, type: 'guilds', id: guild.shardID }))
 					.catch((err) => this.msg({ content: err, type: 'guilds' }));
 
+				break;
+			case 'update':
+				updateSlash(this.client);
 				break;
 			default:
 				break;
