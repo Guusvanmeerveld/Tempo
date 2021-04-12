@@ -12,8 +12,10 @@ export class Seek implements Command {
 	usage = 'seek [hours:minutes:seconds]';
 
 	client;
+	private play;
 	constructor(client: Bot) {
 		this.client = client;
+		this.play = new Play(client);
 	}
 
 	run(msg: Message, args: Array<string>) {
@@ -28,12 +30,13 @@ export class Seek implements Command {
 
 				const seconds = this.parseTime(time);
 
-				if (seconds > song.length || seconds < 0) {
+				if (seconds > song.length / 1000 || seconds < 0 || !seconds) {
 					msg.channel.send('❌  That is not a valid timestamp.');
 					return;
 				}
 
-				// this.player.play(msg, client, song, seconds)
+				msg.channel.send(`⏩  Successfully skipped to \`${time}\`.`);
+				this.play.play(msg, song, seconds);
 			} else {
 				msg.channel.send('❌  You must give a timestamp to skip to.');
 			}
@@ -50,9 +53,11 @@ export class Seek implements Command {
 	private parseTime(input: string): number {
 		const splitted = input.split(':');
 
-		let hours = parseInt(splitted[splitted.length - 3]) ?? null;
-		let minutes = parseInt(splitted[splitted.length - 2]) ?? null;
-		let seconds = parseInt(splitted[splitted.length - 1]) ?? null;
+		let hours = parseInt(splitted[splitted.length - 3] ?? 0);
+		let minutes = parseInt(splitted[splitted.length - 2] ?? 0);
+		let seconds = parseInt(splitted[splitted.length - 1] ?? 0);
+
+		if (minutes > 60 || seconds > 60 || hours < 0 || minutes < 0 || seconds < 0) return 0;
 
 		let hourInSeconds = hours * 60 * 60;
 		let minutesInSeconds = minutes * 60;

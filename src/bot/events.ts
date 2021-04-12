@@ -14,7 +14,6 @@ import Long from 'long';
 import Console from './utils/console';
 import { DefaultEmbed } from './models';
 import { InteractionCreate } from './models/requests';
-import Discord from './utils/requests/discord';
 
 export default class Events {
 	private client: Bot;
@@ -83,7 +82,7 @@ export default class Events {
 		}
 
 		try {
-			command.run(msg, args, this.client);
+			command.run(msg, args);
 		} catch (error) {
 			this.error(error);
 		}

@@ -15,10 +15,10 @@ export class PlaySkip implements Command {
 	private play;
 	constructor(client: Bot) {
 		this.client = client;
-		this.play = new Play(client);
+		this.play = new Play(client).run;
 	}
 
 	run(msg: Message, args: Array<string>) {
-		this.play.run(msg, args, true);
+		this.play(msg, args, true);
 	}
 }

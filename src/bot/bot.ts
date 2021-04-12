@@ -51,7 +51,9 @@ export default class Bot extends Client {
 		this.queues = new Collection();
 
 		const commandArray = Object.values(commands);
-		commandArray.forEach((Command) => this.commands.set(Command.name, new Command(this)));
+		commandArray.forEach((Command) => {
+			this.commands.set(Command.name.toLocaleLowerCase(), new Command(this));
+		});
 	}
 
 	public start(token?: string): void {
