@@ -4,6 +4,6 @@ FROM jrottenberg/ffmpeg:4.3-ubuntu1804
 ENV NODE_ENV=production
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN yarn install --production && mv node_modules ../
+RUN npm install --production && mv node_modules ../
 COPY . .
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
