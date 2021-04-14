@@ -25,6 +25,7 @@
 		"cheerio": "^1.0.0-rc.5",
 		"discord.js-light": "3.5.3",
 		"dotenv": "^8.2.0",
+		"ffmpeg-static": "^4.2.3",
 		"humanize-duration": "^3.25.1",
 		"libsodium-wrappers": "^0.7.9",
 		"lodash": "^4.17.21",
