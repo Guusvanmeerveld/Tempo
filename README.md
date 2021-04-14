@@ -10,14 +10,31 @@
 
 ### Installation
 
-You can install Tempo using the following commands:
-
+The easiest way to install Tempo locally is via Docker:
+```yml
+version: '3'
+services:
+    tempo:
+        image: xeeon/tempo
+        container_name: tempo
+        environment:
+            - YOUTUBE=YOUTUBE API TOKEN
+            - SOUNDCLOUD=SOUNDCLOUD CLIENT ID
+            - SPOTIFY_SECRET=SPOTIFY SECRET API TOKEN
+            - SPOTIFY_ID=SPOTIFY SECRET API ID
+            - GENIUS=GENIUS API KEY
+            - DISCORD=DISCORD BOT TOKEN
+            - OWNER=DISCORD OWNER ID
+            - DATABASE_URL=POSTGRES DATABASE URL
+```
+You can äslo install Tempo using the following commands:
 ```
 git clone https://github.com/guusvanmeerveld/tempo/
 cd tempo
 npm install
 npm run build
 ```
+
 ### Tokens
 
 To start the bot and connect to the Youtube or Soundcloud api, you will need a few tokens in the file `.env`. To do so, you can rename the file [`example.env`](example.env) to `.env` and fill in the necessary tokens/id's.
