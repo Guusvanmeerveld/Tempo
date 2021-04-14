@@ -1,6 +1,6 @@
 FROM node:12.18-alpine
 FROM python:3
-RUN apk add --no-cache ffmpeg
+FROM jrottenberg/ffmpeg:4.3-ubuntu1804
 ENV NODE_ENV=production
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
