@@ -1,8 +1,9 @@
 FROM node:12.18-alpine
+FROM python:3
 RUN apk add --no-cache ffmpeg
-WORKDIR /usr/src/app
-COPY . .
-RUN npm install --silent
-RUN npm run build
 ENV NODE_ENV=production
-CMD ["npm", "start"]
+WORKDIR /usr/src/app
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+RUN yarn install --production && mv node_modules ../
+COPY . .
+CMD ["yarn", "start"]
