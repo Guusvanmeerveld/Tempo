@@ -1,13 +1,9 @@
-import {
-	Guild,
-	Message,
-	TextChannel,
-	GuildChannel,
-	VoiceState,
-	MessageEmbed,
-} from 'discord.js-light';
+import { Guild, Message, TextChannel, GuildChannel, VoiceState } from 'discord.js-light';
 
-const { prefix } = require(process.cwd() + '/src/bot/config/settings.json');
+import { join } from 'path';
+const path = process.cwd();
+
+const { prefix } = require(join(path, '/src/bot/config/settings.json'));
 
 import Bot from './bot';
 import Long from 'long';
@@ -174,7 +170,7 @@ export default class Events {
 	 */
 	public voice(oldState: VoiceState, newState: VoiceState): void {
 		if (oldState && oldState.member === oldState.guild.me) {
-			if (oldState && !newState) this.disconnect(oldState.guild);
+			if (oldState && !newState) this.handleDisconnect(oldState.guild);
 		}
 	}
 
@@ -182,7 +178,7 @@ export default class Events {
 	 * Runs when bot gets disconnected from a voice channel
 	 * @param guild - The guild the bot was disconnected from
 	 */
-	private disconnect(guild: Guild): void {
+	private handleDisconnect(guild: Guild): void {
 		const queue = this.client.queues.get(guild.id);
 		if (!queue) return;
 

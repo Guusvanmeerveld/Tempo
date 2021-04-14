@@ -32,8 +32,10 @@ export class Volume implements Command {
 			msg.channel.send(`The volume is set to ${settings.volume}%`);
 		}
 
-		if (msg.guild?.voice?.connection?.dispatcher) {
-			msg.guild.voice.connection.dispatcher.setVolume(volume / 100);
+		const dispatcher = msg.guild?.voice?.connection?.dispatcher;
+
+		if (dispatcher) {
+			dispatcher.setVolume(volume / 100);
 		}
 
 		this.client.settings.set(msg.guild!.id, Setting.Volume, volume);

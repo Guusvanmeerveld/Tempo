@@ -2,13 +2,11 @@ import { Message } from 'discord.js';
 import Bot from '../bot';
 import { Command, DefaultEmbed, Requirement, Setting } from '../models';
 import { MAX_VOLUME } from './volume';
+import { ucFirst } from '../utils/functions';
 
 import fs from 'fs';
 import { join } from 'path';
 const path = process.cwd();
-
-import { ucFirst } from '../utils/functions';
-import { SlashOptionType } from '../models/requests';
 
 let languages: Array<string> = [];
 

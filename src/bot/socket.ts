@@ -39,6 +39,14 @@ export default class Socket extends WebSocket {
 			Console.error('Disconnected from local websocket server!')
 		);
 
+		this.on('ping', () => {
+			this.pong();
+			if (process.env.NODE_ENV !== 'production')
+				Console.info(
+					'Received ping from ' + process.env.WEBSOCKET_URL + ', responding with a pong.'
+				);
+		});
+
 		this.addEventListener('message', this.handleMsg);
 	}
 
@@ -52,7 +60,8 @@ export default class Socket extends WebSocket {
 
 		switch (data.type) {
 			case 'guilds':
-				this.fetchGuild(content)
+				this.client.guilds
+					.fetch(content)
 					.then((guild) => this.msg({ content: guild, type: 'guilds', id: guild.shardID }))
 					.catch((err) => this.msg({ content: err, type: 'guilds' }));
 
@@ -63,9 +72,5 @@ export default class Socket extends WebSocket {
 			default:
 				break;
 		}
-	}
-
-	private async fetchGuild(id: string) {
-		return await this.client.guilds.fetch(id);
 	}
 }

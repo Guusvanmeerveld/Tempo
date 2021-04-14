@@ -12,10 +12,10 @@ export class Seek implements Command {
 	usage = 'seek [hours:minutes:seconds]';
 
 	client;
-	private play;
+	private player;
 	constructor(client: Bot) {
 		this.client = client;
-		this.play = new Play(client);
+		this.player = new Play(client);
 	}
 
 	run(msg: Message, args: Array<string>) {
@@ -36,7 +36,7 @@ export class Seek implements Command {
 				}
 
 				msg.channel.send(`⏩  Successfully skipped to \`${time}\`.`);
-				this.play.play(msg, song, seconds);
+				this.player.play(msg, song, seconds);
 			} else {
 				msg.channel.send('❌  You must give a timestamp to skip to.');
 			}

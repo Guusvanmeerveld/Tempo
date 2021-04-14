@@ -10,21 +10,14 @@
 
 ### Installation
 
-In order to compile the TypeScript to Javascript, you will need to have TypeScript installed. You can install it using the following command:
-
-```
-npm i -g typescript
-```
-
-Then, install Tempo using the following commands:
+You can install Tempo using the following commands:
 
 ```
 git clone https://github.com/guusvanmeerveld/tempo/
 cd tempo
-npm install --production
+npm install
 npm run build
 ```
-
 ### Tokens
 
 To start the bot and connect to the Youtube or Soundcloud api, you will need a few tokens in the file `.env`. To do so, you can rename the file [`example.env`](example.env) to `.env` and fill in the necessary tokens/id's.
