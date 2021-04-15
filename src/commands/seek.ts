@@ -19,15 +19,17 @@ export class Seek implements Command {
 		this.player = new Play(client);
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>): void {
 		const { connected, error } = checkConnection(msg.guild?.voice?.connection);
 
 		if (connected) {
 			const time = args[0];
 
 			if (time) {
-				const queue = this.client.queues.get(msg.guild!.id);
-				const song = queue?.playing!;
+				const queue = this.client.queues.get(msg.guild?.id ?? '');
+				const song = queue?.playing;
+
+				if (!song) return;
 
 				const seconds = this.parseTime(time);
 
@@ -54,14 +56,14 @@ export class Seek implements Command {
 	private parseTime(input: string): number {
 		const splitted = input.split(':');
 
-		let hours = parseInt(splitted[splitted.length - 3] ?? 0);
-		let minutes = parseInt(splitted[splitted.length - 2] ?? 0);
-		let seconds = parseInt(splitted[splitted.length - 1] ?? 0);
+		const hours = parseInt(splitted[splitted.length - 3] ?? 0);
+		const minutes = parseInt(splitted[splitted.length - 2] ?? 0);
+		const seconds = parseInt(splitted[splitted.length - 1] ?? 0);
 
 		if (minutes > 60 || seconds > 60 || hours < 0 || minutes < 0 || seconds < 0) return 0;
 
-		let hourInSeconds = hours * 60 * 60;
-		let minutesInSeconds = minutes * 60;
+		const hourInSeconds = hours * 60 * 60;
+		const minutesInSeconds = minutes * 60;
 
 		return hourInSeconds + minutesInSeconds + seconds;
 	}

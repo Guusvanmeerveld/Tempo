@@ -82,7 +82,7 @@ export default class Spotify {
 	get(api: 'tracks', id: string): Promise<SpotifyTrackAPI>;
 	get(api: 'albums', id: string): Promise<SpotifyAlbumAPI>;
 
-	public async get(api: API, id: string) {
+	public async get(api: API, id: string): Promise<SpotifyTrackAPI | SpotifyAlbumAPI> {
 		await this.getOAuth();
 
 		const { data } = await request(`/${api}/${id}`, {
@@ -96,7 +96,7 @@ export default class Spotify {
 		return data;
 	}
 
-	public id(url: string) {
+	public id(url: string): string {
 		const stripped = url.split('?');
 		const match = stripped[0].match(regex);
 

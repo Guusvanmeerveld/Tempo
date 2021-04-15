@@ -9,12 +9,12 @@ export class Disconnect implements Command {
 	usage = 'disconnect';
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 
-	public async run(msg: Message) {
+	public async run(msg: Message): Promise<void> {
 		const voice = msg.guild?.voice;
 		const channel = (await voice?.channel?.fetch()) as VoiceChannel;
 
 		if (!channel) {
-			msg.channel.send("❌  I'm not connected to a voice channel.");
+			msg.channel.send('❌  I am not connected to a voice channel.');
 			return;
 		}
 

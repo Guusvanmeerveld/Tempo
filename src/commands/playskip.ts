@@ -18,7 +18,7 @@ export class PlaySkip implements Command {
 		this.play = new Play(client).run;
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>): void {
 		this.play(msg, args, true);
 	}
 }

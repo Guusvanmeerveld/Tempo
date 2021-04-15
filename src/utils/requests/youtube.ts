@@ -31,7 +31,7 @@ export default class Youtube {
 		return data;
 	}
 
-	public async playlist(id: string) {
+	public async playlist(id: string): Promise<unknown> {
 		const { data } = await request('playlists', {
 			params: {
 				part: 'snippet',

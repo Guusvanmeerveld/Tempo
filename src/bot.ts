@@ -1,4 +1,6 @@
 import { Client, Collection } from 'discord.js-light';
+import WebSocket from 'ws';
+
 import { QueueList, Command } from './models';
 import Console from '@utils/console';
 import lang from '@utils/language';
@@ -10,7 +12,6 @@ import Spotify from '@utils/requests/spotify';
 import Youtube from '@utils/requests/youtube';
 import SoundCloud from '@utils/requests/soundcloud';
 
-import WebSocket from 'ws';
 import Socket from './socket';
 
 export default class Bot extends Client {
@@ -58,7 +59,9 @@ export default class Bot extends Client {
 		Console.info('Starting the bot');
 
 		this.on('ready', () => {
-			this.user!.setActivity(lang.bot.activity.text ?? '', {
+			if (!this.user) return;
+
+			this.user.setActivity(lang.bot.activity.text ?? '', {
 				type: 'LISTENING',
 			});
 		});

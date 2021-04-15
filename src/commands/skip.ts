@@ -19,11 +19,11 @@ export class Skip implements Command {
 		this.player = new Play(client);
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>): void {
 		const { connected } = checkConnection(msg.guild?.voice?.connection);
 
 		if (connected) {
-			const queue = this.client.queues.get(msg.guild!.id);
+			const queue = this.client.queues.get(msg.guild?.id ?? '');
 			if (!queue) return;
 
 			let count = 1;

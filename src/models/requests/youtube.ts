@@ -20,11 +20,8 @@ interface ContentDetails {
 	definition: string;
 	caption: string;
 	licensedContent: boolean;
-	contentRating: ContentRating;
 	projection: string;
 }
-
-interface ContentRating {}
 
 interface Snippet {
 	publishedAt: Date;

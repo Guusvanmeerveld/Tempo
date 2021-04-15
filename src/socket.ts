@@ -20,7 +20,7 @@ export default class Socket extends WebSocket {
 	client: Bot;
 
 	constructor(client: Bot) {
-		super(process.env.WEBSOCKET_URL!, {
+		super(process.env.WEBSOCKET_URL ?? '', {
 			headers: {
 				Authorization: process.env.DISCORD,
 			},
@@ -51,7 +51,7 @@ export default class Socket extends WebSocket {
 		this.addEventListener('message', this.handleMsg);
 	}
 
-	public msg(msg: WsMsgData) {
+	public msg(msg: WsMsgData): void {
 		this.send(JSON.stringify(msg));
 	}
 

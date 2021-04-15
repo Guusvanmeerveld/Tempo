@@ -16,11 +16,11 @@ export class Lyrics implements Command {
 		this.client = client;
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>): void {
 		let entry: string;
 
 		if (args.length < 1) {
-			const queue = this.client.queues.get(msg.guild!.id);
+			const queue = this.client.queues.get(msg.guild?.id ?? '');
 			if (!queue?.playing) {
 				msg.channel.send('Please enter a song name to search for.');
 				return;

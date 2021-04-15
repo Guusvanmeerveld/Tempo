@@ -15,8 +15,8 @@ export class Queue implements Command {
 		this.client = client;
 	}
 
-	run(msg: Message, args: Array<string>) {
-		const queue = this.client.queues.get(msg.guild!.id);
+	run(msg: Message, args: Array<string>): void {
+		const queue = this.client.queues.get(msg.guild?.id ?? '');
 
 		if (!queue) return;
 

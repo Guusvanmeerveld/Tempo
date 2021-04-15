@@ -1,4 +1,4 @@
-import { InteractionCallback, SlashCommand } from '@models/requests';
+import { InteractionCallback, InteractionCallbackData, SlashCommand } from '@models/requests';
 
 import axios from 'axios';
 
@@ -7,8 +7,8 @@ const request = axios.create({
 });
 
 class Discord {
-	private id: string = process.env.APPLICATION_ID!;
-	private token: string = process.env.DISCORD!;
+	private id: string = process.env.APPLICATION_ID ?? '';
+	private token: string = process.env.DISCORD ?? '';
 
 	/**
 	 * Respond to a Discord interaction.
@@ -16,7 +16,11 @@ class Discord {
 	 * @param {string} token
 	 * @param {string} response
 	 */
-	public static async interactions(id: string, token: string, response: any): Promise<any> {
+	public static async interactions(
+		id: string,
+		token: string,
+		response: InteractionCallbackData
+	): Promise<unknown> {
 		const body: InteractionCallback = { data: response, type: 4 };
 
 		const { data } = await request(`interactions/${id}/${token}/callback`, {
@@ -33,7 +37,7 @@ class Discord {
 	 * @param updated The new slash command
 	 * @returns Success
 	 */
-	public async bulkUpdateCommands(list: Array<SlashCommand>) {
+	public async bulkUpdateCommands(list: Array<SlashCommand>): Promise<Array<SlashCommand>> {
 		const { data } = await request(`applications/${this.id}/commands`, {
 			headers: {
 				Authorization: `Bot ${this.token}`,

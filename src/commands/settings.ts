@@ -41,12 +41,12 @@ export class Settings implements Command {
 		this.client = client;
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>): void {
 		if (args.length < 1) {
-			const settings = this.client.settings.get(msg.guild!.id);
+			const settings = this.client.settings.get(msg.guild?.id);
 			const embed = new DefaultEmbed(msg.author);
 
-			embed.setTitle(`🛠️  Current settings for \`${msg.guild!.name}\``);
+			embed.setTitle(`🛠️  Current settings for \`${msg.guild?.name ?? 'Unknown guild'}\``);
 
 			const role = msg.guild?.roles.resolve(settings.role)?.toString() ?? 'None';
 
@@ -112,7 +112,7 @@ export class Settings implements Command {
 					break;
 			}
 
-			this.client.settings.set(msg.guild!.id, input, value);
+			this.client.settings.set(msg.guild?.id ?? '', input, value);
 
 			msg.channel.send(`✅  Set the setting \`${input}\` to \`${value}\`.`);
 			return;

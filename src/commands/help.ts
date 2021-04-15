@@ -15,9 +15,9 @@ export class Help implements Command {
 		this.client = client;
 	}
 
-	public run(msg: Message, args: Array<string>) {
+	public run(msg: Message, args: Array<string>): void {
 		const commands = this.client.commands.array();
-		const settings = this.client.settings.get(msg.guild?.id ?? '');
+		const settings = this.client.settings.get(msg.guild?.id);
 
 		let embed: DefaultEmbed | PaginatedEmbed;
 
@@ -26,7 +26,9 @@ export class Help implements Command {
 
 			embed.setTitle('Showing all commands for Tempo');
 			embed.setDescription(
-				`The current prefix for Tempo in \`${msg.guild!.name}\` is \`${settings.prefix}\`.`
+				`The current prefix for Tempo in \`${msg.guild?.name ?? 'Unkown guild'}\` is \`${
+					settings.prefix
+				}\`.`
 			);
 
 			commands.forEach((cmd) => {

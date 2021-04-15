@@ -26,16 +26,16 @@ export default class Settings {
 	}
 
 	get(id: string, setting: Setting): number | string;
-	get(id: string): GuildSettings;
+	get(id?: string): GuildSettings;
 
 	/**
 	 * Get the current settings for a certain guild, or get a specific guild settings value
 	 * @param id - The guild id
 	 * @param setting - [Optional] The setting to retrieve
 	 */
-	public get(id: string, setting?: Setting) {
-		if (this.guilds.has(id)) {
-			return this.guilds.get(id)!;
+	public get(id?: string, setting?: Setting): GuildSettings | number | string {
+		if (id && this.guilds.has(id)) {
+			return this.guilds.get(id) as GuildSettings;
 		}
 
 		return setting ? settings[setting] : settings;
@@ -47,7 +47,7 @@ export default class Settings {
 	 * @param setting - The setting to set
 	 * @param value - The new value of the setting
 	 */
-	public set(id: string, setting: Setting, value: string | number) {
+	public set(id: string, setting: Setting, value: string | number): void {
 		const currentSettings = this.get(id);
 		const newSettings: GuildSettings = {
 			...currentSettings,

@@ -18,13 +18,13 @@ export class PlayList implements Command {
 		this.client = client;
 	}
 
-	public run(msg: Message, args: Array<string>) {
+	public run(msg: Message, args: Array<string>): void {
 		const input = args[0];
 
 		this.album(input).then((album) => {
 			if (!album) {
 				msg.channel.send(
-					`❌  Something went wrong looking up that playlist/album. Please try again later.`
+					'❌  Something went wrong looking up that playlist/album. Please try again later.'
 				);
 				return;
 			}
@@ -55,7 +55,7 @@ export class PlayList implements Command {
 
 			msg.channel.send(embed);
 
-			const queue = this.client.queues.get(msg.guild!.id);
+			const queue = this.client.queues.get(msg.guild?.id ?? '');
 			if (!queue) return;
 
 			Array.prototype.push.apply(

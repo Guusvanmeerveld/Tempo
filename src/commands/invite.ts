@@ -8,7 +8,7 @@ export class Invite implements Command {
 	usage = 'invite';
 	aliases = ['inv'];
 
-	public run(msg: Message) {
+	public run(msg: Message): void {
 		msg.client
 			.generateInvite({
 				permissions: ['CONNECT', 'SPEAK', 'SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],

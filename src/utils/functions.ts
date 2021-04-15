@@ -10,7 +10,7 @@ const abs = ['K', 'M', 'B', 'T'];
  * @param size - The size of the contained arrays
  * @returns Result
  */
-export function chunk(array: Array<any>, size: number): Array<Array<any>> {
+export function chunk(array: Array<unknown>, size: number): Array<Array<unknown>> {
 	const chunked = [];
 
 	for (let i = 0; i < array.length; i += size) {
@@ -25,7 +25,7 @@ export function chunk(array: Array<any>, size: number): Array<Array<any>> {
  * @param string - The string to be used
  * @returns {string} Result
  */
-export function ucFirst(string: string) {
+export function ucFirst(string: string): string {
 	return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
@@ -65,7 +65,7 @@ export function emptyDir(path: string): void {
 		}
 	} else {
 		Console.info(`Directory path "${path}" not found, creating one...`);
-		fs.mkdir(path, () => {});
+		fs.mkdirSync(path);
 	}
 }
 
@@ -121,7 +121,7 @@ export function checkConnection(connection?: VoiceConnection | null): Connection
 	if (!connection) {
 		return {
 			connected: false,
-			error: "❌  I'm not connected to a voice channel.",
+			error: '❌  I am not connected to a voice channel.',
 		};
 	}
 

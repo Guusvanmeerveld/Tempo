@@ -11,7 +11,7 @@ import { Join } from './join';
 const YOUTUBE = /^(https?:\/\/)?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/.+$/g;
 const SOUNDCLOUD = /^https?:\/\/(soundcloud\.com)\/(.*)$/g;
 const SPOTIFY = /^https?:\/\/(open\.spotify\.com\/track)\/(.*)$/g;
-const AUDIO = /^\.(?:wav|mp3)$/g;
+// const AUDIO = /^\.(?:wav|mp3)$/g;
 
 export class Play implements Command {
 	name = 'play';
@@ -33,7 +33,7 @@ export class Play implements Command {
 	 * @param args
 	 * @param client
 	 */
-	public async run(msg: Message, args: Array<string>, playskip?: boolean) {
+	public async run(msg: Message, args: Array<string>, playskip?: boolean): Promise<void> {
 		if (args.length < 1) {
 			this.playAttachment(msg);
 		}
@@ -42,7 +42,7 @@ export class Play implements Command {
 
 		if (!joined) return;
 
-		const queue = this.client.queues.get(msg.guild!.id);
+		const queue = this.client.queues.get(msg.guild?.id ?? '');
 
 		this.info(msg, args)
 			.then((info: Song) => {
@@ -75,8 +75,8 @@ export class Play implements Command {
 	 * @param client
 	 * @param song
 	 */
-	public async play(msg: Message, song: Song | undefined, seek?: number) {
-		const queue = this.client.queues.get(msg.guild!.id);
+	public async play(msg: Message, song: Song | undefined, seek?: number): Promise<void> {
+		const queue = this.client.queues.get(msg.guild?.id ?? '');
 		if (!queue) return;
 
 		if (!song) {
@@ -114,11 +114,11 @@ export class Play implements Command {
 		if (msg.guild?.voice?.connection) {
 			const connection = msg.guild.voice.connection;
 
-			const settings = this.client.settings.get(msg.guild!.id);
+			const settings = this.client.settings.get(msg.guild.id);
 			const volume = settings.volume;
 
 			connection.play(stream, { volume: volume / 100, seek }).on('finish', () => {
-				const queue = this.client.queues.get(msg.guild!.id);
+				const queue = this.client.queues.get(msg.guild?.id ?? '');
 
 				if (!queue) return;
 
@@ -160,8 +160,8 @@ export class Play implements Command {
 			return await this.client.request.spotify.info(input);
 		}
 
-		if (input.match(AUDIO)) {
-		}
+		// if (input.match(AUDIO)) {
+		// }
 
 		const search = args.join(' ');
 
@@ -176,42 +176,45 @@ export class Play implements Command {
 	private async search(input: string, msg: Message): Promise<Song> {
 		const notFound = (platform: string) => `I was not able to find \`${input}\` on ${platform}.`;
 
-		const settings = this.client.settings.get(msg.guild!.id);
+		const settings = this.client.settings.get(msg.guild?.id);
 
+		let platform;
+		let results;
+		let hit;
 		switch (settings.search_platform) {
 			case 'soundcloud':
-				const soundcloud = this.client.request.soundcloud;
-				const tracks = await soundcloud.search(input, 1);
+				platform = this.client.request.soundcloud;
+				results = await platform.search(input, 1);
 
-				if (tracks.collection.length < 1) {
+				if (results.collection.length < 1) {
 					throw notFound('Soundcloud');
 				}
 
-				const track = tracks.collection[0];
+				hit = results.collection[0];
 
-				return await soundcloud.info(track.permalink_url);
+				return await platform.info(hit.permalink_url);
 			case 'spotify':
-				const spotify = this.client.request.spotify;
-				const songs = (await spotify.search(input, 1)).tracks;
+				platform = this.client.request.spotify;
+				results = (await platform.search(input, 1)).tracks;
 
-				if (songs.items.length < 1) {
+				if (results.items.length < 1) {
 					throw notFound('Spotify');
 				}
 
-				const song = songs.items[0];
+				hit = results.items[0];
 
-				return spotify.info(song.id);
+				return platform.info(hit.id);
 			default:
-				const youtube = this.client.request.youtube;
-				const videos = await youtube.search(input, 1);
+				platform = this.client.request.youtube;
+				results = await platform.search(input, 1);
 
-				if (videos.items.length < 1) {
+				if (results.items.length < 1) {
 					throw notFound('Youtube');
 				}
 
-				const video = videos.items[0] as Video;
+				hit = results.items[0] as Video;
 
-				return youtube.info(video?.id ?? 'Unknown');
+				return platform.info(hit?.id ?? 'Unknown');
 		}
 	}
 
