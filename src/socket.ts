@@ -1,7 +1,8 @@
-import { updateSlash } from './slash';
 import WebSocket from 'ws';
-import Bot from './bot';
+
+import { updateSlash } from './slash';
 import Console from '@utils/console';
+import Bot from './bot';
 
 export interface WsMsgData {
 	type: 'guilds' | 'update';

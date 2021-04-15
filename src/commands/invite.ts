@@ -1,4 +1,5 @@
-import { Message } from 'discord.js';
+import { Message } from 'discord.js-light';
+
 import { Command } from '@models/index';
 
 export class Invite implements Command {

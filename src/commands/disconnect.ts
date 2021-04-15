@@ -1,5 +1,6 @@
-import { Command, Requirement } from '@models/index';
 import { Message, VoiceChannel } from 'discord.js-light';
+
+import { Command, Requirement } from '@models/index';
 
 export class Disconnect implements Command {
 	name = 'disconnect';

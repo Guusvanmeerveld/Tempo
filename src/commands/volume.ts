@@ -1,6 +1,7 @@
 import { Message } from 'discord.js-light';
-import Bot from '../bot';
+
 import { Command, Requirement, Setting } from '@models/index';
+import Bot from '../bot';
 
 export const MAX_VOLUME = 1000;
 

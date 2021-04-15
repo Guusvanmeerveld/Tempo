@@ -1,8 +1,9 @@
-import { Message } from 'discord.js';
-import Bot from '../bot';
+import { Message } from 'discord.js-light';
+
 import { Command, DefaultEmbed, Requirement, Setting } from '@models/index';
-import { MAX_VOLUME } from './volume';
 import { ucFirst } from '@utils/functions';
+import { MAX_VOLUME } from './volume';
+import Bot from '../bot';
 
 import fs from 'fs';
 import { join } from 'path';

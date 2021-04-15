@@ -1,12 +1,11 @@
 import { Guild, Message, TextChannel, GuildChannel, VoiceState } from 'discord.js-light';
-
-import { prefix } from '@config/settings.json';
-
-import Bot from './bot';
 import Long from 'long';
-import Console from '@utils/console';
-import { DefaultEmbed } from '@models/index';
+
 import { InteractionCreate } from '@models/requests';
+import { prefix } from '@config/settings.json';
+import { DefaultEmbed } from '@models/index';
+import Console from '@utils/console';
+import Bot from './bot';
 
 export default class Events {
 	private client: Bot;

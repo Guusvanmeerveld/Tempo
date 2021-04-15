@@ -1,4 +1,4 @@
-import { VoiceConnection } from 'discord.js';
+import { VoiceConnection } from 'discord.js-light';
 import fs from 'fs';
 import Console from './console';
 

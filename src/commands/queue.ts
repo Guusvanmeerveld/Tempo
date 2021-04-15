@@ -1,7 +1,7 @@
-import { Message } from 'discord.js';
-import { EmbedField } from 'discord.js-light';
-import Bot from '../bot';
+import { Message, EmbedField } from 'discord.js-light';
+
 import { Command, PaginatedEmbed, Requirement, Song } from '@models/index';
+import Bot from '../bot';
 
 export class Queue implements Command {
 	name = 'queue';

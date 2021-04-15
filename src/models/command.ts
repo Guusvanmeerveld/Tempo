@@ -1,6 +1,7 @@
 import { Message } from 'discord.js-light';
+
 import Bot from '../bot';
-import { SlashOptionChoice, SlashOptionType } from '@models/requests';
+import { SlashOptionChoice, SlashOptionType } from './requests';
 
 export interface Command {
 	name: string;

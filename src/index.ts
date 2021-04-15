@@ -1,8 +1,8 @@
 console.clear();
 
 import { config } from 'dotenv';
-
 import { existsSync } from 'fs';
+
 import Console from '@utils/console';
 
 if (existsSync('.env')) {

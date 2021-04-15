@@ -1,6 +1,7 @@
-import { checkConnection } from '@utils/functions';
 import { Message } from 'discord.js-light';
+
 import { Command, Requirement } from '@models/index';
+import { checkConnection } from '@utils/functions';
 
 export class Resume implements Command {
 	name = 'resume';

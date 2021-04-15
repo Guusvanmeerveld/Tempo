@@ -1,7 +1,7 @@
-import { Command } from '@models/index';
-
 import humanizeDuration from 'humanize-duration';
-import { Message } from 'discord.js';
+import { Message } from 'discord.js-light';
+
+import { Command } from '@models/index';
 import Bot from '../bot';
 
 export class Uptime implements Command {

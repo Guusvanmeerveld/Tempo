@@ -1,6 +1,7 @@
+import { EmbedField, Message } from 'discord.js-light';
+
 import { Command, DefaultEmbed, PaginatedEmbed } from '@models/index';
 import { ucFirst } from '@utils/functions';
-import { EmbedField, Message } from 'discord.js';
 import Bot from '../bot';
 
 export class Help implements Command {

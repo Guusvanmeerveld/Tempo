@@ -1,8 +1,9 @@
-import Bot from '../bot';
-import { Command, Requirement } from 'models';
 import { Message } from 'discord.js-light';
+
 import { checkConnection } from '@utils/functions';
+import { Command, Requirement } from '@models/index';
 import { Play } from './play';
+import Bot from '../bot';
 
 export class Seek implements Command {
 	name = 'seek';

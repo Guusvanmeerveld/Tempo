@@ -1,15 +1,12 @@
-import { Command, Song, Requirement, SongEmbed } from '@models/index';
-
-import Console from '@utils/console';
-
-import { Join } from './join';
-
-import ytdl from 'ytdl-core';
-
+import { Message } from 'discord.js-light';
 import { Readable } from 'node:stream';
 import { Video } from 'ytsr';
-import { Message } from 'discord.js';
+import ytdl from 'ytdl-core';
 import Bot from '../bot';
+
+import { Command, Song, Requirement, SongEmbed } from '@models/index';
+import Console from '@utils/console';
+import { Join } from './join';
 
 const YOUTUBE = /^(https?:\/\/)?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/.+$/g;
 const SOUNDCLOUD = /^https?:\/\/(soundcloud\.com)\/(.*)$/g;

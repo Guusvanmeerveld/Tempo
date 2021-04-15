@@ -1,7 +1,8 @@
-const discordToken = process.env.DISCORD;
-
 import { ShardingManager } from 'discord.js-light';
+
 import Console from '@utils/console';
+
+const discordToken = process.env.DISCORD;
 
 export default class Manager {
 	private manager: ShardingManager;

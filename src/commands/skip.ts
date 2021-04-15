@@ -1,9 +1,9 @@
-import { checkConnection } from '@utils/functions';
 import { Message } from 'discord.js-light';
-import Bot from '../bot';
-import { Command, Requirement } from '@models/index';
 
+import { Command, Requirement } from '@models/index';
+import { checkConnection } from '@utils/functions';
 import { Play } from './play';
+import Bot from '../bot';
 
 export class Skip implements Command {
 	name = 'skip';

@@ -1,5 +1,6 @@
-import { Command, Requirement } from '@models/index';
 import { VoiceChannel, Message } from 'discord.js-light';
+
+import { Command, Requirement } from '@models/index';
 import Bot from '../bot';
 
 export class Join implements Command {

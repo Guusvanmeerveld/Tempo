@@ -1,6 +1,7 @@
-import { Message } from 'discord.js';
-import Bot from '../bot';
+import { Message } from 'discord.js-light';
+
 import { Album, Command, DefaultEmbed, Requirement, Song } from '@models/index';
+import Bot from '../bot';
 
 export const SPOTIFY_ALBUM = /^https?:\/\/(open\.spotify\.com\/album)\/(.*)$/g;
 export const YOUTUBE_PLAYLIST = /^(https?:)\/\/?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/(playlist\?list=)(.*)$/g;

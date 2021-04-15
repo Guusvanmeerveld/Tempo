@@ -1,9 +1,9 @@
-import { Message } from 'discord.js';
-import Bot from '../bot';
-import { Command, DefaultEmbed } from '@models/index';
-import Console from '@utils/console';
+import { Message } from 'discord.js-light';
 
+import { Command, DefaultEmbed } from '@models/index';
 import Genius from '@utils/requests/genius';
+import Console from '@utils/console';
+import Bot from '../bot';
 
 export class Lyrics implements Command {
 	name = 'lyrics';
