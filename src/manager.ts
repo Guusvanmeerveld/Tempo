@@ -1,13 +1,14 @@
 const discordToken = process.env.DISCORD;
 
 import { ShardingManager } from 'discord.js-light';
-import Console from './bot/utils/console';
+import Console from '@utils/console';
 
 export default class Manager {
 	private manager: ShardingManager;
 	constructor() {
-		this.manager = new ShardingManager('./dist/bot/index.js', {
+		this.manager = new ShardingManager('./dist/start.js', {
 			token: discordToken,
+			execArgv: ['-r', 'tsconfig-paths/register', '-r', 'ts-node/register/transpile-only'],
 		});
 	}
 

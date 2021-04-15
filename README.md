@@ -27,7 +27,7 @@ services:
             - OWNER=DISCORD OWNER ID
             - DATABASE_URL=POSTGRES DATABASE URL
 ```
-You can äslo install Tempo using the following commands:
+You can also install Tempo using the following commands:
 ```
 git clone https://github.com/guusvanmeerveld/tempo/
 cd tempo
@@ -49,4 +49,4 @@ npm start
 
 ### Configuration
 
-For a more specific installation, please check the `src/config` folder and update the files to your needs.
+For a more specific installation, please check the `config` folder and update the files to your needs.

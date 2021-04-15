@@ -1,18 +1,18 @@
 import { config } from 'dotenv';
 config();
 
-import Discord from './bot/utils/requests/discord';
+import Discord from './utils/requests/discord';
 
 const discord = new Discord();
 
-import * as commands from './bot/commands';
-import { Command } from './bot/models';
-import { SlashCommand } from './bot/models/requests';
+import * as commands from './commands';
+import { Command } from '@models/index';
+import { SlashCommand } from '@models/requests';
 
-import Console from './bot/utils/console';
-import Bot from 'bot/bot';
+import Console from '@utils/console';
+import Bot from './bot';
 
-export const updateSlash = async (client: Bot) => {
+export const updateSlash = (client: Bot): void => {
 	const localCommands: Array<Command> = Object.values(commands).map(
 		(Command) => new Command(client)
 	);

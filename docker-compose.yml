@@ -1,5 +1,5 @@
 tempo:
-  image: guusvanmeerveld/tempo
+  image: xeeon/tempo
   container_name: tempo
   environment:
     - YOUTUBE=YOUTUBE API TOKEN
@@ -9,5 +9,5 @@ tempo:
     - GENIUS=GENIUS API KEY
     - DISCORD=DISCORD BOT TOKEN
     - OWNER=DISCORD OWNER ID
-    - WEBSOCKET_URL=WEBSOCKET URL
-    - DATABASE_URL=POSTGRES DATABASE URL
+    - WEBSOCKET_URL=WEBSOCKET URL [OPTIONAL]
+    - DATABASE_URL=POSTGRES DATABASE URL [OPTIONAL]
