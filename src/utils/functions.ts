@@ -10,7 +10,7 @@ const abs = ['K', 'M', 'B', 'T'];
  * @param size - The size of the contained arrays
  * @returns Result
  */
-export function chunk(array: Array<unknown>, size: number): Array<Array<unknown>> {
+export function chunk(array: Array<any>, size: number): Array<Array<any>> {
 	const chunked = [];
 
 	for (let i = 0; i < array.length; i += size) {
