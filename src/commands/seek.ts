@@ -1,3 +1,4 @@
+import HumanizeDuration from 'humanize-duration';
 import { Message } from 'discord.js-light';
 
 import { checkConnection } from '@utils/functions';
@@ -31,15 +32,15 @@ export class Seek implements Command {
 
 				if (!song) return;
 
-				const seconds = this.parseTime(time);
+				const ms = this.parseTime(time) * 1000
 
-				if (seconds > song.length / 1000 || seconds < 0 || !seconds) {
+				if (ms > song.length || ms <= 0) {
 					msg.channel.send('❌  That is not a valid timestamp.');
 					return;
 				}
 
-				msg.channel.send(`⏩  Successfully skipped to \`${time}\`.`);
-				this.player.play(msg, song, seconds);
+				msg.channel.send(`⏩  Successfully skipped to \`${HumanizeDuration(ms)}\`.`);
+				this.player.play(msg, song, ms / 1000);
 			} else {
 				msg.channel.send('❌  You must give a timestamp to skip to.');
 			}
@@ -60,11 +61,11 @@ export class Seek implements Command {
 		const minutes = parseInt(splitted[splitted.length - 2] ?? 0);
 		const seconds = parseInt(splitted[splitted.length - 1] ?? 0);
 
-		if (minutes > 60 || seconds > 60 || hours < 0 || minutes < 0 || seconds < 0) return 0;
+		if (minutes > 60 || seconds > 60 || hours < 0 || minutes < 0 || seconds < 0) return 0
 
 		const hourInSeconds = hours * 60 * 60;
 		const minutesInSeconds = minutes * 60;
 
-		return hourInSeconds + minutesInSeconds + seconds;
+		return hourInSeconds + minutesInSeconds + seconds
 	}
 }
