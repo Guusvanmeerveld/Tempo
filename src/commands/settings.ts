@@ -5,15 +5,6 @@ import { ucFirst } from '@utils/functions';
 import { MAX_VOLUME } from './volume';
 import Bot from '../bot';
 
-import fs from 'fs';
-import { join } from 'path';
-const path = process.cwd();
-
-let languages: Array<string> = [];
-
-const files = fs.readdirSync(join(path, 'src/config/lang'));
-languages = files.map((g) => g.replace('.json', ''));
-
 export class Settings implements Command {
 	name = 'settings';
 	description = 'Change the way the bot behaves.';
@@ -103,13 +94,13 @@ export class Settings implements Command {
 
 					break;
 
-				case Setting.Language:
-					if (!languages.includes(value)) {
-						msg.channel.send('❌  That is not a valid language.');
-						return;
-					}
+				// case Setting.Language:
+				// 	if () {
+				// 		msg.channel.send('❌  That is not a valid language.');
+				// 		return;
+				// 	}
 
-					break;
+				// 	break;
 			}
 
 			this.client.settings.set(msg.guild?.id ?? '', input, value);

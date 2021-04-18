@@ -1,0 +1,9 @@
+{
+    "commands": [],
+    "bot": {
+        "activity": {
+            "name": "je dikke moeder",
+            "type": "LISTENING"
+        }
+    }
+}

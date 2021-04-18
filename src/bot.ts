@@ -3,8 +3,8 @@ import WebSocket from 'ws';
 
 import { QueueList, Command } from './models';
 import Console from '@utils/console';
-import lang from '@utils/language';
 import Settings from '@utils/settings';
+import Locales from '@utils/locales';
 
 import * as commands from './commands';
 
@@ -18,6 +18,7 @@ export default class Bot extends Client {
 	public settings: Settings;
 	public commands: Collection<string, Command>;
 	public queues: Collection<string, QueueList>;
+	public locales: Locales;
 
 	public socket?: WebSocket;
 
@@ -39,6 +40,7 @@ export default class Bot extends Client {
 
 		if (process.env.WEBSOCKET_URL) this.socket = new Socket(this);
 		this.settings = new Settings();
+		this.locales = new Locales(this);
 
 		this.request = {
 			spotify: new Spotify(),
@@ -60,9 +62,10 @@ export default class Bot extends Client {
 
 		this.on('ready', () => {
 			if (!this.user) return;
+			const lang = this.locales.getFromLocale('en-US');
 
-			this.user.setActivity(lang.bot.activity.text ?? '', {
-				type: 'LISTENING',
+			this.user.setActivity(lang.bot.activity.name, {
+				type: lang.bot.activity.type,
 			});
 		});
 

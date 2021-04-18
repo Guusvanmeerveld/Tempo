@@ -38,7 +38,7 @@ export default class Settings {
 			return this.guilds.get(id) as GuildSettings;
 		}
 
-		return setting ? settings[setting] : settings;
+		return setting ? settings[setting] : (settings as GuildSettings);
 	}
 
 	/**

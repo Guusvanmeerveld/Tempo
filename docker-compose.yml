@@ -11,7 +11,6 @@ services:
       - GENIUS=GENIUS API KEY
       - DISCORD=DISCORD BOT TOKEN
       - OWNER=DISCORD OWNER ID
-      - DATABASE_URL=POSTGRES DATABASE URL
   db:
     image: postgres
     container_name: tempo-db
