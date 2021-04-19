@@ -1,6 +1,8 @@
 import { Message, EmbedField } from 'discord.js-light';
 
-import { Command, PaginatedEmbed, Requirement, Song } from '@models/index';
+import { Command, Requirement } from '@models/command';
+import { PaginatedEmbed } from '@models/embed';
+import { Song } from '@models/song';
 import Bot from '../bot';
 
 export class Queue implements Command {
@@ -27,7 +29,7 @@ export class Queue implements Command {
 
 		let fields: Array<EmbedField> = [];
 		if (queue.songs.length > 0) {
-			fields = queue.songs.map((song: Song, i) => {
+			fields = queue.songs.map((song: Song, i: number) => {
 				return {
 					name: `#${i + 1} ${song.title}`,
 					value: 'Requested by ' + song.requested?.toString() ?? 'Unknown user',

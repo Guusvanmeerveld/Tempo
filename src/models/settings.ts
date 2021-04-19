@@ -15,3 +15,5 @@ export enum Setting {
 	Search_Platform = 'search_platform',
 	Language = 'language',
 }
+
+export type searchPlatform = 'youtube' | 'soundcloud' | 'spotify';

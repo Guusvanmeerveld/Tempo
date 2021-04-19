@@ -1,6 +1,6 @@
 const soundcloudToken = process.env.SOUNDCLOUD;
 
-import { Song } from '@models/index';
+import { Song } from '@models/song';
 import { SoundCloudSearchAPI, SoundCloudTrackAPI } from '@models/requests';
 
 import axios from 'axios';

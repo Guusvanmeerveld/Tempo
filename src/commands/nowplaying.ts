@@ -1,6 +1,7 @@
 import { Message } from 'discord.js-light';
 
-import { Command, SongEmbed } from '@models/index';
+import { Command } from '@models/command';
+import { SongEmbed } from '@models/embed';
 import Bot from '../bot';
 
 const PROGRESS_LINE = '⎯';

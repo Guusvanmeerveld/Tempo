@@ -1,10 +1,10 @@
 import { Collection } from 'discord.js-light';
+import { isEqual } from 'lodash';
 
 import settings from '@config/settings.json';
 
-import { GuildSettings, Setting } from '@models/index';
+import { GuildSettings, Setting } from '@models/settings';
 import Console from './console';
-import { isEqual } from 'lodash';
 
 import { Database, RawDBData } from './database';
 

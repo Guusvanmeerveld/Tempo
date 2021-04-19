@@ -1,7 +1,8 @@
 import { Client, Collection } from 'discord.js-light';
 import WebSocket from 'ws';
 
-import { QueueList, Command } from './models';
+import { Command } from '@models/command';
+import { QueueList } from '@models/queue';
 import Console from '@utils/console';
 import Settings from '@utils/settings';
 import Locales from '@utils/locales';

@@ -5,7 +5,7 @@ const spotify = {
 
 import axios from 'axios';
 
-import { Song } from '@models/index';
+import { Song } from '@models/song';
 import { SpotifyAlbumAPI, SpotifySearchAPI, SpotifyTrackAPI } from '@models/requests';
 
 import Console from '@utils/console';

@@ -1,6 +1,7 @@
 import { EmbedField, Message } from 'discord.js-light';
 
-import { Command, DefaultEmbed, PaginatedEmbed } from '@models/index';
+import { DefaultEmbed, PaginatedEmbed } from '@models/embed';
+import { Command, Requirement } from '@models/command';
 import { ucFirst } from '@utils/functions';
 import Bot from '../bot';
 
@@ -58,7 +59,9 @@ export class Help implements Command {
 
 			const name = ucFirst(command?.name ?? '');
 			const aliases = command?.aliases?.join(', ');
-			const requirements = command?.requirements?.map((g) => `\`${ucFirst(g)}\``).join(' & ');
+			const requirements = command?.requirements
+				?.map((g: Requirement) => `\`${ucFirst(g)}\``)
+				.join(' & ');
 
 			embed = new DefaultEmbed(msg.author);
 

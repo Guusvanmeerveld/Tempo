@@ -1,6 +1,6 @@
 import { Message } from 'discord.js-light';
 
-import { Command, Requirement } from '@models/index';
+import { Command, Requirement } from '@models/command';
 import Bot from '../bot';
 
 export class Loop implements Command {

@@ -4,7 +4,9 @@ import { Video } from 'ytsr';
 import ytdl from 'ytdl-core';
 import Bot from '../bot';
 
-import { Command, Song, Requirement, SongEmbed } from '@models/index';
+import { Command, Requirement } from '@models/command';
+import { SongEmbed } from '@models/embed';
+import { Song } from '@models/song';
 import Console from '@utils/console';
 import { Join } from './join';
 
@@ -36,6 +38,7 @@ export class Play implements Command {
 	public async run(msg: Message, args: Array<string>, playskip?: boolean): Promise<void> {
 		if (args.length < 1) {
 			this.playAttachment(msg);
+			return;
 		}
 
 		const joined = await this.join(msg);

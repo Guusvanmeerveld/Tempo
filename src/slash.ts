@@ -3,7 +3,7 @@ config();
 
 import { SlashCommand } from '@models/requests';
 import Discord from './utils/requests/discord';
-import { Command } from '@models/index';
+import { Command } from '@models/command';
 import * as commands from './commands';
 import Console from '@utils/console';
 import Bot from './bot';

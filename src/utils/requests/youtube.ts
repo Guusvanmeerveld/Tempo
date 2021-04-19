@@ -1,6 +1,6 @@
 const youtubeToken = process.env.YOUTUBE;
 
-import { Song } from '@models/index';
+import { Song } from '@models/song';
 import { YoutubeVideoAPI } from '@models/requests';
 
 import axios from 'axios';

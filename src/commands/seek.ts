@@ -1,8 +1,8 @@
 import HumanizeDuration from 'humanize-duration';
 import { Message } from 'discord.js-light';
 
+import { Command, Requirement } from '@models/command';
 import { checkConnection } from '@utils/functions';
-import { Command, Requirement } from '@models/index';
 import { Play } from './play';
 import Bot from '../bot';
 

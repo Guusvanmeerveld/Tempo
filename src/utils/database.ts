@@ -1,5 +1,6 @@
 import { Pool, QueryConfig } from 'pg';
-import { GuildSettings } from '@models/index';
+
+import { GuildSettings } from '@models/settings';
 import Console from './console';
 
 export interface RawDBData {

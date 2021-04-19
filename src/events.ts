@@ -3,7 +3,7 @@ import Long from 'long';
 
 // import { InteractionCreate } from '@models/requests';
 import { prefix } from '@config/settings.json';
-import { DefaultEmbed } from '@models/index';
+import { DefaultEmbed } from '@models/embed';
 import Console from '@utils/console';
 import Bot from './bot';
 

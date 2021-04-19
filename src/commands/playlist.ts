@@ -1,6 +1,8 @@
 import { Message } from 'discord.js-light';
 
-import { Album, Command, DefaultEmbed, Requirement, Song } from '@models/index';
+import { Command, Requirement } from '@models/command';
+import { DefaultEmbed } from '@models/embed';
+import { Song, Album } from '@models/song';
 import Bot from '../bot';
 
 export const SPOTIFY_ALBUM = /^https?:\/\/(open\.spotify\.com\/album)\/(.*)$/g;

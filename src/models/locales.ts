@@ -14,6 +14,17 @@ export default interface Locale {
 	};
 }
 
+export const languageDefs = [
+	{
+		name: 'nederlands',
+		value: 'nl-NL',
+	},
+	{
+		name: 'english',
+		value: 'en-US',
+	},
+];
+
 export type localeString = 'nl-NL' | 'en-US';
 
 interface Command {
