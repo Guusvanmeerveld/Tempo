@@ -1,5 +1,7 @@
 import { Message } from 'discord.js-light';
-import { Command, SongEmbed } from '@models/index';
+
+import { Command } from '@models/command';
+import { SongEmbed } from '@models/embed';
 import Bot from '../bot';
 
 const PROGRESS_LINE = '⎯';
@@ -18,8 +20,8 @@ export class NowPlaying implements Command {
 		this.client = client;
 	}
 
-	public run(msg: Message, args: Array<string>) {
-		const queue = this.client.queues.get(msg.guild!.id);
+	public run(msg: Message): void {
+		const queue = this.client.queues.get(msg.guild?.id ?? '');
 
 		if (!queue?.playing) {
 			msg.channel.send('❌  There is nothing playing right now.');

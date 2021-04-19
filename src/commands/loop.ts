@@ -1,5 +1,6 @@
-import { Command, Requirement } from '@models/index';
-import { Message } from 'discord.js';
+import { Message } from 'discord.js-light';
+
+import { Command, Requirement } from '@models/command';
 import Bot from '../bot';
 
 export class Loop implements Command {
@@ -13,10 +14,10 @@ export class Loop implements Command {
 		this.client = client;
 	}
 
-	run(msg: Message, args: Array<string>) {
-		const queue = this.client.queues.get(msg.guild!.id);
+	run(msg: Message): void {
+		const queue = this.client.queues.get(msg.guild?.id ?? '');
 		if (!queue) {
-			msg.channel.send("❌  I'm not connected to a voice channel");
+			msg.channel.send('❌  I am not connected to a voice channel');
 			return;
 		}
 

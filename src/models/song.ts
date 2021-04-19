@@ -1,4 +1,4 @@
-import { User } from 'discord.js';
+import { User } from 'discord.js-light';
 
 export type Platform = 'soundcloud' | 'youtube' | 'spotify' | 'audio';
 

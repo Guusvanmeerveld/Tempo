@@ -9,11 +9,13 @@
 		"ecmaVersion": 12,
 		"sourceType": "module"
 	},
-	"plugins": ["@typescript-eslint"],
+	"plugins": ["@typescript-eslint", "prettier"],
 	"rules": {
-		"indent": ["error", "tab"],
+		// "indent": ["error", "tab"],
+		"prettier/prettier": "error",
 		"linebreak-style": ["error", "unix"],
-		"quotes": ["error", "single"],
-		"semi": ["error", "always"]
+		"no-case-declarations": 0,
+		"quotes": ["error", "single"]
+		// "semi": ["error", "always"]
 	}
 }

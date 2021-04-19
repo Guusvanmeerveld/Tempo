@@ -10,9 +10,9 @@
 	"scripts": {
 		"pretify": "prettier --write .",
 		"lint": "eslint src",
-		"update": "ts-node-dev src/slash",
 		"dev": "ts-node-dev -r tsconfig-paths/register src/start.ts",
 		"dev-full": "ts-node-dev src",
+		"test-build": "tsc --noEmit",
 		"build": "tsc",
 		"start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register . --production"
 	},
@@ -26,6 +26,7 @@
 		"cheerio": "^1.0.0-rc.5",
 		"discord.js-light": "3.5.3",
 		"dotenv": "^8.2.0",
+		"erlpack": "discord/erlpack",
 		"ffmpeg-static": "^4.2.3",
 		"humanize-duration": "^3.25.1",
 		"libsodium-wrappers": "^0.7.9",
@@ -49,6 +50,7 @@
 		"@typescript-eslint/eslint-plugin": "^4.22.0",
 		"@typescript-eslint/parser": "^4.22.0",
 		"eslint": "^7.24.0",
+		"eslint-plugin-prettier": "^3.4.0",
 		"prettier": "2.2.1",
 		"ts-node-dev": "^1.1.1",
 		"tsconfig-paths": "^3.9.0",

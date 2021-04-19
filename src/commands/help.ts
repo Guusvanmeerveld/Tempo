@@ -1,6 +1,8 @@
-import { Command, DefaultEmbed, PaginatedEmbed } from '@models/index';
+import { EmbedField, Message } from 'discord.js-light';
+
+import { DefaultEmbed, PaginatedEmbed } from '@models/embed';
+import { Command, Requirement } from '@models/command';
 import { ucFirst } from '@utils/functions';
-import { EmbedField, Message } from 'discord.js';
 import Bot from '../bot';
 
 export class Help implements Command {
@@ -14,9 +16,9 @@ export class Help implements Command {
 		this.client = client;
 	}
 
-	public run(msg: Message, args: Array<string>) {
+	public run(msg: Message, args: Array<string>): void {
 		const commands = this.client.commands.array();
-		const settings = this.client.settings.get(msg.guild?.id ?? '');
+		const settings = this.client.settings.get(msg.guild?.id);
 
 		let embed: DefaultEmbed | PaginatedEmbed;
 
@@ -25,7 +27,9 @@ export class Help implements Command {
 
 			embed.setTitle('Showing all commands for Tempo');
 			embed.setDescription(
-				`The current prefix for Tempo in \`${msg.guild!.name}\` is \`${settings.prefix}\`.`
+				`The current prefix for Tempo in \`${msg.guild?.name ?? 'Unkown guild'}\` is \`${
+					settings.prefix
+				}\`.`
 			);
 
 			commands.forEach((cmd) => {
@@ -55,7 +59,9 @@ export class Help implements Command {
 
 			const name = ucFirst(command?.name ?? '');
 			const aliases = command?.aliases?.join(', ');
-			const requirements = command?.requirements?.map((g) => `\`${ucFirst(g)}\``).join(' & ');
+			const requirements = command?.requirements
+				?.map((g: Requirement) => `\`${ucFirst(g)}\``)
+				.join(' & ');
 
 			embed = new DefaultEmbed(msg.author);
 

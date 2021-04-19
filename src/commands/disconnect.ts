@@ -1,5 +1,7 @@
-import { Command, Requirement } from '@models/index';
 import { Message, VoiceChannel } from 'discord.js-light';
+
+import { Command, Requirement } from '@models/command';
+import Bot from 'bot';
 
 export class Disconnect implements Command {
 	name = 'disconnect';
@@ -8,16 +10,23 @@ export class Disconnect implements Command {
 	usage = 'disconnect';
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 
-	public async run(msg: Message) {
+	client;
+	constructor(client: Bot) {
+		this.client = client;
+	}
+
+	public async run(msg: Message): Promise<void> {
 		const voice = msg.guild?.voice;
 		const channel = (await voice?.channel?.fetch()) as VoiceChannel;
 
+		const lang = this.client.locales.get(msg.guild);
+
 		if (!channel) {
-			msg.channel.send("❌  I'm not connected to a voice channel.");
+			msg.channel.send(`❌  ${lang.voice.notConnected}`);
 			return;
 		}
 
-		msg.channel.send(`🔈  Successfully disconnected from \`${channel?.name}\`.`);
+		msg.channel.send(`🔈  ${lang.voice.disconnected.replace('{channelName}', channel?.name)}`);
 		voice?.channel?.leave();
 	}
 }

@@ -1,17 +1,15 @@
-import { Message } from 'discord.js';
-import Bot from '../bot';
-import { Command, DefaultEmbed, Requirement, Setting } from '@models/index';
-import { MAX_VOLUME } from './volume';
+import { Message } from 'discord.js-light';
+
+import { Setting, searchPlatform } from '@models/settings';
+import { Command, Requirement } from '@models/command';
+import { SlashOptionType } from '@models/requests';
+import { DefaultEmbed } from '@models/embed';
+import { languageDefs } from '@models/locales';
 import { ucFirst } from '@utils/functions';
+import { MAX_VOLUME } from './volume';
+import Bot from '../bot';
 
-import fs from 'fs';
-import { join } from 'path';
-const path = process.cwd();
-
-let languages: Array<string> = [];
-
-const files = fs.readdirSync(join(path, 'src/config/lang'));
-languages = files.map((g) => g.replace('.json', ''));
+const ROLE_MENTION = /(<@&)([0-9]{18})(>)/;
 
 export class Settings implements Command {
 	name = 'settings';
@@ -19,80 +17,69 @@ export class Settings implements Command {
 	usage = 'settings [setting to change] [new value of the setting]';
 	aliases = ['set'];
 	requirements: Requirement[] = ['ROLE'];
-	// options = [
-	// 	{
-	// 		type: SlashOptionType.STRING,
-	// 		name: 'setting',
-	// 		description: 'The prefix for the current server.',
-	// 		choices: [
-	// 			{
-	// 				name: 'prefix',
-	// 				value: 'prefix',
-	// 			},
-	// 		],
-	// 	},
-	// 	{
-	// 	}
-	// ];
+	options = [
+		{
+			type: SlashOptionType.STRING,
+			name: 'setting',
+			description: 'The setting to change.',
+			choices: [
+				{
+					name: 'Prefix',
+					value: 'prefix',
+				},
+				{
+					name: 'Volume',
+					value: 'volume',
+				},
+				{
+					name: 'Language',
+					value: 'language',
+				},
+				{
+					name: 'Role',
+					value: 'role',
+				},
+				{
+					name: 'Searchplatform',
+					value: 'search_platform',
+				},
+			],
+		},
+		{
+			type: SlashOptionType.STRING,
+			name: 'value',
+			description: 'The new value of the setting.',
+		},
+	];
 
 	client;
 	constructor(client: Bot) {
 		this.client = client;
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>): void {
 		if (args.length < 1) {
-			const settings = this.client.settings.get(msg.guild!.id);
-			const embed = new DefaultEmbed(msg.author);
-
-			embed.setTitle(`🛠️  Current settings for \`${msg.guild!.name}\``);
-
-			const role = msg.guild?.roles.resolve(settings.role)?.toString() ?? 'None';
-
-			embed.addFields(
-				{
-					name: 'Prefix',
-					value: `\`${settings.prefix}\``,
-					inline: true,
-				},
-				{
-					name: 'Language',
-					value: `${settings.language}`,
-					inline: true,
-				},
-				{
-					name: 'Search platform',
-					value: `${ucFirst(settings.search_platform)}`,
-					inline: true,
-				},
-				{
-					name: 'Role',
-					value: `${role}`,
-					inline: true,
-				},
-				{
-					name: 'Volume',
-					value: `${settings.volume}%`,
-					inline: true,
-				}
-			);
-
-			msg.channel.send({ allowedMentions: { users: [] }, embed });
+			msg.channel.send(this.getSettingsEmbed(msg));
 			return;
 		}
 
-		const input = args[0] as Setting;
-		if (Object.values(Setting).includes(input)) {
+		const input = args[0].toLocaleLowerCase();
+
+		const choices = this.options[0].choices!;
+		const foundOption = choices.find((option) => option.name.toLocaleLowerCase() === input);
+
+		if (foundOption) {
 			if (args.length < 2) {
 				msg.channel.send('Please re-enter with a new value.');
 				return;
 			}
 
-			let value: string | number = args[1];
+			let pretty = args[1].toLowerCase();
+			let value: string | number = pretty;
 
 			switch (input) {
 				case Setting.Volume:
-					value = parseInt(value.replace('%', ''));
+					value = parseInt(pretty.replace('%', ''));
 					if (isNaN(value) || value < 0 || value > MAX_VOLUME) {
 						msg.channel.send(
 							`❌  That is not a valid number. Please specify a number between 0% - ${MAX_VOLUME}%.`
@@ -100,23 +87,87 @@ export class Settings implements Command {
 						return;
 					}
 
+					pretty = value + '%';
 					break;
 
 				case Setting.Language:
-					if (!languages.includes(value)) {
+					const lang = languageDefs.find((lang) => lang.name === value);
+
+					if (!lang) {
 						msg.channel.send('❌  That is not a valid language.');
 						return;
+					}
+
+					value = lang.value;
+					pretty = lang.name;
+					break;
+
+				case Setting.Role:
+					const match = value.match(ROLE_MENTION);
+
+					if (!match) {
+						if (value === 'none') {
+							value = 0;
+						} else {
+							msg.channel.send('❌  That is not a valid role.');
+							return;
+						}
+					} else {
+						value = match[2];
+						pretty = msg.guild?.roles.resolve(value)?.toString() ?? 'None';
 					}
 
 					break;
 			}
 
-			this.client.settings.set(msg.guild!.id, input, value);
+			this.client.settings.set(msg.guild?.id ?? '', input as Setting, value);
 
-			msg.channel.send(`✅  Set the setting \`${input}\` to \`${value}\`.`);
+			msg.channel.send(`✅  Set the setting \`${input}\` to ${pretty}.`, {
+				allowedMentions: { users: [] },
+			});
 			return;
 		}
 
 		msg.channel.send('❌  That is not a valid setting.');
+	}
+
+	private getSettingsEmbed(msg: Message) {
+		const settings = this.client.settings.get(msg.guild?.id);
+		const embed = new DefaultEmbed(msg.author);
+
+		embed.setTitle(`🛠️  Current settings for \`${msg.guild?.name ?? 'Unknown guild'}\``);
+
+		const role = msg.guild?.roles.resolve(settings.role)?.toString() ?? 'None';
+		const language = languageDefs.find((lang) => lang.value === settings.language);
+
+		embed.addFields(
+			{
+				name: 'Prefix',
+				value: `\`${settings.prefix}\``,
+				inline: true,
+			},
+			{
+				name: 'Language',
+				value: `${ucFirst(language?.name ?? '')}`,
+				inline: true,
+			},
+			{
+				name: 'Search platform',
+				value: `${ucFirst(settings.search_platform)}`,
+				inline: true,
+			},
+			{
+				name: 'Role',
+				value: `${role}`,
+				inline: true,
+			},
+			{
+				name: 'Volume',
+				value: `${settings.volume}%`,
+				inline: true,
+			}
+		);
+
+		return { allowedMentions: { users: [] }, embed };
 	}
 }

@@ -1,8 +1,8 @@
 import { Message } from 'discord.js-light';
-import Bot from '../bot';
-import { Command, Requirement } from '@models/index';
 
+import { Command, Requirement } from '@models/command';
 import { Play } from './index';
+import Bot from '../bot';
 
 export class PlaySkip implements Command {
 	name = 'playskip';
@@ -18,7 +18,7 @@ export class PlaySkip implements Command {
 		this.play = new Play(client).run;
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>): void {
 		this.play(msg, args, true);
 	}
 }

@@ -1,5 +1,6 @@
-import { Message } from 'discord.js';
-import { Command } from '@models/index';
+import { Message } from 'discord.js-light';
+
+import { Command } from '@models/command';
 
 export class Invite implements Command {
 	name = 'invite';
@@ -7,7 +8,7 @@ export class Invite implements Command {
 	usage = 'invite';
 	aliases = ['inv'];
 
-	public run(msg: Message) {
+	public run(msg: Message): void {
 		msg.client
 			.generateInvite({
 				permissions: ['CONNECT', 'SPEAK', 'SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],

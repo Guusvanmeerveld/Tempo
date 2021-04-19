@@ -1,8 +1,11 @@
 import { Client, Collection } from 'discord.js-light';
-import { QueueList, Command } from './models';
+import WebSocket from 'ws';
+
+import { Command } from '@models/command';
+import { QueueList } from '@models/queue';
 import Console from '@utils/console';
-import lang from '@utils/language';
 import Settings from '@utils/settings';
+import Locales from '@utils/locales';
 
 import * as commands from './commands';
 
@@ -10,13 +13,13 @@ import Spotify from '@utils/requests/spotify';
 import Youtube from '@utils/requests/youtube';
 import SoundCloud from '@utils/requests/soundcloud';
 
-import WebSocket from 'ws';
 import Socket from './socket';
 
 export default class Bot extends Client {
 	public settings: Settings;
 	public commands: Collection<string, Command>;
 	public queues: Collection<string, QueueList>;
+	public locales: Locales;
 
 	public socket?: WebSocket;
 
@@ -38,6 +41,7 @@ export default class Bot extends Client {
 
 		if (process.env.WEBSOCKET_URL) this.socket = new Socket(this);
 		this.settings = new Settings();
+		this.locales = new Locales(this);
 
 		this.request = {
 			spotify: new Spotify(),
@@ -58,8 +62,11 @@ export default class Bot extends Client {
 		Console.info('Starting the bot');
 
 		this.on('ready', () => {
-			this.user!.setActivity(lang.bot.activity.text ?? '', {
-				type: 'LISTENING',
+			if (!this.user) return;
+			const lang = this.locales.getFromLocale('en-US');
+
+			this.user.setActivity(lang.bot.activity.name, {
+				type: lang.bot.activity.type,
 			});
 		});
 

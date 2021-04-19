@@ -1,0 +1,18 @@
+{
+    "commands": [
+        {
+            "name": "seek",
+            "description": "Skip to a certain part of the song that is currently playing"
+        }
+    ],
+    "voice": {
+        "notConnected": "I am not connected to a voice channel.",
+        "disconnected": "Successfully disconnected from `{channelName}`."
+    },
+    "bot": {
+        "activity": {
+            "name": "-help",
+            "type": "LISTENING"
+        }
+    }
+}

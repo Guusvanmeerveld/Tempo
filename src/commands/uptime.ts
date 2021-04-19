@@ -1,7 +1,7 @@
-import { Command } from '@models/index';
-
 import humanizeDuration from 'humanize-duration';
-import { Message } from 'discord.js';
+import { Message } from 'discord.js-light';
+
+import { Command } from '@models/command';
 import Bot from '../bot';
 
 export class Uptime implements Command {
@@ -15,7 +15,7 @@ export class Uptime implements Command {
 		this.client = client;
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message): void {
 		const time = humanizeDuration(this.client.uptime ?? 0);
 
 		msg.channel.send(`🕧  Shard \`${msg.guild?.shardID ?? 0}\` has been online for ${time}.`);

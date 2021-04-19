@@ -1,6 +1,7 @@
+import { Message } from 'discord.js-light';
+
+import { Command, Requirement } from '@models/command';
 import { checkConnection } from '@utils/functions';
-import { Message } from 'discord.js';
-import { Command, Requirement } from '@models/index';
 
 export class Pause implements Command {
 	name = 'pause';
@@ -8,11 +9,12 @@ export class Pause implements Command {
 	usage = 'pause';
 	description = 'Pause or play the music';
 
-	run(msg: Message) {
+	run(msg: Message): void {
 		const { connection, connected, error } = checkConnection(msg.guild?.voice?.connection);
 
 		if (connected) {
-			const dispatcher = connection?.dispatcher!;
+			const dispatcher = connection?.dispatcher;
+			if (!dispatcher) return;
 
 			const paused = dispatcher.paused;
 

@@ -10,9 +10,16 @@ const request = axios.create({
 	},
 });
 
+interface BasicSongInfo {
+	lyrics?: string;
+	url: string;
+	title: string;
+	image: string;
+}
+
 export default class Genius {
-	public static async search(entry: string) {
-		const { data } = await request(`/search`, {
+	public static async search(entry: string): Promise<BasicSongInfo> {
+		const { data } = await request('/search', {
 			params: {
 				q: entry,
 			},

@@ -1,6 +1,7 @@
-import { checkConnection } from '@utils/functions';
 import { Message } from 'discord.js-light';
-import { Command, Requirement } from '@models/index';
+
+import { Command, Requirement } from '@models/command';
+import { checkConnection } from '@utils/functions';
 
 export class Stop implements Command {
 	name = 'stop';
@@ -9,11 +10,12 @@ export class Stop implements Command {
 	requirements: Requirement[] = ['VOICE', 'ROLE'];
 	aliases = ['st'];
 
-	run(msg: Message) {
+	run(msg: Message): void {
 		const { connection, connected, error } = checkConnection(msg.guild?.voice?.connection);
 
 		if (connected) {
-			const dispatcher = connection?.dispatcher!;
+			const dispatcher = connection?.dispatcher;
+			if (!dispatcher) return;
 
 			if (dispatcher.paused) {
 				msg.channel.send('⏸️  Already stopped.');

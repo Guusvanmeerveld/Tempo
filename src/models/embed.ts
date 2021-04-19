@@ -1,5 +1,6 @@
 import { EmbedField, MessageEmbed, User } from 'discord.js-light';
 import humanizeDuration from 'humanize-duration';
+
 import { chunk, abbreviate, ucFirst } from '@utils/functions';
 import { Song } from './song';
 

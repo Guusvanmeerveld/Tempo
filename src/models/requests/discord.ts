@@ -1,3 +1,5 @@
+import { MessageEmbed } from 'discord.js-light';
+
 export interface InteractionCreate {
 	version: number;
 	type: number;
@@ -45,10 +47,12 @@ interface User {
 
 export interface InteractionCallback {
 	type: number;
-	data: {
-		embeds?: Array<any>;
-		content?: string;
-	};
+	data: InteractionCallbackData;
+}
+
+export interface InteractionCallbackData {
+	embeds?: Array<MessageEmbed>;
+	content?: string;
 }
 
 export interface SlashCommand {

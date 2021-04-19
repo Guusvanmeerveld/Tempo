@@ -1,7 +1,9 @@
-import { Message } from 'discord.js';
-import { EmbedField } from 'discord.js-light';
+import { Message, EmbedField } from 'discord.js-light';
+
+import { Command, Requirement } from '@models/command';
+import { PaginatedEmbed } from '@models/embed';
+import { Song } from '@models/song';
 import Bot from '../bot';
-import { Command, PaginatedEmbed, Requirement, Song } from '@models/index';
 
 export class Queue implements Command {
 	name = 'queue';
@@ -15,8 +17,8 @@ export class Queue implements Command {
 		this.client = client;
 	}
 
-	run(msg: Message, args: Array<string>) {
-		const queue = this.client.queues.get(msg.guild!.id);
+	run(msg: Message, args: Array<string>): void {
+		const queue = this.client.queues.get(msg.guild?.id ?? '');
 
 		if (!queue) return;
 
@@ -27,7 +29,7 @@ export class Queue implements Command {
 
 		let fields: Array<EmbedField> = [];
 		if (queue.songs.length > 0) {
-			fields = queue.songs.map((song: Song, i) => {
+			fields = queue.songs.map((song: Song, i: number) => {
 				return {
 					name: `#${i + 1} ${song.title}`,
 					value: 'Requested by ' + song.requested?.toString() ?? 'Unknown user',

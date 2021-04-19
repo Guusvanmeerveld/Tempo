@@ -1,6 +1,6 @@
 const youtubeToken = process.env.YOUTUBE;
 
-import { Song } from '@models/index';
+import { Song } from '@models/song';
 import { YoutubeVideoAPI } from '@models/requests';
 
 import axios from 'axios';
@@ -31,7 +31,7 @@ export default class Youtube {
 		return data;
 	}
 
-	public async playlist(id: string) {
+	public async playlist(id: string): Promise<unknown> {
 		const { data } = await request('playlists', {
 			params: {
 				part: 'snippet',

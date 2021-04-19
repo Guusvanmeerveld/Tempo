@@ -1,6 +1,8 @@
 import { Message } from 'discord.js-light';
+
+import { Command, Requirement } from '@models/command';
+import { Setting } from '@models/settings';
 import Bot from '../bot';
-import { Command, Requirement, Setting } from '@models/index';
 
 export const MAX_VOLUME = 1000;
 
@@ -16,7 +18,7 @@ export class Volume implements Command {
 		this.client = client;
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>): void {
 		const volume = parseInt(args[0]?.replace('%', ''));
 
 		if (isNaN(volume) || volume < 0 || volume > MAX_VOLUME) {
@@ -27,7 +29,7 @@ export class Volume implements Command {
 		}
 
 		if (!volume) {
-			const settings = this.client.settings.get(msg.guild!.id);
+			const settings = this.client.settings.get(msg.guild?.id);
 
 			msg.channel.send(`The volume is set to ${settings.volume}%`);
 		}
@@ -38,7 +40,7 @@ export class Volume implements Command {
 			dispatcher.setVolume(volume / 100);
 		}
 
-		this.client.settings.set(msg.guild!.id, Setting.Volume, volume);
+		this.client.settings.set(msg.guild?.id ?? '', Setting.Volume, volume);
 		msg.channel.send(`🔊  Set the volume to \`${volume}%\``);
 	}
 }

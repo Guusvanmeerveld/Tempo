@@ -1,9 +1,10 @@
-import { Message } from 'discord.js';
-import Bot from '../bot';
-import { Command, DefaultEmbed } from '@models/index';
-import Console from '@utils/console';
+import { Message } from 'discord.js-light';
 
+import { Command } from '@models/command';
+import { DefaultEmbed } from '@models/embed';
 import Genius from '@utils/requests/genius';
+import Console from '@utils/console';
+import Bot from '../bot';
 
 export class Lyrics implements Command {
 	name = 'lyrics';
@@ -16,11 +17,11 @@ export class Lyrics implements Command {
 		this.client = client;
 	}
 
-	run(msg: Message, args: Array<string>) {
+	run(msg: Message, args: Array<string>): void {
 		let entry: string;
 
 		if (args.length < 1) {
-			const queue = this.client.queues.get(msg.guild!.id);
+			const queue = this.client.queues.get(msg.guild?.id ?? '');
 			if (!queue?.playing) {
 				msg.channel.send('Please enter a song name to search for.');
 				return;

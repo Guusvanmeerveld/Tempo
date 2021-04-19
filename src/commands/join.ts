@@ -1,5 +1,6 @@
-import { Command, Requirement } from '@models/index';
 import { VoiceChannel, Message } from 'discord.js-light';
+
+import { Command, Requirement } from '@models/command';
 import Bot from '../bot';
 
 export class Join implements Command {
@@ -17,13 +18,14 @@ export class Join implements Command {
 	public async run(msg: Message): Promise<boolean | void> {
 		const channel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
 
-		if (channel.members.get(this.client.user!.id) && msg.guild?.voice?.connection) {
+		if (channel.members.get(this.client.user?.id ?? '') && msg.guild?.voice?.connection) {
 			const voiceChannel = (await msg.guild?.voice?.channel?.fetch()) as VoiceChannel;
 			msg.channel.send(`🔈  Connected to \`${voiceChannel.name}\``);
 			return true;
 		}
 
-		const user = msg.client.user!;
+		const user = msg.client.user;
+		if (!user) return;
 
 		const channelPerms = channel?.permissionsFor(user);
 

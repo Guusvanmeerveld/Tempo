@@ -186,21 +186,6 @@ interface Media {
 	transcodings: Transcoding[];
 }
 
-interface Format {
-	protocol: Protocol;
-	mime_type: MIMEType;
-}
-
-enum MIMEType {
-	AudioMPEG = 'audio/mpeg',
-	AudioOggCodecsOpus = 'audio/ogg; codecs="opus"',
-}
-
-enum Protocol {
-	HLS = 'hls',
-	Progressive = 'progressive',
-}
-
 enum MonetizationModel {
 	Blackbox = 'BLACKBOX',
 	NotApplicable = 'NOT_APPLICABLE',
@@ -227,9 +212,4 @@ interface Badges {
 	pro: boolean;
 	pro_unlimited: boolean;
 	verified: boolean;
-}
-
-enum ID {
-	CreatorProUnlimited = 'creator-pro-unlimited',
-	Free = 'free',
 }

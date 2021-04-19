@@ -1,12 +1,11 @@
 import { Guild, Message, TextChannel, GuildChannel, VoiceState } from 'discord.js-light';
-
-import { prefix } from '@config/settings.json';
-
-import Bot from './bot';
 import Long from 'long';
+
+// import { InteractionCreate } from '@models/requests';
+import { prefix } from '@config/settings.json';
+import { DefaultEmbed } from '@models/embed';
 import Console from '@utils/console';
-import { DefaultEmbed } from '@models/index';
-import { InteractionCreate } from '@models/requests';
+import Bot from './bot';
 
 export default class Events {
 	private client: Bot;
@@ -23,7 +22,7 @@ export default class Events {
 		if (
 			msg.partial ||
 			msg.system ||
-			msg.author.id === msg.client.user!.id ||
+			msg.author.id === msg.client.user?.id ||
 			msg.author.bot ||
 			!msg.guild ||
 			!msg.content
@@ -38,7 +37,8 @@ export default class Events {
 		}
 
 		const channel = (await msg.channel.fetch()) as TextChannel;
-		const user = this.client.user!;
+		const user = this.client.user;
+		if (!user) return;
 
 		const channelPerms = channel.permissionsFor(user);
 
@@ -47,7 +47,7 @@ export default class Events {
 		}
 
 		const args: Array<string> = msg.content.slice(settings.prefix.length).split(/ +/);
-		const commandInput: string = args.shift()!.toLowerCase();
+		const commandInput: string = args.shift()?.toLowerCase() ?? '';
 
 		const command =
 			this.client.commands.get(commandInput) ||
@@ -80,15 +80,15 @@ export default class Events {
 			this.error(error);
 		}
 
-		if (!this.client.queues.has(msg.guild!.id))
-			this.client.queues.set(msg.guild!.id, { songs: [], loop: false });
+		if (!this.client.queues.has(msg.guild?.id))
+			this.client.queues.set(msg.guild.id, { songs: [], loop: false });
 	}
 
 	/**
 	 * Runs when the bot encounters an error
 	 * @param error - The error that occured
 	 */
-	public error(error: Object) {
+	public error(error: unknown): void {
 		this.client.users
 			.fetch(process.env.OWNER ?? '')
 			.then((owner) => owner.send('```json\n' + error + '```'));
@@ -99,7 +99,8 @@ export default class Events {
 	 * @param guild - The guild the bot has joined
 	 */
 	public async guildJoin(guild: Guild): Promise<void> {
-		const user = guild.client.user!;
+		const user = guild.client.user;
+		if (!user) return;
 
 		const channels = await guild.channels.fetch();
 
@@ -156,9 +157,9 @@ export default class Events {
 		(mainChannel as TextChannel).send(embed);
 	}
 
-	public slash(interaction: InteractionCreate) {
-		// Discord.interactions(interaction.id, interaction.token, {});
-	}
+	// public slash(interaction: InteractionCreate) {
+	//  Discord.interactions(interaction.id, interaction.token, {});
+	// }
 
 	/**
 	 * Runs when there is a voice state update

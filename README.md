@@ -29,7 +29,7 @@ services:
 ```
 You can also install Tempo using the following commands:
 ```
-git clone https://github.com/guusvanmeerveld/tempo/
+git clone https://github.com/guusvanmeerveld/tempo/ tempo
 cd tempo
 npm install
 npm run build

@@ -1,12 +1,14 @@
-require('dotenv').config();
+import { config } from 'dotenv';
+config();
+
+// import { WSEventType } from 'discord.js-light';
+
+import Events from './events';
+import Bot from './bot';
+
 if (process.env.NODE_ENV !== 'production') console.clear();
 
 const discordToken = process.env.DISCORD;
-import Events from './events';
-
-import Bot from './bot';
-import { WSEventType } from 'discord.js-light';
-
 const bot = new Bot();
 
 bot.start(discordToken);
@@ -18,4 +20,4 @@ bot.on('guildCreate', (guild) => events.guildJoin(guild));
 bot.on('error', (err) => events.error(err));
 bot.on('voiceStateUpdate', (oldState, newState) => events.voice(oldState, newState));
 
-bot.ws.on('INTERACTION_CREATE' as WSEventType, (interaction) => events.slash(interaction));
+// bot.ws.on('INTERACTION_CREATE' as WSEventType, (interaction) => events.slash(interaction));

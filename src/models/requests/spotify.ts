@@ -77,7 +77,7 @@ export interface SpotifyAlbumAPI {
 	copyrights: Copyright[];
 	external_ids: ExternalIDS;
 	external_urls: ExternalUrls;
-	genres: any[];
+	genres: string[];
 	href: string;
 	id: string;
 	images: Image[];
