@@ -10,9 +10,9 @@
 	"scripts": {
 		"pretify": "prettier --write .",
 		"lint": "eslint src",
-		"update": "ts-node-dev src/slash",
 		"dev": "ts-node-dev -r tsconfig-paths/register src/start.ts",
 		"dev-full": "ts-node-dev src",
+		"test-build": "tsc --noEmit",
 		"build": "tsc",
 		"start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register . --production"
 	},

@@ -18,6 +18,6 @@ jobs:
       - name: Install all dependecies
         run: yarn install
       - name: Compile Typescript to JavaScript
-        run: yarn build
+        run: yarn test-build
       - name: ESlint check
         run: yarn lint
