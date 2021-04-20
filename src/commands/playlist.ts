@@ -28,6 +28,7 @@ export class PlayList implements Command {
 				msg.channel.send(
 					'❌  Something went wrong looking up that playlist/album. Please try again later.'
 				);
+
 				return;
 			}
 
@@ -93,6 +94,7 @@ export class PlayList implements Command {
 					platform: 'spotify',
 					url: g.external_urls.spotify,
 					length: g.duration_ms,
+					stats: {},
 				};
 			});
 

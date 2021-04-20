@@ -45,17 +45,17 @@ export class SongEmbed extends DefaultEmbed {
 			},
 			{
 				name: 'Streams',
-				value: abbreviate(song?.views ?? 0),
+				value: abbreviate(song?.stats.views ?? 0),
 				inline: true,
 			}
 		);
 
-		if (song?.likes) {
-			this.addField('Likes', abbreviate(song?.likes ?? 0), true);
+		if (song?.stats.likes) {
+			this.addField('Likes', abbreviate(song?.stats.likes ?? 0), true);
 		}
 
-		if (song?.dislikes) {
-			this.addField('Dislikes', abbreviate(song?.dislikes ?? 0), true);
+		if (song?.stats.dislikes) {
+			this.addField('Dislikes', abbreviate(song?.stats.dislikes ?? 0), true);
 		}
 	}
 }

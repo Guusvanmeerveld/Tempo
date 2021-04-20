@@ -10,9 +10,12 @@ export interface Song {
 	date: Date;
 	url: string;
 	length: number;
-	views?: number;
-	likes?: number;
-	dislikes?: number;
+	started?: number;
+	stats: {
+		views?: number;
+		likes?: number;
+		dislikes?: number;
+	};
 	download?: string;
 	requested?: User;
 }

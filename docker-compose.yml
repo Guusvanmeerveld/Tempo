@@ -16,5 +16,5 @@ services:
     container_name: tempo-db
     restart: always
     environment:
-      POSTGRES_PASSWORD: t3mpoisl1t
+      POSTGRES_PASSWORD: tempo
       POSTGRES_USER: tempo

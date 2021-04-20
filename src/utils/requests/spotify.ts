@@ -120,7 +120,9 @@ export default class Spotify {
 			platform: 'spotify',
 			title: song.name,
 			length: song.duration_ms,
-			// views: song,
+			stats: {
+				// views: song,
+			},
 		};
 	}
 }

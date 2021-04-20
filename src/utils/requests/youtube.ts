@@ -93,11 +93,13 @@ export default class Youtube {
 			author: snippet.channelTitle,
 			image: snippet.thumbnails.high.url,
 			date: new Date(snippet.publishedAt),
-			views: parseInt(statistics.viewCount),
-			likes: parseInt(statistics.likeCount),
-			dislikes: parseInt(statistics.dislikeCount),
 			url: `https://youtu.be/${video.id}`,
 			length: ytDurationToMs(contentDetails.duration),
+			stats: {
+				views: parseInt(statistics.viewCount),
+				likes: parseInt(statistics.likeCount),
+				dislikes: parseInt(statistics.dislikeCount),
+			},
 		};
 	}
 }

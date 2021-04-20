@@ -87,6 +87,11 @@ export class Play implements Command {
 			return;
 		}
 
+		song = {
+			...song,
+			started: Date.now() - (seek ?? 0) * 1000,
+		};
+
 		queue.playing = song;
 
 		let stream: Readable | string;

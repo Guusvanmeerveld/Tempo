@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # Set workdir
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy files to workdir
 COPY ["package.json", "yarn.lock*", "package-lock.json*", "tsconfig.json*", "npm-shrinkwrap.json*", "./"]
