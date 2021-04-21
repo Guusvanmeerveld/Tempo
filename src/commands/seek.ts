@@ -40,7 +40,8 @@ export class Seek implements Command {
 				}
 
 				msg.channel.send(`⏩  Successfully skipped to \`${HumanizeDuration(ms)}\`.`);
-				this.player.play(msg, song, ms / 1000);
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				this.player.play(msg.guild!, song, ms / 1000);
 			} else {
 				msg.channel.send('❌  You must give a timestamp to skip to.');
 			}

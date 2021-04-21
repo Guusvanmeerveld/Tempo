@@ -42,7 +42,8 @@ export class Skip implements Command {
 			}
 
 			msg.channel.send('⏩  Successfully skipped the song.');
-			this.player.play(msg, queue.songs[count - 1]);
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			this.player.play(msg.guild!, queue.songs[count - 1]);
 			queue?.songs.splice(0, count);
 		}
 	}
