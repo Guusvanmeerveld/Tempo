@@ -1,19 +1,22 @@
-import { Message } from 'discord.js-light';
+import { Guild, Message, MessageReaction } from 'discord.js-light';
 import { Readable } from 'node:stream';
 import ytdl from 'ytdl-core';
-import Bot from '../bot';
 
 import { Command, Requirement } from '@models/command';
 import { Convert } from '@utils/requests';
 import { SongEmbed } from '@models/embed';
+import Reactions from '@utils/reactions';
 import { Song } from '@models/song';
 import Console from '@utils/console';
 import { Join } from './join';
+import Bot from '../bot';
 
 const YOUTUBE = /^(https?:\/\/)?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/.+$/g;
 const SOUNDCLOUD = /^https?:\/\/(soundcloud\.com)\/(.*)$/g;
 const SPOTIFY = /^https?:\/\/(open\.spotify\.com\/track)\/(.*)$/g;
 // const AUDIO = /^\.(?:wav|mp3)$/g;
+
+const emojis = ['⏪', '⏯️', '⏩'];
 
 export class Play implements Command {
 	name = 'play';
@@ -24,9 +27,11 @@ export class Play implements Command {
 
 	client;
 	join;
+	reactions;
 	constructor(client: Bot) {
 		this.client = client;
 		this.join = new Join(client).run;
+		this.reactions = new Reactions(emojis);
 	}
 
 	/**
@@ -61,9 +66,13 @@ export class Play implements Command {
 					return;
 				}
 
-				msg.channel.send('🎵  Now playing:', { embed });
+				msg.channel.send('🎵  Now playing:', embed).then((msg) =>
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+					this.reactions.listen(msg, (reaction) => this.reactionPlayer(reaction, msg.guild!))
+				);
 
-				this.play(msg, song);
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				this.play(msg.guild!, song);
 			})
 			.catch((error) => {
 				Console.error(error);
@@ -72,18 +81,41 @@ export class Play implements Command {
 			});
 	}
 
+	private reactionPlayer(reaction: MessageReaction, guild: Guild) {
+		const currentPlaying = this.client.queues.get(guild.id)?.playing;
+		const playingFor = (Date.now() - (currentPlaying?.started ?? 0)) / 1000;
+
+		switch (reaction.emoji.name) {
+			case '⏪':
+				this.play(guild, currentPlaying, playingFor - 10);
+
+				break;
+			case '⏯️':
+				const dispatcher = guild.voice?.connection?.dispatcher;
+
+				if (dispatcher) {
+					if (dispatcher.paused) dispatcher.resume();
+					else dispatcher.pause();
+				}
+				break;
+			case '⏩':
+				this.play(guild, currentPlaying, playingFor + 10);
+				break;
+		}
+	}
+
 	/**
 	 * Determine the platform and stream the song.
 	 * @param msg
 	 * @param client
 	 * @param song
 	 */
-	public async play(msg: Message, song: Song | undefined, seek?: number): Promise<void> {
-		const queue = this.client.queues.get(msg.guild?.id ?? '');
+	public async play(guild: Guild, song: Song | undefined, seek?: number): Promise<void> {
+		const queue = this.client.queues.get(guild.id);
 		if (!queue) return;
 
 		if (!song) {
-			msg.guild?.voice?.channel?.leave();
+			guild?.voice?.channel?.leave();
 			return;
 		}
 
@@ -100,12 +132,12 @@ export class Play implements Command {
 				stream = await this.client.request.soundcloud.download(song.download);
 
 				if (!stream) {
-					msg.channel.send('❌  Soundcloud song does not have a downloadable url');
+					// msg.channel.send('❌  Soundcloud song does not have a downloadable url');
 				}
 				break;
 		}
 
-		this.stream(msg, stream, seek);
+		this.stream(guild, stream, seek);
 	}
 
 	/**
@@ -114,20 +146,20 @@ export class Play implements Command {
 	 * @param client
 	 * @param stream
 	 */
-	private stream(msg: Message, stream: Readable | string, seek?: number) {
-		if (msg.guild?.voice?.connection) {
-			const connection = msg.guild.voice.connection;
+	private stream(guild: Guild, stream: Readable | string, seek?: number) {
+		if (guild.voice?.connection) {
+			const connection = guild.voice.connection;
 
-			const settings = this.client.settings.get(msg.guild.id);
+			const settings = this.client.settings.get(guild.id);
 			const volume = settings.volume;
 
 			connection.play(stream, { volume: volume / 100, seek }).on('finish', () => {
-				const queue = this.client.queues.get(msg.guild?.id ?? '');
+				const queue = this.client.queues.get(guild?.id ?? '');
 
 				if (!queue) return;
 
 				if (queue.loop) {
-					this.play(msg, queue.playing);
+					this.play(guild, queue.playing);
 					return;
 				}
 
@@ -135,12 +167,12 @@ export class Play implements Command {
 					const newSong = queue.songs.shift() as Song;
 
 					queue.playing = newSong;
-					this.play(msg, newSong);
+					this.play(guild, newSong);
 
 					return;
 				}
 
-				msg.guild?.voice?.channel?.leave();
+				guild.voice?.channel?.leave();
 			});
 		}
 	}
@@ -191,7 +223,9 @@ export class Play implements Command {
 			if (!first) return;
 
 			await this.join(msg);
-			this.stream(msg, first.attachment.toString());
+
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			this.stream(msg.guild!, first.attachment.toString());
 			msg.channel.send('🎵  Now playing');
 			return;
 		}
