@@ -52,8 +52,9 @@ export default class Bot extends Client {
 		this.on('ready', () => {
 			if (!this.user) return;
 			const lang = this.locales.getFromLocale('en-US');
+			const activity = lang.bot.activity.name.replace('{username}', this.user.username);
 
-			this.user.setActivity(lang.bot.activity.name, {
+			this.user.setActivity(activity, {
 				type: lang.bot.activity.type,
 			});
 		});

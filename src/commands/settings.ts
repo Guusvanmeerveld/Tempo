@@ -1,6 +1,6 @@
 import { Message } from 'discord.js-light';
 
-import { Setting, searchPlatform } from '@models/settings';
+import { Setting } from '@models/settings';
 import { Command, Requirement } from '@models/command';
 import { SlashOptionType } from '@models/requests';
 import { DefaultEmbed } from '@models/embed';
@@ -13,7 +13,7 @@ const ROLE_MENTION = /(<@&)([0-9]{18})(>)/;
 
 export class Settings implements Command {
 	name = 'settings';
-	description = 'Change the way the bot behaves.';
+	description = 'Change the way the bot behaves in this server.';
 	usage = 'settings [setting to change] [new value of the setting]';
 	aliases = ['set'];
 	requirements: Requirement[] = ['ROLE'];

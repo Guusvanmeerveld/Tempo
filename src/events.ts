@@ -30,6 +30,16 @@ export default class Events {
 			return;
 		}
 
+		const user = this.client.user;
+		if (!user) return;
+
+		if (msg.mentions.has(user)) {
+			const help = this.client.commands.get('help');
+			help?.run(msg, []);
+
+			return;
+		}
+
 		const settings = this.client.settings.get(msg.guild.id);
 
 		if (!msg.content.startsWith(settings.prefix)) {
@@ -37,9 +47,6 @@ export default class Events {
 		}
 
 		const channel = (await msg.channel.fetch()) as TextChannel;
-		const user = this.client.user;
-		if (!user) return;
-
 		const channelPerms = channel.permissionsFor(user);
 
 		if (!channelPerms?.has('SEND_MESSAGES') || !channelPerms?.has('EMBED_LINKS')) {
