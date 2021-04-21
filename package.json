@@ -19,7 +19,7 @@
 	"author": "Guus van Meerveld",
 	"license": "MIT",
 	"dependencies": {
-		"@discordjs/opus": "^0.4.0",
+		"@discordjs/opus": "^0.5.0",
 		"axios": "^0.21.1",
 		"bufferutil": "^4.0.3",
 		"chalk": "^4.1.0",
