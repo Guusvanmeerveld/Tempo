@@ -9,9 +9,7 @@ import Locales from '@utils/locales';
 
 import * as commands from './commands';
 
-import Spotify from '@utils/requests/spotify';
-import Youtube from '@utils/requests/youtube';
-import SoundCloud from '@utils/requests/soundcloud';
+import Request from '@utils/requests/';
 
 import Socket from './socket';
 
@@ -23,11 +21,7 @@ export default class Bot extends Client {
 
 	public socket?: WebSocket;
 
-	public request: {
-		spotify: Spotify;
-		youtube: Youtube;
-		soundcloud: SoundCloud;
-	};
+	public request = new Request();
 
 	constructor() {
 		super({
@@ -42,12 +36,6 @@ export default class Bot extends Client {
 		if (process.env.WEBSOCKET_URL) this.socket = new Socket(this);
 		this.settings = new Settings();
 		this.locales = new Locales(this);
-
-		this.request = {
-			spotify: new Spotify(),
-			youtube: new Youtube(),
-			soundcloud: new SoundCloud(),
-		};
 
 		this.commands = new Collection();
 		this.queues = new Collection();

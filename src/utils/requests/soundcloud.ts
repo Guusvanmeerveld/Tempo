@@ -1,6 +1,5 @@
 const soundcloudToken = process.env.SOUNDCLOUD;
 
-import { Song } from '@models/song';
 import { SoundCloudSearchAPI, SoundCloudTrackAPI } from '@models/requests';
 
 import axios from 'axios';
@@ -13,24 +12,24 @@ const request = axios.create({
 
 export default class SoundCloud {
 	public async track(url: string): Promise<SoundCloudTrackAPI> {
-		return (
-			await request('/resolve', {
-				params: {
-					url,
-				},
-			})
-		).data;
+		const { data } = await request('/resolve', {
+			params: {
+				url,
+			},
+		});
+
+		return data;
 	}
 
 	public async search(entry: string, limit: number): Promise<SoundCloudSearchAPI> {
-		return (
-			await request('/search/tracks', {
-				params: {
-					q: entry,
-					limit,
-				},
-			})
-		).data;
+		const { data } = await request('/search/tracks', {
+			params: {
+				q: entry,
+				limit,
+			},
+		});
+
+		return data;
 	}
 
 	public async download(url: string | undefined): Promise<Stream> {
@@ -38,24 +37,5 @@ export default class SoundCloud {
 		const downloadURL = (await request(url)).data.url;
 
 		return m3u8stream(downloadURL);
-	}
-
-	public async info(input: string): Promise<Song> {
-		const data = await this.track(input);
-
-		return {
-			platform: 'soundcloud',
-			title: data.title,
-			date: new Date(data.created_at),
-			author: data.publisher_metadata?.artist ?? 'Unknown artist',
-			image: data.artwork_url,
-			url: data.permalink_url,
-			download: data.media?.transcodings[0].url,
-			length: data.duration,
-			stats: {
-				likes: data.likes_count,
-				views: data.playback_count,
-			},
-		};
 	}
 }

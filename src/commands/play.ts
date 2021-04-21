@@ -1,10 +1,10 @@
 import { Message } from 'discord.js-light';
 import { Readable } from 'node:stream';
-import { Video } from 'ytsr';
 import ytdl from 'ytdl-core';
 import Bot from '../bot';
 
 import { Command, Requirement } from '@models/command';
+import { Convert } from '@utils/requests';
 import { SongEmbed } from '@models/embed';
 import { Song } from '@models/song';
 import Console from '@utils/console';
@@ -87,11 +87,7 @@ export class Play implements Command {
 			return;
 		}
 
-		song = {
-			...song,
-			started: Date.now() - (seek ?? 0) * 1000,
-		};
-
+		song.started = Date.now() - (seek ?? 0) * 1000;
 		queue.playing = song;
 
 		let stream: Readable | string;
@@ -157,73 +153,36 @@ export class Play implements Command {
 	private async info(msg: Message, args: Array<string>): Promise<Song> {
 		const input = args[0];
 		if (input.match(YOUTUBE)) {
-			return await this.client.request.youtube.info(input);
+			const id = this.client.request.youtube.id(input);
+			const data = await this.client.request.youtube.video(id);
+
+			return Convert.youtube(data);
 		}
 
 		if (input.match(SOUNDCLOUD)) {
-			return await this.client.request.soundcloud.info(input);
+			const song = await this.client.request.soundcloud.track(input);
+
+			return Convert.soundcloud(song);
 		}
 
 		if (input.match(SPOTIFY)) {
-			return await this.client.request.spotify.info(input);
+			const id = this.client.request.spotify.id(input);
+
+			const song = await this.client.request.spotify.get('tracks', id);
+
+			return Convert.spotify(song);
 		}
 
 		// if (input.match(AUDIO)) {
 		// }
 
-		const search = args.join(' ');
+		const searchQuery = args.join(' ');
 
-		msg.channel.send(`🔍  Searching for \`${search}\`.`);
-		return await this.search(search, msg);
-	}
-
-	/**
-	 * Search on a given platform for a user input
-	 * @param input
-	 */
-	private async search(input: string, msg: Message): Promise<Song> {
-		const notFound = (platform: string) => `I was not able to find \`${input}\` on ${platform}.`;
-
+		msg.channel.send(`🔍  Searching for \`${searchQuery}\`.`);
 		const settings = this.client.settings.get(msg.guild?.id);
 
-		let platform;
-		let results;
-		let hit;
-		switch (settings.search_platform) {
-			case 'soundcloud':
-				platform = this.client.request.soundcloud;
-				results = await platform.search(input, 1);
-
-				if (results.collection.length < 1) {
-					throw notFound('Soundcloud');
-				}
-
-				hit = results.collection[0];
-
-				return await platform.info(hit.permalink_url);
-			case 'spotify':
-				platform = this.client.request.spotify;
-				results = (await platform.search(input, 1)).tracks;
-
-				if (results.items.length < 1) {
-					throw notFound('Spotify');
-				}
-
-				hit = results.items[0];
-
-				return platform.info(hit.id);
-			default:
-				platform = this.client.request.youtube;
-				results = await platform.search(input, 1);
-
-				if (results.items.length < 1) {
-					throw notFound('Youtube');
-				}
-
-				hit = results.items[0] as Video;
-
-				return platform.info(hit?.id ?? 'Unknown');
-		}
+		const results = await this.client.request.search(searchQuery, 1, settings.search_platform);
+		return results[0];
 	}
 
 	private async playAttachment(msg: Message) {
@@ -237,7 +196,7 @@ export class Play implements Command {
 			return;
 		}
 
-		msg.channel.send('Please enter a link/search entry.');
+		msg.channel.send('❌  Please enter a link/search entry.');
 		return;
 	}
 }

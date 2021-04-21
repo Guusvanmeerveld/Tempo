@@ -1,11 +1,9 @@
 const youtubeToken = process.env.YOUTUBE;
 
-import { Song } from '@models/song';
 import { YoutubeVideoAPI } from '@models/requests';
 
 import axios from 'axios';
 import ytsr, { Result } from 'ytsr';
-import { ytDurationToMs } from '@utils/functions';
 
 const request = axios.create({
 	baseURL: 'https://www.googleapis.com/youtube/v3/',
@@ -48,7 +46,12 @@ export default class Youtube {
 	 * @param limit
 	 */
 	public async search(query: string, limit: number): Promise<Result> {
-		const data = await ytsr(query, {
+		const filters = await ytsr.getFilters(query);
+		const filteredURL = filters.get('Type')?.get('Video');
+
+		if (!filteredURL?.url) throw 'Could not find any videos';
+
+		const data = await ytsr(filteredURL.url, {
 			limit,
 		});
 
@@ -69,37 +72,5 @@ export default class Youtube {
 		match = url.match(playlist);
 
 		return url;
-	}
-
-	/**
-	 * Get info about a song on Youtube.
-	 * @param input The youtube video link
-	 */
-	public async info(input: string): Promise<Song> {
-		const id = this.id(input);
-		const data = await this.video(id);
-
-		const video = data.items[0];
-
-		if (!video) throw 'Could not find any information about this video.';
-
-		const snippet = video.snippet;
-		const statistics = video.statistics;
-		const contentDetails = video.contentDetails;
-
-		return {
-			platform: 'youtube',
-			title: snippet.title,
-			author: snippet.channelTitle,
-			image: snippet.thumbnails.high.url,
-			date: new Date(snippet.publishedAt),
-			url: `https://youtu.be/${video.id}`,
-			length: ytDurationToMs(contentDetails.duration),
-			stats: {
-				views: parseInt(statistics.viewCount),
-				likes: parseInt(statistics.likeCount),
-				dislikes: parseInt(statistics.dislikeCount),
-			},
-		};
 	}
 }

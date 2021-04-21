@@ -132,3 +132,23 @@ export function checkConnection(connection?: VoiceConnection | null): Connection
 
 	return { connected: true, connection };
 }
+
+/**
+ * Enter a time in [hh:mm:ss] format and parse it to ms.
+ * @param input The time to be parsed
+ * @returns The time in ms
+ */
+export function parseTime(input: string): number {
+	const splitted = input.split(':');
+
+	const hours = parseInt(splitted[splitted.length - 3] ?? 0);
+	const minutes = parseInt(splitted[splitted.length - 2] ?? 0);
+	const seconds = parseInt(splitted[splitted.length - 1] ?? 0);
+
+	if (minutes > 60 || seconds > 60 || hours < 0 || minutes < 0 || seconds < 0) return 0;
+
+	const hourInSeconds = hours * 60 * 60;
+	const minutesInSeconds = minutes * 60;
+
+	return (hourInSeconds + minutesInSeconds + seconds) * 1000;
+}

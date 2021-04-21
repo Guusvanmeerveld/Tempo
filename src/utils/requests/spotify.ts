@@ -5,7 +5,6 @@ const spotify = {
 
 import axios from 'axios';
 
-import { Song } from '@models/song';
 import { SpotifyAlbumAPI, SpotifySearchAPI, SpotifyTrackAPI } from '@models/requests';
 
 import Console from '@utils/console';
@@ -105,24 +104,5 @@ export default class Spotify {
 		}
 
 		return url;
-	}
-
-	public async info(url: string): Promise<Song> {
-		const id = this.id(url);
-
-		const song = await this.get('tracks', id);
-
-		return {
-			author: song.artists[0].name,
-			date: new Date(song.album.release_date),
-			url: song.external_urls.spotify,
-			image: song.album.images[0].url,
-			platform: 'spotify',
-			title: song.name,
-			length: song.duration_ms,
-			stats: {
-				// views: song,
-			},
-		};
 	}
 }

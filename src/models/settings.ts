@@ -3,7 +3,7 @@ import { localeString } from './locales';
 export interface GuildSettings {
 	prefix: string;
 	volume: number;
-	search_platform: string;
+	search_platform: searchPlatform;
 	role: string;
 	language: localeString;
 }
