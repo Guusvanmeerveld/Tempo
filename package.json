@@ -27,7 +27,7 @@
 		"discord.js-light": "3.5.3",
 		"dotenv": "^8.2.0",
 		"ffmpeg-static": "^4.2.3",
-		"humanize-duration": "^3.25.1",
+		"humanize-duration": "^3.25.2",
 		"libsodium-wrappers": "^0.7.9",
 		"lodash": "^4.17.21",
 		"long": "^4.0.0",
