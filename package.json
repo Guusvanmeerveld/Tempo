@@ -24,7 +24,7 @@
 		"bufferutil": "^4.0.3",
 		"chalk": "^4.1.0",
 		"cheerio": "^1.0.0-rc.5",
-		"discord.js-light": "3.5.3",
+		"discord.js-light": "3.5.9",
 		"dotenv": "^8.2.0",
 		"ffmpeg-static": "^4.2.3",
 		"humanize-duration": "^3.25.1",
