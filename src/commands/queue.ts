@@ -18,8 +18,7 @@ export class Queue implements Command {
 	}
 
 	run(msg: Message, args: Array<string>): void {
-		const queue = this.client.queues.get(msg.guild?.id ?? '');
-
+		const queue = this.client.queue.get(msg.guild?.id ?? '');
 		if (!queue) return;
 
 		if (queue.songs.length < 1) {

@@ -1,6 +1,8 @@
 import { Message } from 'discord.js-light';
 
 import { Command, Requirement } from '@models/command';
+import { checkConnection } from '@utils/functions';
+import { QueueList } from '@models/queue';
 import Bot from '../bot';
 
 export class Loop implements Command {
@@ -15,11 +17,13 @@ export class Loop implements Command {
 	}
 
 	run(msg: Message): void {
-		const queue = this.client.queues.get(msg.guild?.id ?? '');
-		if (!queue) {
+		const { connected } = checkConnection(msg.guild?.voice?.connection);
+		if (!connected) {
 			msg.channel.send('❌  I am not connected to a voice channel');
 			return;
 		}
+
+		const queue = this.client.queue.get(msg.guild?.id ?? '') as QueueList;
 
 		const loop = queue.loop;
 

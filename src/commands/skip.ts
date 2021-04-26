@@ -2,6 +2,7 @@ import { Message } from 'discord.js-light';
 
 import { Command, Requirement } from '@models/command';
 import { checkConnection } from '@utils/functions';
+import { QueueList } from '@models/queue';
 import { Play } from './play';
 import Bot from '../bot';
 
@@ -23,8 +24,7 @@ export class Skip implements Command {
 		const { connected } = checkConnection(msg.guild?.voice?.connection);
 
 		if (connected) {
-			const queue = this.client.queues.get(msg.guild?.id ?? '');
-			if (!queue) return;
+			const queue = this.client.queue.get(msg.guild?.id ?? '') as QueueList;
 
 			let count = 1;
 

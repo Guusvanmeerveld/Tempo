@@ -133,6 +133,10 @@ export function checkConnection(connection?: VoiceConnection | null): Connection
 	return { connected: true, connection };
 }
 
+export function secondsToTime(input: number): string {
+	return new Date(input).toISOString().substr(11, 8);
+}
+
 /**
  * Enter a time in [hh:mm:ss] format and parse it to ms.
  * @param input The time to be parsed

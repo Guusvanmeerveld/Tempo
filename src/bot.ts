@@ -2,10 +2,10 @@ import { Client, Collection } from 'discord.js-light';
 import WebSocket from 'ws';
 
 import { Command } from '@models/command';
-import { QueueList } from '@models/queue';
 import Console from '@utils/console';
 import Settings from '@utils/settings';
 import Locales from '@utils/locales';
+import Queue from '@utils/queue';
 
 import * as commands from './commands';
 
@@ -15,8 +15,8 @@ import Socket from './socket';
 
 export default class Bot extends Client {
 	public settings: Settings;
+	public queue: Queue;
 	public commands: Collection<string, Command>;
-	public queues: Collection<string, QueueList>;
 	public locales: Locales;
 
 	public socket?: WebSocket;
@@ -36,9 +36,9 @@ export default class Bot extends Client {
 		if (process.env.WEBSOCKET_URL) this.socket = new Socket(this);
 		this.settings = new Settings();
 		this.locales = new Locales(this);
+		this.queue = new Queue();
 
 		this.commands = new Collection();
-		this.queues = new Collection();
 
 		Object.values(commands).forEach((Command) => {
 			this.commands.set(Command.name.toLocaleLowerCase(), new Command(this));

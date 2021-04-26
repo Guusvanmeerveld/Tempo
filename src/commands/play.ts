@@ -50,7 +50,7 @@ export class Play implements Command {
 
 		if (!joined) return;
 
-		const queue = this.client.queues.get(msg.guild?.id ?? '');
+		const queue = this.client.queue.get(msg.guild?.id ?? '');
 
 		this.info(msg, args)
 			.then((info: Song) => {
@@ -82,7 +82,9 @@ export class Play implements Command {
 	}
 
 	private reactionPlayer(reaction: MessageReaction, guild: Guild) {
-		const currentPlaying = this.client.queues.get(guild.id)?.playing;
+		const currentPlaying = this.client.queue.get(guild.id)?.playing;
+		if (!currentPlaying) return;
+
 		const playingFor = (Date.now() - (currentPlaying?.started ?? 0)) / 1000;
 
 		switch (reaction.emoji.name) {
@@ -111,7 +113,7 @@ export class Play implements Command {
 	 * @param song
 	 */
 	public async play(guild: Guild, song: Song | undefined, seek?: number): Promise<void> {
-		const queue = this.client.queues.get(guild.id);
+		const queue = this.client.queue.get(guild.id);
 		if (!queue) return;
 
 		if (!song) {
@@ -154,7 +156,8 @@ export class Play implements Command {
 			const volume = settings.volume;
 
 			connection.play(stream, { volume: volume / 100, seek }).on('finish', () => {
-				const queue = this.client.queues.get(guild?.id ?? '');
+				const id = guild?.id ?? '';
+				const queue = this.client.queue.get(id);
 
 				if (!queue) return;
 
@@ -163,11 +166,9 @@ export class Play implements Command {
 					return;
 				}
 
-				if (queue.songs.length > 0) {
-					const newSong = queue.songs.shift() as Song;
-
-					queue.playing = newSong;
-					this.play(guild, newSong);
+				const shifted = this.client.queue.shift(id);
+				if (shifted) {
+					this.play(guild, shifted);
 
 					return;
 				}

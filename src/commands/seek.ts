@@ -27,7 +27,7 @@ export class Seek implements Command {
 			const time = args[0];
 
 			if (time) {
-				const queue = this.client.queues.get(msg.guild?.id ?? '');
+				const queue = this.client.queue.get(msg.guild?.id ?? '');
 				const song = queue?.playing;
 
 				if (!song) return;

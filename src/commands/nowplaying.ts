@@ -21,7 +21,7 @@ export class NowPlaying implements Command {
 	}
 
 	public run(msg: Message): void {
-		const queue = this.client.queues.get(msg.guild?.id ?? '');
+		const queue = this.client.queue.get(msg.guild?.id ?? '');
 
 		if (!queue?.playing) {
 			msg.channel.send('❌  There is nothing playing right now.');

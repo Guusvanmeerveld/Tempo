@@ -4,6 +4,7 @@ import { DefaultEmbed } from '@models/embed';
 
 import Reactions, { Reaction } from '@utils/reactions';
 import Bot from 'bot';
+import { secondsToTime } from '@utils/functions';
 
 const SEARCH_COUNT = 5;
 
@@ -14,7 +15,7 @@ export class Search implements Command {
 	aliases = ['find', 'f'];
 	description = 'Search for a song on a specified platform.';
 	usage = 'search `[song to search for]`';
-	requirements: Requirement[] = ['VOICE', 'ROLE'];
+	requirements: Requirement[] = ['ROLE'];
 
 	private reactions = new Reactions(emojis);
 
@@ -50,13 +51,13 @@ export class Search implements Command {
 		results.forEach((song, i) => {
 			const count = emojis[i];
 
-			const length = song.length;
+			const length = secondsToTime(song.length);
 			const author = song.author;
 			const info = `${author} - \`${length}\``;
 
-			const title = song.title;
+			const title = `${count} - ${song.title}`;
 
-			embed.addField(`${count} - ${title}`, info, false);
+			embed.addField(title, info, false);
 		});
 
 		embed.setTitle(`Showing results for \`${search}\``);
@@ -64,7 +65,7 @@ export class Search implements Command {
 
 		sent
 			.edit('✅  Found the following:', embed)
-			.then((msg) => this.reactions.listen(msg, this.handleReaction))
+			.then((msg) => this.reactions.listen(msg, () => this.handleReaction))
 			.catch(console.log);
 	}
 

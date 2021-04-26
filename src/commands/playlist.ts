@@ -58,7 +58,7 @@ export class PlayList implements Command {
 
 			msg.channel.send(embed);
 
-			const queue = this.client.queues.get(msg.guild?.id ?? '');
+			const queue = this.client.queue.get(msg.guild?.id ?? '');
 			if (!queue) return;
 
 			Array.prototype.push.apply(

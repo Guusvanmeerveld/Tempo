@@ -16,7 +16,19 @@ export class Join implements Command {
 	}
 
 	public async run(msg: Message): Promise<boolean | void> {
-		const channel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
+		let channel: VoiceChannel;
+
+		try {
+			channel = (await msg.member?.voice.channel?.fetch()) as VoiceChannel;
+		} catch (e) {
+			if (e.httpStatus === 403) {
+				msg.channel.send('❌  I am not allowed to view to your voice channel.');
+				return;
+			}
+
+			msg.channel.send(`❌  The following went wrong joining that voice channel: \`${e}\`.`);
+			return;
+		}
 
 		if (channel.members.get(this.client.user?.id ?? '') && msg.guild?.voice?.connection) {
 			const voiceChannel = (await msg.guild?.voice?.channel?.fetch()) as VoiceChannel;
@@ -53,7 +65,7 @@ export class Join implements Command {
 			return;
 		}
 
-		await channel?.join();
+		await channel?.join().catch(console.log);
 		msg.channel.send(`🔈  Successfully joined \`${channel.name ?? 'Unknown channel'}\`.`);
 
 		return true;
