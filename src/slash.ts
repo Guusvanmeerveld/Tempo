@@ -2,18 +2,17 @@ import { config } from 'dotenv';
 config();
 
 import { SlashCommand } from '@models/requests';
-import Discord from './utils/requests/discord';
 import { Command } from '@models/command';
-import * as commands from './commands';
 import Console from '@utils/console';
-import Bot from './bot';
 
-const discord = new Discord();
+import * as commands from './commands';
+import Bot from './bot';
 
 export const updateSlash = (client: Bot): void => {
 	const localCommands: Array<Command> = Object.values(commands).map(
 		(Command) => new Command(client)
 	);
+
 	const slashCommands: Array<SlashCommand> = [];
 
 	localCommands.forEach((command) => {
@@ -26,7 +25,7 @@ export const updateSlash = (client: Bot): void => {
 		});
 	});
 
-	discord
+	client.request.discord
 		.bulkUpdateCommands(slashCommands)
 		.then(() => Console.success(`Successfully updated ${slashCommands.length} commands!`))
 		.catch((err) => Console.error(`Failed to update commands: ${err}`));

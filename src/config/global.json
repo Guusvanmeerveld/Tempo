@@ -1,0 +1,11 @@
+{
+	"maxVolume": 1000,
+	"botPermissions": ["CONNECT", "SPEAK", "SEND_MESSAGES", "EMBED_LINKS", "ADD_REACTIONS"],
+	"progressBar": {
+		"line": "⎯",
+		"location": "⬤",
+		"length": 40
+	},
+	"queueLimit": 50,
+	"searchLimit": 5
+}

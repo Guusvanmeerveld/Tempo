@@ -1,19 +1,19 @@
 import { Message } from 'discord.js-light';
 
-import { Setting, searchPlatform } from '@models/settings';
+import { Setting } from '@models/settings';
 import { Command, Requirement } from '@models/command';
 import { SlashOptionType } from '@models/requests';
+import { maxVolume } from '@config/global.json';
 import { DefaultEmbed } from '@models/embed';
 import { languageDefs } from '@models/locales';
 import { ucFirst } from '@utils/functions';
-import { MAX_VOLUME } from './volume';
 import Bot from '../bot';
 
 const ROLE_MENTION = /(<@&)([0-9]{18})(>)/;
 
 export class Settings implements Command {
 	name = 'settings';
-	description = 'Change the way the bot behaves.';
+	description = 'Change the way the bot behaves in this server.';
 	usage = 'settings [setting to change] [new value of the setting]';
 	aliases = ['set'];
 	requirements: Requirement[] = ['ROLE'];
@@ -80,9 +80,9 @@ export class Settings implements Command {
 			switch (input) {
 				case Setting.Volume:
 					value = parseInt(pretty.replace('%', ''));
-					if (isNaN(value) || value < 0 || value > MAX_VOLUME) {
+					if (isNaN(value) || value < 0 || value > maxVolume) {
 						msg.channel.send(
-							`❌  That is not a valid number. Please specify a number between 0% - ${MAX_VOLUME}%.`
+							`❌  That is not a valid number. Please specify a number between 0% - ${maxVolume}%.`
 						);
 						return;
 					}

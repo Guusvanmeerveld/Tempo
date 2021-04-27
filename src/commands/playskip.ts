@@ -12,13 +12,13 @@ export class PlaySkip implements Command {
 	requirements: Requirement[] = ['ROLE', 'VOICE'];
 
 	client;
-	private play;
+	private player;
 	constructor(client: Bot) {
 		this.client = client;
-		this.play = new Play(client).run;
+		this.player = new Play(client);
 	}
 
 	run(msg: Message, args: Array<string>): void {
-		this.play(msg, args, true);
+		this.player.run(msg, args, true);
 	}
 }

@@ -10,11 +10,18 @@ export interface Song {
 	date: Date;
 	url: string;
 	length: number;
-	views?: number;
-	likes?: number;
-	dislikes?: number;
-	download?: string;
+	started?: number;
+	stats: {
+		views?: number;
+		likes?: number;
+		dislikes?: number;
+	};
 	requested?: User;
+}
+
+export interface SoundCloudSong extends Song {
+	download: string;
+	downloadable: boolean;
 }
 
 export interface Album {

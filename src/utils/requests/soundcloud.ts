@@ -1,6 +1,5 @@
 const soundcloudToken = process.env.SOUNDCLOUD;
 
-import { Song } from '@models/song';
 import { SoundCloudSearchAPI, SoundCloudTrackAPI } from '@models/requests';
 
 import axios from 'axios';
@@ -12,48 +11,47 @@ const request = axios.create({
 });
 
 export default class SoundCloud {
+	/**
+	 * Get information about a track using its url.
+	 * @param {string} url - The url of the track.
+	 * @returns {Promise<SoundCloudTrackAPI>} Information about the track.
+	 */
 	public async track(url: string): Promise<SoundCloudTrackAPI> {
-		return (
-			await request('/resolve', {
-				params: {
-					url,
-				},
-			})
-		).data;
+		const { data } = await request('/resolve', {
+			params: {
+				url,
+			},
+		});
+
+		return data;
 	}
 
+	/**
+	 * Searches for a track.
+	 * @param {string} input - The entry to search for.
+	 * @param {number} limit - The maximium amount of results to return.
+	 * @returns {Promise<SoundCloudSearchAPI>} The results.
+	 */
 	public async search(entry: string, limit: number): Promise<SoundCloudSearchAPI> {
-		return (
-			await request('/search/tracks', {
-				params: {
-					q: entry,
-					limit,
-				},
-			})
-		).data;
+		const { data } = await request('/search/tracks', {
+			params: {
+				q: entry,
+				limit,
+			},
+		});
+
+		return data;
 	}
 
+	/**
+	 * Get a m3u8 stream from a given url.
+	 * @param {string} url - The url to get the stream from.
+	 * @returns {Promise<Stream>} The stream.
+	 */
 	public async download(url: string | undefined): Promise<Stream> {
 		if (!url) throw 'No url given';
 		const downloadURL = (await request(url)).data.url;
 
 		return m3u8stream(downloadURL);
-	}
-
-	public async info(input: string): Promise<Song> {
-		const data = await this.track(input);
-
-		return {
-			platform: 'soundcloud',
-			title: data.title,
-			date: new Date(data.created_at),
-			author: data.publisher_metadata?.artist ?? 'Unknown artist',
-			image: data.artwork_url,
-			url: data.permalink_url,
-			download: data.media?.transcodings[0].url,
-			likes: data.likes_count,
-			views: data.playback_count,
-			length: data.duration,
-		};
 	}
 }

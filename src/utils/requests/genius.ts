@@ -18,6 +18,11 @@ interface BasicSongInfo {
 }
 
 export default class Genius {
+	/**
+	 * Search the lyrics for a song on Genius.
+	 * @param {string} entry - The entry to search for.
+	 * @returns {Promise<BasicSongInfo>} Some basic info about the song (including lyrics).
+	 */
 	public static async search(entry: string): Promise<BasicSongInfo> {
 		const { data } = await request('/search', {
 			params: {
@@ -35,6 +40,8 @@ export default class Genius {
 
 		const lyrics = await this.lyrics(url);
 
+		if (!lyrics) throw `Could not get lyrics from this url: ${url}`;
+
 		return {
 			lyrics,
 			url,
@@ -43,7 +50,12 @@ export default class Genius {
 		};
 	}
 
-	private static async lyrics(url: string) {
+	/**
+	 * Gets the lyrics from a Genius url.
+	 * @param {string} url - The Genius url where the lyrics can be found.
+	 * @returns {string} The lyrics found at the url.
+	 */
+	public static async lyrics(url: string): Promise<string | void> {
 		const { data } = await axios.get(url);
 
 		const $ = cio.load(data);

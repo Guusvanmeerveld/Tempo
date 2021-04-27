@@ -19,7 +19,7 @@ export class Pause implements Command {
 			const paused = dispatcher.paused;
 
 			paused ? dispatcher.resume() : dispatcher.pause();
-			msg.channel.send(`${paused ? 'Resumed' : 'Paused'} the music.`);
+			msg.channel.send(`${paused ? '⏯️  Resumed' : '⏸  Paused'} the music.`);
 		} else if (error) {
 			msg.channel.send(error);
 		}

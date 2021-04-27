@@ -2,7 +2,7 @@ import HumanizeDuration from 'humanize-duration';
 import { Message } from 'discord.js-light';
 
 import { Command, Requirement } from '@models/command';
-import { checkConnection } from '@utils/functions';
+import { checkConnection, parseTime } from '@utils/functions';
 import { Play } from './play';
 import Bot from '../bot';
 
@@ -27,12 +27,12 @@ export class Seek implements Command {
 			const time = args[0];
 
 			if (time) {
-				const queue = this.client.queues.get(msg.guild?.id ?? '');
+				const queue = this.client.queue.get(msg.guild?.id ?? '');
 				const song = queue?.playing;
 
 				if (!song) return;
 
-				const ms = this.parseTime(time) * 1000;
+				const ms = parseTime(time);
 
 				if (ms > song.length || ms <= 0) {
 					msg.channel.send('❌  That is not a valid timestamp.');
@@ -40,32 +40,13 @@ export class Seek implements Command {
 				}
 
 				msg.channel.send(`⏩  Successfully skipped to \`${HumanizeDuration(ms)}\`.`);
-				this.player.play(msg, song, ms / 1000);
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				this.player.play(msg.guild!, song, ms / 1000);
 			} else {
 				msg.channel.send('❌  You must give a timestamp to skip to.');
 			}
 		} else if (error) {
 			msg.channel.send(error);
 		}
-	}
-
-	/**
-	 * Enter a time in [hh:mm:ss] format and parse it to seconds.
-	 * @param input The time to be parsed
-	 * @returns The time in seconds
-	 */
-	private parseTime(input: string): number {
-		const splitted = input.split(':');
-
-		const hours = parseInt(splitted[splitted.length - 3] ?? 0);
-		const minutes = parseInt(splitted[splitted.length - 2] ?? 0);
-		const seconds = parseInt(splitted[splitted.length - 1] ?? 0);
-
-		if (minutes > 60 || seconds > 60 || hours < 0 || minutes < 0 || seconds < 0) return 0;
-
-		const hourInSeconds = hours * 60 * 60;
-		const minutesInSeconds = minutes * 60;
-
-		return hourInSeconds + minutesInSeconds + seconds;
 	}
 }

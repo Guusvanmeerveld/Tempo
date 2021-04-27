@@ -4,10 +4,7 @@ import { Command } from '@models/command';
 import { SongEmbed } from '@models/embed';
 import Bot from '../bot';
 
-const PROGRESS_LINE = '⎯';
-const PROGRESS_LOC = '⬤';
-
-const PROGRESS_LENGTH = 40;
+import { progressBar } from '@config/global.json';
 
 export class NowPlaying implements Command {
 	name = 'now playing';
@@ -21,7 +18,7 @@ export class NowPlaying implements Command {
 	}
 
 	public run(msg: Message): void {
-		const queue = this.client.queues.get(msg.guild?.id ?? '');
+		const queue = this.client.queue.get(msg.guild?.id ?? '');
 
 		if (!queue?.playing) {
 			msg.channel.send('❌  There is nothing playing right now.');
@@ -30,7 +27,7 @@ export class NowPlaying implements Command {
 
 		const embed = new SongEmbed({ author: msg.author, song: queue.playing });
 
-		const time = msg.guild?.voice?.connection?.dispatcher?.streamTime ?? 0;
+		const time = Date.now() - (queue.playing.started ?? 0);
 		const length = queue.playing.length;
 
 		const progressBar = this.createProgressBar(time, length);
@@ -41,11 +38,11 @@ export class NowPlaying implements Command {
 	}
 
 	private createProgressBar(streamTime: number, length: number): string {
-		const progress = (streamTime / length) * PROGRESS_LENGTH;
-		const base = PROGRESS_LINE.repeat(PROGRESS_LENGTH);
+		const progress = (streamTime / length) * progressBar.length;
+		const base = progressBar.line.repeat(progressBar.length);
 
 		// Replace character at right position with progress icon
-		const bar = base.substring(0, progress) + PROGRESS_LOC + base.substring(progress + 1);
+		const bar = base.substring(0, progress) + progressBar.location + base.substring(progress + 1);
 
 		return bar;
 	}

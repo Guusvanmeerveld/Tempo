@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # Set workdir
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy files to workdir
 COPY ["package.json", "yarn.lock*", "package-lock.json*", "tsconfig.json*", "npm-shrinkwrap.json*", "./"]
@@ -32,9 +32,9 @@ RUN yarn install
 RUN yarn build
 
 # Set node env to production
-ENV NODE_ENV=production 
+ENV NODE_ENV=production
 
 # Move node_modules away
-RUN mv node_modules ../
+RUN mv node_modules ../ && rm -r src
 
 CMD ["yarn", "start"]

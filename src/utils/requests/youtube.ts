@@ -1,11 +1,9 @@
 const youtubeToken = process.env.YOUTUBE;
 
-import { Song } from '@models/song';
 import { YoutubeVideoAPI } from '@models/requests';
 
 import axios from 'axios';
 import ytsr, { Result } from 'ytsr';
-import { ytDurationToMs } from '@utils/functions';
 
 const request = axios.create({
 	baseURL: 'https://www.googleapis.com/youtube/v3/',
@@ -17,8 +15,9 @@ const playlist = /^(https:\/\/)?(www\.)?(youtube\.com\/playlist\?list=)([0-9A-Za
 
 export default class Youtube {
 	/**
-	 * Get information about a video on Youtube.
-	 * @param id
+	 * Get information about a video using its id.
+	 * @param {string} id - The id of the video.
+	 * @returns {Promise<YoutubeVideoAPI>} Information about the video.
 	 */
 	public async video(id: string): Promise<YoutubeVideoAPI> {
 		const { data } = await request('videos', {
@@ -31,6 +30,11 @@ export default class Youtube {
 		return data;
 	}
 
+	/**
+	 * Get information about a playlist using its id.
+	 * @param {string} id - The id of the playlist.
+	 * @returns {Promise<unknown>} Information about the playlist.
+	 */
 	public async playlist(id: string): Promise<unknown> {
 		const { data } = await request('playlists', {
 			params: {
@@ -43,12 +47,18 @@ export default class Youtube {
 	}
 
 	/**
-	 * Search for a set number of videos on Youtube.
-	 * @param query
-	 * @param limit
+	 * Searches for a video.
+	 * @param {string} input - The entry to search for.
+	 * @param {number} limit - The maximium amount of results to return.
+	 * @returns {Promise<Result>} The results.
 	 */
 	public async search(query: string, limit: number): Promise<Result> {
-		const data = await ytsr(query, {
+		const filters = await ytsr.getFilters(query);
+		const filteredURL = filters.get('Type')?.get('Video');
+
+		if (!filteredURL?.url) throw 'Could not find any videos';
+
+		const data = await ytsr(filteredURL.url, {
 			limit,
 		});
 
@@ -56,8 +66,9 @@ export default class Youtube {
 	}
 
 	/**
-	 * Get the video id from a youtube url.
-	 * @param url
+	 * Get the id of a video by its url.
+	 * @param {string} url - The url of the video.
+	 * @returns {string} The id of the video.
 	 */
 	public id(url: string): string {
 		let match = url.match(video);
@@ -69,35 +80,5 @@ export default class Youtube {
 		match = url.match(playlist);
 
 		return url;
-	}
-
-	/**
-	 * Get info about a song on Youtube.
-	 * @param input The youtube video link
-	 */
-	public async info(input: string): Promise<Song> {
-		const id = this.id(input);
-		const data = await this.video(id);
-
-		const video = data.items[0];
-
-		if (!video) throw 'Could not find any information about this video.';
-
-		const snippet = video.snippet;
-		const statistics = video.statistics;
-		const contentDetails = video.contentDetails;
-
-		return {
-			platform: 'youtube',
-			title: snippet.title,
-			author: snippet.channelTitle,
-			image: snippet.thumbnails.high.url,
-			date: new Date(snippet.publishedAt),
-			views: parseInt(statistics.viewCount),
-			likes: parseInt(statistics.likeCount),
-			dislikes: parseInt(statistics.dislikeCount),
-			url: `https://youtu.be/${video.id}`,
-			length: ytDurationToMs(contentDetails.duration),
-		};
 	}
 }

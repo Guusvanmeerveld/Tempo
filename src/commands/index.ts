@@ -18,3 +18,4 @@ export * from './lyrics';
 export * from './loop';
 export * from './seek';
 export * from './nowplaying';
+export * from './search';

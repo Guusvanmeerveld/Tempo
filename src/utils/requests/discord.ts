@@ -12,9 +12,9 @@ class Discord {
 
 	/**
 	 * Respond to a Discord interaction.
-	 * @param {string} id
-	 * @param {string} token
-	 * @param {string} response
+	 * @param {string} id - The id of the interaction.
+	 * @param {string} token - The interactions token.
+	 * @param {string} response - The response to the interaction.
 	 */
 	public static async interactions(
 		id: string,
@@ -32,10 +32,9 @@ class Discord {
 	}
 
 	/**
-	 * Updates a list of slash commands, each with a given id.
-	 * @param id The id of the slash command to update
-	 * @param updated The new slash command
-	 * @returns Success
+	 * Overwrite the existing list of slash commands with the given new ones.
+	 * @param {Array<SlashCommand>} updated - The list of the new slash commands.
+	 * @returns {Promise<Array<SlashCommand>>} Success
 	 */
 	public async bulkUpdateCommands(list: Array<SlashCommand>): Promise<Array<SlashCommand>> {
 		const { data } = await request(`applications/${this.id}/commands`, {

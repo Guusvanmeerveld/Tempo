@@ -11,7 +11,7 @@
     },
     "bot": {
         "activity": {
-            "name": "-help",
+            "name": "-help | @{username}",
             "type": "LISTENING"
         }
     }

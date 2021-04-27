@@ -2,32 +2,26 @@ import { Client, Collection } from 'discord.js-light';
 import WebSocket from 'ws';
 
 import { Command } from '@models/command';
-import { QueueList } from '@models/queue';
 import Console from '@utils/console';
 import Settings from '@utils/settings';
 import Locales from '@utils/locales';
+import Queue from '@utils/queue';
 
 import * as commands from './commands';
 
-import Spotify from '@utils/requests/spotify';
-import Youtube from '@utils/requests/youtube';
-import SoundCloud from '@utils/requests/soundcloud';
+import Request from '@utils/requests/';
 
 import Socket from './socket';
 
 export default class Bot extends Client {
 	public settings: Settings;
+	public queue: Queue;
 	public commands: Collection<string, Command>;
-	public queues: Collection<string, QueueList>;
 	public locales: Locales;
 
 	public socket?: WebSocket;
 
-	public request: {
-		spotify: Spotify;
-		youtube: Youtube;
-		soundcloud: SoundCloud;
-	};
+	public request = new Request();
 
 	constructor() {
 		super({
@@ -42,15 +36,9 @@ export default class Bot extends Client {
 		if (process.env.WEBSOCKET_URL) this.socket = new Socket(this);
 		this.settings = new Settings();
 		this.locales = new Locales(this);
-
-		this.request = {
-			spotify: new Spotify(),
-			youtube: new Youtube(),
-			soundcloud: new SoundCloud(),
-		};
+		this.queue = new Queue();
 
 		this.commands = new Collection();
-		this.queues = new Collection();
 
 		Object.values(commands).forEach((Command) => {
 			this.commands.set(Command.name.toLocaleLowerCase(), new Command(this));
@@ -64,8 +52,9 @@ export default class Bot extends Client {
 		this.on('ready', () => {
 			if (!this.user) return;
 			const lang = this.locales.getFromLocale('en-US');
+			const activity = lang.bot.activity.name.replace('{username}', this.user.username);
 
-			this.user.setActivity(lang.bot.activity.name, {
+			this.user.setActivity(activity, {
 				type: lang.bot.activity.type,
 			});
 		});

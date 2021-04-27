@@ -73,7 +73,7 @@ export function emptyDir(path: string): void {
  * Give a duration formatted by YouTube and convert it to seconds.
  * Stolen from https://gist.github.com/jrtaylor-com/42883b0e28a45b8362e7
  * @param duration - The duration to convert
- * @returns The duration in seconds
+ * @returns The duration in ms
  */
 export function ytDurationToMs(duration: string): number {
 	let hours = 0;
@@ -83,27 +83,26 @@ export function ytDurationToMs(duration: string): number {
 	// Remove PT from string ref: https://developers.google.com/youtube/v3/docs/videos#contentDetails.duration
 	duration = duration.replace('PT', '');
 
-	// If the string contains hours parse it and remove it from our duration string
 	if (duration.indexOf('H') > -1) {
-		const hours_split = duration.split('H');
-		hours = parseInt(hours_split[0]);
-		duration = hours_split[1];
+		const hoursSplit = duration.split('H');
+
+		hours = parseInt(hoursSplit[0]);
+		duration = hoursSplit[1];
 	}
 
-	// If the string contains minutes parse it and remove it from our duration string
 	if (duration.indexOf('M') > -1) {
-		const minutes_split = duration.split('M');
-		minutes = parseInt(minutes_split[0]);
-		duration = minutes_split[1];
+		const minutesSplit = duration.split('M');
+
+		minutes = parseInt(minutesSplit[0]);
+		duration = minutesSplit[1];
 	}
 
-	// If the string contains seconds parse it and remove it from our duration string
 	if (duration.indexOf('S') > -1) {
 		const seconds_split = duration.split('S');
+
 		seconds = parseInt(seconds_split[0]);
 	}
 
-	// Math the values to return seconds
 	return (hours * 60 * 60 + minutes * 60 + seconds) * 1000;
 }
 
@@ -132,4 +131,28 @@ export function checkConnection(connection?: VoiceConnection | null): Connection
 	}
 
 	return { connected: true, connection };
+}
+
+export function secondsToTime(input: number): string {
+	return new Date(input).toISOString().substr(11, 8);
+}
+
+/**
+ * Enter a time in [hh:mm:ss] format and parse it to ms.
+ * @param input The time to be parsed
+ * @returns The time in ms
+ */
+export function parseTime(input: string): number {
+	const splitted = input.split(':');
+
+	const hours = parseInt(splitted[splitted.length - 3] ?? 0);
+	const minutes = parseInt(splitted[splitted.length - 2] ?? 0);
+	const seconds = parseInt(splitted[splitted.length - 1] ?? 0);
+
+	if (minutes > 60 || seconds > 60 || hours < 0 || minutes < 0 || seconds < 0) return 0;
+
+	const hourInSeconds = hours * 60 * 60;
+	const minutesInSeconds = minutes * 60;
+
+	return (hourInSeconds + minutesInSeconds + seconds) * 1000;
 }

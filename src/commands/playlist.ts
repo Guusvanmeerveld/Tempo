@@ -28,6 +28,7 @@ export class PlayList implements Command {
 				msg.channel.send(
 					'❌  Something went wrong looking up that playlist/album. Please try again later.'
 				);
+
 				return;
 			}
 
@@ -57,7 +58,7 @@ export class PlayList implements Command {
 
 			msg.channel.send(embed);
 
-			const queue = this.client.queues.get(msg.guild?.id ?? '');
+			const queue = this.client.queue.get(msg.guild?.id ?? '');
 			if (!queue) return;
 
 			Array.prototype.push.apply(
@@ -93,6 +94,7 @@ export class PlayList implements Command {
 					platform: 'spotify',
 					url: g.external_urls.spotify,
 					length: g.duration_ms,
+					stats: {},
 				};
 			});
 
