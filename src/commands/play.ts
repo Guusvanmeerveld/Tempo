@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Guild, Message, MessageReaction } from 'discord.js-light';
-import { Readable } from 'node:stream';
+import { Readable } from 'stream';
 import ytdl from 'ytdl-core';
 
 import { Command, Requirement } from '@models/command';
+import { Song, SoundCloudSong } from '@models/song';
 import { Convert } from '@utils/requests';
 import { SongEmbed } from '@models/embed';
 import Reactions from '@utils/reactions';
-import { Song } from '@models/song';
 import Console from '@utils/console';
 import { Join } from './join';
 import Bot from '../bot';
@@ -16,7 +17,9 @@ const SOUNDCLOUD = /^https?:\/\/(soundcloud\.com)\/(.*)$/g;
 const SPOTIFY = /^https?:\/\/(open\.spotify\.com\/track)\/(.*)$/g;
 // const AUDIO = /^\.(?:wav|mp3)$/g;
 
-const emojis = ['⏪', '⏯️', '⏩'];
+const playEmojis = ['⏪', '⏯️', '⏩'];
+
+import { queueLimit } from '@config/global.json';
 
 export class Play implements Command {
 	name = 'play';
@@ -30,8 +33,8 @@ export class Play implements Command {
 	reactions;
 	constructor(client: Bot) {
 		this.client = client;
-		this.join = new Join(client).run;
-		this.reactions = new Reactions(emojis);
+		this.join = (client.commands.get('join') as Join).run;
+		this.reactions = new Reactions(playEmojis);
 	}
 
 	/**
@@ -53,11 +56,16 @@ export class Play implements Command {
 		const queue = this.client.queue.get(msg.guild?.id ?? '');
 
 		this.info(msg, args)
-			.then((info: Song) => {
-				const song: Song = { requested: msg.author, ...info };
+			.then((song: Song) => {
+				song.requested = msg.author;
 				const embed = new SongEmbed({ author: msg.author, song });
 
 				if (queue?.playing && !playskip) {
+					if (queue.songs.length >= queueLimit) {
+						msg.channel.send('❌  You cannot add more than 50 songs to the queue.');
+						return;
+					}
+
 					queue.songs.push(song);
 					msg.channel.send(`🎵  Added \`${song.title}\` to the queue.`, {
 						embed,
@@ -66,12 +74,12 @@ export class Play implements Command {
 					return;
 				}
 
-				msg.channel.send('🎵  Now playing:', embed).then((msg) =>
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					this.reactions.listen(msg, (reaction) => this.reactionPlayer(reaction, msg.guild!))
-				);
+				msg.channel
+					.send('🎵  Now playing:', embed)
+					.then((msg) =>
+						this.reactions.listen(msg, (reaction) => this.reactionPlayer(reaction, msg.guild!))
+					);
 
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				this.play(msg.guild!, song);
 			})
 			.catch((error) => {
@@ -131,11 +139,15 @@ export class Play implements Command {
 				stream = ytdl(song.url, { filter: 'audioonly' });
 				break;
 			case 'soundcloud':
-				stream = await this.client.request.soundcloud.download(song.download);
+				const track = song as SoundCloudSong;
 
-				if (!stream) {
-					// msg.channel.send('❌  Soundcloud song does not have a downloadable url');
+				if (!track.downloadable) {
+					// msg.channel.send('❌  This Soundcloud song does not have a downloadable url.');
+					return;
 				}
+
+				stream = await this.client.request.soundcloud.download(track.download);
+
 				break;
 		}
 
@@ -225,7 +237,6 @@ export class Play implements Command {
 
 			await this.join(msg);
 
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			this.stream(msg.guild!, first.attachment.toString());
 			msg.channel.send('🎵  Now playing');
 			return;

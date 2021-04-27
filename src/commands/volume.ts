@@ -4,7 +4,7 @@ import { Command, Requirement } from '@models/command';
 import { Setting } from '@models/settings';
 import Bot from '../bot';
 
-export const MAX_VOLUME = 1000;
+import { maxVolume } from '@config/global.json';
 
 export class Volume implements Command {
 	name = 'volume';
@@ -21,9 +21,9 @@ export class Volume implements Command {
 	run(msg: Message, args: Array<string>): void {
 		const volume = parseInt(args[0]?.replace('%', ''));
 
-		if (isNaN(volume) || volume < 0 || volume > MAX_VOLUME) {
+		if (isNaN(volume) || volume < 0 || volume > maxVolume) {
 			msg.channel.send(
-				`❌  That is not a valid number. Please specify a number between 0 - ${MAX_VOLUME}.`
+				`❌  That is not a valid number. Please specify a number between 0 - ${maxVolume}.`
 			);
 			return;
 		}

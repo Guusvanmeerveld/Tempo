@@ -1,6 +1,8 @@
-import { Message } from 'discord.js-light';
+import { Message, PermissionResolvable } from 'discord.js-light';
 
 import { Command } from '@models/command';
+
+import { botPermissions } from '@config/global.json';
 
 export class Invite implements Command {
 	name = 'invite';
@@ -11,7 +13,7 @@ export class Invite implements Command {
 	public run(msg: Message): void {
 		msg.client
 			.generateInvite({
-				permissions: ['CONNECT', 'SPEAK', 'SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
+				permissions: botPermissions as PermissionResolvable,
 			})
 			.then((invite) => msg.channel.send(`Heres a link to invite me to a server: ${invite}`));
 	}

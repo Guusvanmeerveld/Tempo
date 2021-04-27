@@ -27,15 +27,14 @@ export class Queue implements Command {
 		}
 
 		let fields: Array<EmbedField> = [];
-		if (queue.songs.length > 0) {
-			fields = queue.songs.map((song: Song, i: number) => {
-				return {
-					name: `#${i + 1} ${song.title}`,
-					value: 'Requested by ' + song.requested?.toString() ?? 'Unknown user',
-					inline: false,
-				};
-			});
-		}
+
+		fields = queue.songs.map((song: Song, i: number) => {
+			return {
+				name: `#${i + 1} ${song.title}`,
+				value: 'Requested by ' + song.requested?.toString() ?? 'Unknown user',
+				inline: false,
+			};
+		});
 
 		const embed = new PaginatedEmbed({
 			author: msg.author,

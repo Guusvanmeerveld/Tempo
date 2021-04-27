@@ -1,7 +1,6 @@
 import { CollectorFilter, Message, MessageReaction, User } from 'discord.js-light';
 
-export type Reaction = MessageReaction;
-type ReactionCallback = (reaction: Reaction) => void;
+type ReactionCallback = (reaction: MessageReaction) => void;
 
 export default class Reactions {
 	emojis;
@@ -11,8 +10,8 @@ export default class Reactions {
 
 	/**
 	 * Listen for a reaction on a certain message.
-	 * @param msg The message to listen on the initialized reactions on.
-	 * @param callback The callback that needs to run when a reaction is received.
+	 * @param {Message} msg The message to listen on the initialized reactions on.
+	 * @param {ReactionCallBack} callback The callback that needs to run when a reaction is received.
 	 */
 	public listen(msg: Message, callback: ReactionCallback): void {
 		this.emojis.forEach(async (emoji) => await msg.react(emoji));

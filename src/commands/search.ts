@@ -1,12 +1,12 @@
-import { Message } from 'discord.js-light';
+import { Message, MessageReaction } from 'discord.js-light';
+
 import { Command, Requirement } from '@models/command';
-import { DefaultEmbed } from '@models/embed';
-
-import Reactions, { Reaction } from '@utils/reactions';
-import Bot from 'bot';
 import { secondsToTime } from '@utils/functions';
+import { DefaultEmbed } from '@models/embed';
+import Reactions from '@utils/reactions';
+import Bot from 'bot';
 
-const SEARCH_COUNT = 5;
+import { searchLimit } from '@config/global.json';
 
 const emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
 
@@ -35,11 +35,7 @@ export class Search implements Command {
 
 		const settings = this.client.settings.get(msg.guild?.id);
 
-		const results = await this.client.request.search(
-			search,
-			SEARCH_COUNT,
-			settings.search_platform
-		);
+		const results = await this.client.request.search(search, searchLimit, settings.search_platform);
 
 		if (!results) {
 			msg.channel.send(`❌  I was not able to find anything matching \`${search}\``);
@@ -69,7 +65,7 @@ export class Search implements Command {
 			.catch(console.log);
 	}
 
-	private handleReaction(reaction: Reaction) {
+	private handleReaction(reaction: MessageReaction) {
 		console.log(reaction.emoji.name);
 	}
 }

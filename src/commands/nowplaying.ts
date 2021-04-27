@@ -4,10 +4,7 @@ import { Command } from '@models/command';
 import { SongEmbed } from '@models/embed';
 import Bot from '../bot';
 
-const PROGRESS_LINE = '⎯';
-const PROGRESS_LOC = '⬤';
-
-const PROGRESS_LENGTH = 40;
+import { progressBar } from '@config/global.json';
 
 export class NowPlaying implements Command {
 	name = 'now playing';
@@ -41,11 +38,11 @@ export class NowPlaying implements Command {
 	}
 
 	private createProgressBar(streamTime: number, length: number): string {
-		const progress = (streamTime / length) * PROGRESS_LENGTH;
-		const base = PROGRESS_LINE.repeat(PROGRESS_LENGTH);
+		const progress = (streamTime / length) * progressBar.length;
+		const base = progressBar.line.repeat(progressBar.length);
 
 		// Replace character at right position with progress icon
-		const bar = base.substring(0, progress) + PROGRESS_LOC + base.substring(progress + 1);
+		const bar = base.substring(0, progress) + progressBar.location + base.substring(progress + 1);
 
 		return bar;
 	}
