@@ -16,6 +16,7 @@ interface OAuth {
 }
 
 type API = 'albums' | 'tracks';
+type APIResponse = SpotifyTrackAPI | SpotifyAlbumAPI;
 
 const oauth = axios.create({ baseURL: 'https://accounts.spotify.com/api' });
 const request = axios.create({ baseURL: 'https://api.spotify.com/v1' });
@@ -23,8 +24,9 @@ const request = axios.create({ baseURL: 'https://api.spotify.com/v1' });
 const regex = /(open\.spotify\.com\/(album|track)\/)([0-9A-Za-z_-]{22}).*/;
 
 export default class Spotify {
-	oauth: OAuth;
-	token: string;
+	private oauth: OAuth;
+	private token: string;
+
 	constructor() {
 		const tokenCombo = `${spotify.id}:${spotify.secret}`;
 		this.token = Buffer.from(tokenCombo).toString('base64');
@@ -36,7 +38,10 @@ export default class Spotify {
 		};
 	}
 
-	private async getOAuth() {
+	/**
+	 * Check if the current oauth token has expired and request a new one if that is the case.
+	 */
+	private async getOAuth(): Promise<void> {
 		if (this.oauth.created) {
 			const expired = Date.now() - this.oauth.created > this.oauth.expires * 1000;
 
@@ -61,6 +66,12 @@ export default class Spotify {
 		this.oauth = oauthToken;
 	}
 
+	/**
+	 * Searches for a song.
+	 * @param {string} input - The entry to search for.
+	 * @param {number} limit - The maximium amount of results to return.
+	 * @returns {Promise<SpotifySearchAPI>} The results.
+	 */
 	public async search(input: string, limit: number): Promise<SpotifySearchAPI> {
 		await this.getOAuth();
 
@@ -81,7 +92,13 @@ export default class Spotify {
 	get(api: 'tracks', id: string): Promise<SpotifyTrackAPI>;
 	get(api: 'albums', id: string): Promise<SpotifyAlbumAPI>;
 
-	public async get(api: API, id: string): Promise<SpotifyTrackAPI | SpotifyAlbumAPI> {
+	/**
+	 * Get a n item from a given API by its id.
+	 * @param {API} api - The API location to request from.
+	 * @param {string} id - The id of the item that is requested.
+	 * @returns {Promise<APIResponse>} The api's response.
+	 */
+	public async get(api: API, id: string): Promise<APIResponse> {
 		await this.getOAuth();
 
 		const { data } = await request(`/${api}/${id}`, {
@@ -95,6 +112,11 @@ export default class Spotify {
 		return data;
 	}
 
+	/**
+	 * Get the id of a song by its url.
+	 * @param {string} url - The url of the song.
+	 * @returns {string} The id of the song.
+	 */
 	public id(url: string): string {
 		const stripped = url.split('?');
 		const match = stripped[0].match(regex);

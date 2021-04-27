@@ -16,8 +16,12 @@ export interface Song {
 		likes?: number;
 		dislikes?: number;
 	};
-	download?: string;
 	requested?: User;
+}
+
+export interface SoundCloudSong extends Song {
+	download: string;
+	downloadable: boolean;
 }
 
 export interface Album {

@@ -15,8 +15,9 @@ const playlist = /^(https:\/\/)?(www\.)?(youtube\.com\/playlist\?list=)([0-9A-Za
 
 export default class Youtube {
 	/**
-	 * Get information about a video on Youtube.
-	 * @param id
+	 * Get information about a video using its id.
+	 * @param {string} id - The id of the video.
+	 * @returns {Promise<YoutubeVideoAPI>} Information about the video.
 	 */
 	public async video(id: string): Promise<YoutubeVideoAPI> {
 		const { data } = await request('videos', {
@@ -29,6 +30,11 @@ export default class Youtube {
 		return data;
 	}
 
+	/**
+	 * Get information about a playlist using its id.
+	 * @param {string} id - The id of the playlist.
+	 * @returns {Promise<unknown>} Information about the playlist.
+	 */
 	public async playlist(id: string): Promise<unknown> {
 		const { data } = await request('playlists', {
 			params: {
@@ -41,9 +47,10 @@ export default class Youtube {
 	}
 
 	/**
-	 * Search for a set number of videos on Youtube.
-	 * @param query
-	 * @param limit
+	 * Searches for a video.
+	 * @param {string} input - The entry to search for.
+	 * @param {number} limit - The maximium amount of results to return.
+	 * @returns {Promise<Result>} The results.
 	 */
 	public async search(query: string, limit: number): Promise<Result> {
 		const filters = await ytsr.getFilters(query);
@@ -59,8 +66,9 @@ export default class Youtube {
 	}
 
 	/**
-	 * Get the video id from a youtube url.
-	 * @param url
+	 * Get the id of a video by its url.
+	 * @param {string} url - The url of the video.
+	 * @returns {string} The id of the video.
 	 */
 	public id(url: string): string {
 		let match = url.match(video);

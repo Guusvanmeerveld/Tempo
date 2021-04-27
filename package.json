@@ -14,7 +14,7 @@
 		"dev-full": "ts-node-dev src",
 		"test-build": "tsc --noEmit",
 		"build": "tsc",
-		"start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register . --production --inspect"
+		"start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register . --production"
 	},
 	"author": "Guus van Meerveld",
 	"license": "MIT",

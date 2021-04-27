@@ -32,9 +32,9 @@ RUN yarn install
 RUN yarn build
 
 # Set node env to production
-ENV NODE_ENV=production 
+ENV NODE_ENV=production
 
 # Move node_modules away
-RUN mv node_modules ../
+RUN mv node_modules ../ && rm -r src
 
 CMD ["yarn", "start"]

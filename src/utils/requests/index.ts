@@ -4,7 +4,7 @@ import { SpotifyTrackAPI, SoundCloudTrackAPI, YoutubeVideoAPI } from '@models/re
 
 import { searchPlatform } from '@models/settings';
 import { parseTime, ytDurationToMs } from '@utils/functions';
-import { Song } from '@models/song';
+import { Song, SoundCloudSong } from '@models/song';
 
 import Discord from './discord';
 import Genius from './genius';
@@ -13,19 +13,24 @@ import Spotify from './spotify';
 import Youtube from './youtube';
 
 export default class Request {
-	discord = new Discord();
-	genius = new Genius();
-	soundcloud = new SoundCloud();
-	spotify = new Spotify();
-	youtube = new Youtube();
+	public discord = new Discord();
+	public genius = new Genius();
+	public soundcloud = new SoundCloud();
+	public spotify = new Spotify();
+	public youtube = new Youtube();
 
 	/**
 	 * Search on a given platform for a user input.
-	 * @param input - The input to search for.
-	 * @param max - The max amount of results to return.
-	 * @param searchPlatform - The platform to search on.
+	 * @param {string} input - The input to search for.
+	 * @param {number} max - The max amount of results to return.
+	 * @param {searchPlatform} searchPlatform - The platform to search on.
+	 * @returns {Promise<Array<Song>>} An array of songs that where found.
 	 */
-	async search(input: string, max: number, searchPlatform: searchPlatform): Promise<Array<Song>> {
+	public async search(
+		input: string,
+		max: number,
+		searchPlatform: searchPlatform
+	): Promise<Array<Song>> {
 		const notFound = (platform: string) => `I was not able to find \`${input}\` on ${platform}.`;
 
 		let platform;
@@ -72,7 +77,7 @@ export default class Request {
 }
 
 export class Convert {
-	public static soundcloud(track: SoundCloudTrackAPI): Song {
+	public static soundcloud(track: SoundCloudTrackAPI): SoundCloudSong {
 		return {
 			title: track.title,
 			platform: 'soundcloud',
@@ -86,6 +91,7 @@ export class Convert {
 			},
 			url: track.permalink_url,
 			download: track.media?.transcodings[0].url,
+			downloadable: track.downloadable,
 		};
 	}
 

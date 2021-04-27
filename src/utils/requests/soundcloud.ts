@@ -11,6 +11,11 @@ const request = axios.create({
 });
 
 export default class SoundCloud {
+	/**
+	 * Get information about a track using its url.
+	 * @param {string} url - The url of the track.
+	 * @returns {Promise<SoundCloudTrackAPI>} Information about the track.
+	 */
 	public async track(url: string): Promise<SoundCloudTrackAPI> {
 		const { data } = await request('/resolve', {
 			params: {
@@ -21,6 +26,12 @@ export default class SoundCloud {
 		return data;
 	}
 
+	/**
+	 * Searches for a track.
+	 * @param {string} input - The entry to search for.
+	 * @param {number} limit - The maximium amount of results to return.
+	 * @returns {Promise<SoundCloudSearchAPI>} The results.
+	 */
 	public async search(entry: string, limit: number): Promise<SoundCloudSearchAPI> {
 		const { data } = await request('/search/tracks', {
 			params: {
@@ -32,6 +43,11 @@ export default class SoundCloud {
 		return data;
 	}
 
+	/**
+	 * Get a m3u8 stream from a given url.
+	 * @param {string} url - The url to get the stream from.
+	 * @returns {Promise<Stream>} The stream.
+	 */
 	public async download(url: string | undefined): Promise<Stream> {
 		if (!url) throw 'No url given';
 		const downloadURL = (await request(url)).data.url;

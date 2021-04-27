@@ -8,7 +8,7 @@ import Console from '@utils/console';
 if (existsSync('.env')) {
 	config();
 	Console.success('Found environmental variables in .env file!');
-} else {
+} else if (process.env.NODE_ENV === 'development') {
 	Console.info('Could not locate .env file! Did you remember to create one?');
 }
 
