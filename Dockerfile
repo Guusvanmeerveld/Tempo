@@ -34,7 +34,7 @@ RUN yarn build
 # Set node env to production
 ENV NODE_ENV=production
 
-# Move node_modules away
-RUN mv node_modules ../ && rm -r src
+# Remove src folder
+RUN rm -r src
 
 CMD ["yarn", "start"]
