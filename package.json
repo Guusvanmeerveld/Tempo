@@ -35,7 +35,7 @@
 		"pg": "^8.5.1",
 		"utf-8-validate": "^5.0.4",
 		"ws": "^7.4.5",
-		"ytdl-core": "^4.5.0",
+		"ytdl-core": "^4.7.0",
 		"ytsr": "^3.5.0"
 	},
 	"devDependencies": {
@@ -46,7 +46,7 @@
 		"@types/node": "^15.0.0",
 		"@types/pg": "^7.14.11",
 		"@types/ws": "^7.4.2",
-		"@typescript-eslint/eslint-plugin": "^4.22.0",
+		"@typescript-eslint/eslint-plugin": "^4.22.1",
 		"@typescript-eslint/parser": "^4.22.0",
 		"eslint": "^7.25.0",
 		"eslint-plugin-prettier": "^3.4.0",
