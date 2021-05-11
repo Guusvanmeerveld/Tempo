@@ -25,7 +25,7 @@
 		"chalk": "^4.1.1",
 		"cheerio": "^1.0.0-rc.5",
 		"discord.js-light": "3.5.9",
-		"dotenv": "^9.0.0",
+		"dotenv": "^9.0.2",
 		"ffmpeg-static": "^4.2.3",
 		"humanize-duration": "^3.26.0",
 		"libsodium-wrappers": "^0.7.9",
