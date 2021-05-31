@@ -42,7 +42,7 @@
 		"@types/humanize-duration": "^3.18.1",
 		"@types/lodash": "^4.14.168",
 		"@types/long": "^4.0.1",
-		"@types/lowdb": "^1.0.7",
+		"@types/lowdb": "^1.0.10",
 		"@types/node": "^15.0.2",
 		"@types/pg": "^7.14.11",
 		"@typescript-eslint/parser": "^4.22.1",
