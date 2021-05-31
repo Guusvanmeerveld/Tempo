@@ -34,7 +34,7 @@
 		"m3u8stream": "^0.8.3",
 		"pg": "^8.5.1",
 		"utf-8-validate": "^5.0.5",
-		"ws": "^7.4.5",
+		"ws": "^7.4.6",
 		"ytdl-core": "^4.7.0",
 		"ytsr": "^3.5.0"
 	},
@@ -45,7 +45,7 @@
 		"@types/lowdb": "^1.0.7",
 		"@types/node": "^15.0.2",
 		"@types/pg": "^7.14.11",
-		"@types/ws": "^7.4.2",
+		"@types/ws": "^7.4.4",
 		"@typescript-eslint/eslint-plugin": "^4.22.1",
 		"@typescript-eslint/parser": "^4.22.0",
 		"eslint": "^7.25.0",
