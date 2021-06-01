@@ -7,7 +7,7 @@ const discordToken = process.env.DISCORD;
 export default class Manager {
 	private manager: ShardingManager;
 	constructor() {
-		this.manager = new ShardingManager('./dist/start.js', {
+		this.manager = new ShardingManager('./dist/bot/start.js', {
 			token: discordToken,
 			execArgv: ['-r', 'tsconfig-paths/register', '-r', 'ts-node/register/transpile-only'],
 		});

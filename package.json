@@ -10,7 +10,7 @@
 	"scripts": {
 		"pretify": "prettier --write .",
 		"lint": "eslint src",
-		"dev": "ts-node-dev -r tsconfig-paths/register src/start.ts",
+		"dev": "ts-node-dev -r tsconfig-paths/register src/bot/start.ts",
 		"dev-full": "ts-node-dev src",
 		"test-build": "tsc --noEmit",
 		"build": "tsc",

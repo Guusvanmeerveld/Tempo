@@ -4,7 +4,7 @@ config();
 // import { WSEventType } from 'discord.js-light';
 
 import Events from './events';
-import Bot from './bot';
+import Bot from '.';
 
 if (process.env.NODE_ENV !== 'production') console.clear();
 

@@ -5,8 +5,8 @@ import { SlashCommand } from '@models/requests';
 import { Command } from '@models/command';
 import Console from '@utils/console';
 
-import * as commands from './commands';
-import Bot from './bot';
+import * as commands from '../commands';
+import Bot from '.';
 
 export const updateSlash = (client: Bot): void => {
 	const localCommands: Array<Command> = Object.values(commands).map(

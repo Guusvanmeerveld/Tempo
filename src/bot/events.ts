@@ -5,7 +5,7 @@ import Long from 'long';
 import { prefix } from '@config/settings.json';
 import { DefaultEmbed } from '@models/embed';
 import Console from '@utils/console';
-import Bot from './bot';
+import Bot from '.';
 
 export default class Events {
 	private client: Bot;

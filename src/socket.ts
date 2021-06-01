@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 
-import { updateSlash } from './slash';
+import { updateSlash } from './bot/slash';
 import Console from '@utils/console';
 import Bot from './bot';
 

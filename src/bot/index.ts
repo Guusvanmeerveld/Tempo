@@ -7,11 +7,10 @@ import Settings from '@utils/settings';
 import Locales from '@utils/locales';
 import Queue from '@utils/queue';
 
-import * as commands from './commands';
+import * as commands from '../commands';
+import Socket from '../socket';
 
 import Request from '@utils/requests/';
-
-import Socket from './socket';
 
 export default class Bot extends Client {
 	public settings: Settings;
