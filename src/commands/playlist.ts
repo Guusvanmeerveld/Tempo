@@ -6,7 +6,8 @@ import { Song, Album } from '@models/song';
 import Bot from '../bot';
 
 export const SPOTIFY_ALBUM = /^https?:\/\/(open\.spotify\.com\/album)\/(.*)$/g;
-export const YOUTUBE_PLAYLIST = /^(https?:)\/\/?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/(playlist\?list=)(.*)$/g;
+export const YOUTUBE_PLAYLIST =
+	/^(https?:)\/\/?(www\.)?(m\.)?(youtube.com|youtu\.?be)\/(playlist\?list=)(.*)$/g;
 
 export class PlayList implements Command {
 	name = 'playlist';

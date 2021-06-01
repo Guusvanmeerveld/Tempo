@@ -50,8 +50,7 @@ export class Database {
 	public set(id: string, settings: GuildSettings): void {
 		const query: QueryConfig = {
 			name: 'insert/update-guild',
-			text:
-				'INSERT INTO guilds(id, settings) VALUES($1, $2) ON CONFLICT (id) DO UPDATE SET id = $1, settings = $2',
+			text: 'INSERT INTO guilds(id, settings) VALUES($1, $2) ON CONFLICT (id) DO UPDATE SET id = $1, settings = $2',
 			values: [id, settings],
 		};
 

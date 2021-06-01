@@ -65,8 +65,8 @@ export class Settings implements Command {
 
 		const input = args[0].toLocaleLowerCase();
 
-		const choices = this.options[0].choices!;
-		const foundOption = choices.find((option) => option.name.toLocaleLowerCase() === input);
+		const choices = this.options[0].choices;
+		const foundOption = choices?.find((option) => option.name.toLocaleLowerCase() === input);
 
 		if (foundOption) {
 			if (args.length < 2) {
