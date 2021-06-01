@@ -35,7 +35,7 @@
 		"pg": "^8.5.1",
 		"utf-8-validate": "^5.0.5",
 		"ws": "^7.4.6",
-		"ytdl-core": "^4.7.0",
+		"ytdl-core": "^4.8.2",
 		"ytsr": "^3.5.0"
 	},
 	"devDependencies": {
