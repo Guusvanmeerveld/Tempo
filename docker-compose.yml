@@ -1,7 +1,7 @@
 version: '3'
 services:
   tempo:
-    image: xeeon/tempo
+    image: guusvanmeerveld/tempo
     container_name: tempo
     environment:
       - YOUTUBE=YOUTUBE API TOKEN
@@ -11,10 +11,10 @@ services:
       - GENIUS=GENIUS API KEY
       - DISCORD=DISCORD BOT TOKEN
       - OWNER=DISCORD OWNER ID
-  db:
-    image: postgres
-    container_name: tempo-db
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: tempo
-      POSTGRES_USER: tempo
+  # db:
+  #   image: postgres
+  #   container_name: tempo-db
+  #   restart: always
+  #   environment:
+  #     POSTGRES_PASSWORD: tempo
+  #     POSTGRES_USER: tempo
