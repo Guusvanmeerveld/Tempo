@@ -1,8 +1,3 @@
-const spotify = {
-	id: process.env.SPOTIFY_ID,
-	secret: process.env.SPOTIFY_SECRET,
-};
-
 import axios from 'axios';
 
 import { SpotifyAlbumAPI, SpotifySearchAPI, SpotifyTrackAPI } from '@models/requests';
@@ -28,7 +23,19 @@ export default class Spotify {
 	private token: string;
 
 	constructor() {
+		if (!process.env.SPOTIFY_SECRET || !process.env.SPOTIFY_ID) {
+			Console.info(
+				'Could not find SPOTIFY_SECRET or SPOTIFY_ID variables, disabling Spotify support'
+			);
+		}
+
+		const spotify = {
+			id: process.env.SPOTIFY_ID,
+			secret: process.env.SPOTIFY_SECRET,
+		};
+
 		const tokenCombo = `${spotify.id}:${spotify.secret}`;
+
 		this.token = Buffer.from(tokenCombo).toString('base64');
 
 		this.oauth = {

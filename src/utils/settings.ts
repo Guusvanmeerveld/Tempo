@@ -16,12 +16,12 @@ export default class Settings {
 		this.db = new Database();
 		this.guilds = new Collection();
 
+		console.time('get-database');
 		this.db.get().then((guilds) => {
-			guilds.forEach((guild: RawDBData) => {
-				this.guilds.set(guild.id ?? '', guild.settings);
-			});
+			guilds.forEach((guild: RawDBData) => this.guilds.set(guild.id ?? '', guild.settings));
 
 			Console.success('Retrieved data from database!');
+			console.timeEnd('get-database');
 		});
 	}
 

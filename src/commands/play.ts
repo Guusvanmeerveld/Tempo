@@ -43,22 +43,22 @@ export class Play implements Command {
 	 * @param args
 	 * @param client
 	 */
-	public async run(msg: Message, args: Array<string>, playskip?: boolean): Promise<void> {
+	public run(msg: Message, args: Array<string>, playskip?: boolean): void {
 		if (args.length < 1) {
 			this.playAttachment(msg);
 			return;
 		}
 
-		const joined = await this.join(msg);
-
-		if (!joined) return;
-
-		const queue = this.client.queue.get(msg.guild?.id ?? '');
-
 		this.info(msg, args)
-			.then((song: Song) => {
+			.then(async (song: Song) => {
+				const joined = await this.join(msg);
+
+				if (!joined) return;
+
 				song.requested = msg.author;
 				const embed = new SongEmbed({ author: msg.author, song });
+
+				const queue = this.client.queue.get(msg.guild?.id ?? '');
 
 				if (queue?.playing && !playskip) {
 					if (queue.songs.length >= queueLimit) {
@@ -67,6 +67,7 @@ export class Play implements Command {
 					}
 
 					queue.songs.push(song);
+
 					msg.channel.send(`🎵  Added \`${song.title}\` to the queue.`, {
 						embed,
 					});
@@ -197,6 +198,7 @@ export class Play implements Command {
 	 */
 	private async info(msg: Message, args: Array<string>): Promise<Song> {
 		const input = args[0];
+
 		if (input.match(YOUTUBE)) {
 			const id = this.client.request.youtube.id(input);
 			const data = await this.client.request.youtube.video(id);
@@ -239,6 +241,7 @@ export class Play implements Command {
 
 			this.stream(msg.guild!, first.attachment.toString());
 			msg.channel.send('🎵  Now playing');
+
 			return;
 		}
 

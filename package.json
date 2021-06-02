@@ -3,7 +3,6 @@
 	"version": "0.1.0",
 	"description": "A simple Discord music bot that can play Soundcloud, Youtube or Spotify tracks.",
 	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
 	"homepage": "https://tempo.g-vm.nl",
 	"repository": "github:guusvanmeerveld/tempo",
 	"markdown": "github",
@@ -35,7 +34,7 @@
 		"pg": "^8.5.1",
 		"utf-8-validate": "^5.0.5",
 		"ws": "^7.4.6",
-		"ytdl-core": "^4.7.0",
+		"ytdl-core": "^4.8.2",
 		"ytsr": "^3.5.0"
 	},
 	"devDependencies": {

@@ -13,15 +13,20 @@ export class Database {
 
 	constructor() {
 		this.pool = new Pool({
-			connectionString: process.env.DATABASE_URL,
-			ssl: {
-				rejectUnauthorized: false,
-			},
+			connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432',
+			// ssl: {
+			// 	rejectUnauthorized: false,
+			// },
 		});
 
-		this.pool.on('error', (err) => {
-			Console.error('Unexpected error on idle client' + JSON.stringify(err));
-		});
+		this.pool.on('error', (err) =>
+			Console.error('Unexpected error on idle client' + JSON.stringify(err))
+		);
+
+		this.pool
+			.query('CREATE TABLE IF NOT EXISTS guilds(id VARCHAR(30) NOT NULL, settings JSON);')
+			.then(console.log)
+			.catch(console.log);
 	}
 
 	/**

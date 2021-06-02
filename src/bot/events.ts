@@ -5,6 +5,7 @@ import Long from 'long';
 import { prefix } from '@config/settings.json';
 import { DefaultEmbed } from '@models/embed';
 import Console from '@utils/console';
+
 import Bot from '.';
 
 export default class Events {
@@ -95,9 +96,13 @@ export default class Events {
 	 * @param error - The error that occured
 	 */
 	public error(error: unknown): void {
-		this.client.users
-			.fetch(process.env.OWNER ?? '')
-			.then((owner) => owner.send('```json\n' + error + '```'));
+		if (process.env.OWNER) {
+			this.client.users
+				.fetch(process.env.OWNER ?? '')
+				.then((owner) => owner.send('```json\n' + error + '```'));
+		}
+
+		console.log(error);
 	}
 
 	/**
