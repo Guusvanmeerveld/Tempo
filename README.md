@@ -14,18 +14,40 @@ The easiest way to install Tempo locally is via Docker:
 ```yml
 version: '3'
 services:
-    tempo:
-        image: xeeon/tempo
-        container_name: tempo
-        environment:
-            - YOUTUBE=YOUTUBE API TOKEN
-            - SOUNDCLOUD=SOUNDCLOUD CLIENT ID
-            - SPOTIFY_SECRET=SPOTIFY SECRET API TOKEN
-            - SPOTIFY_ID=SPOTIFY SECRET API ID
-            - GENIUS=GENIUS API KEY
-            - DISCORD=DISCORD BOT TOKEN
-            - OWNER=DISCORD OWNER ID
-            - DATABASE_URL=POSTGRES DATABASE URL
+  tempo:
+    depends_on: [db]
+    image: guusvanmeerveld/tempo
+    container_name: tempo
+    environment:
+      # Optional tokens, function will be disabled if token isn't provided
+      YOUTUBE: YOUTUBE API TOKEN
+      SOUNDCLOUD: SOUNDCLOUD CLIENT ID
+      SPOTIFY_SECRET: SPOTIFY SECRET API TOKEN
+      SPOTIFY_ID: SPOTIFY SECRET API ID
+      GENIUS: GENIUS API KEY
+
+      # Required token
+      DISCORD: DISCORD BOT TOKEN
+
+      # Required if you want errors to be sent to you
+      OWNER: DISCORD OWNER ID
+
+      # You can use your own database url if you already have one running
+      DATABASE_URL: 'postgresql://tempo:tempo@tempo-db:5432/tempo'
+  db:
+    image: postgres
+    container_name: tempo-db
+    restart: always
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: tempo
+      POSTGRES_USER: tempo
+      POSTGRES_DB: tempo
+
+volumes:
+  data:
 ```
 You can also install Tempo using the following commands:
 ```

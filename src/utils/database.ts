@@ -22,11 +22,6 @@ export class Database {
 		this.pool.on('error', (err) =>
 			Console.error('Unexpected error on idle client' + JSON.stringify(err))
 		);
-
-		this.pool
-			.query('CREATE TABLE IF NOT EXISTS guilds(id VARCHAR(30) NOT NULL, settings JSON);')
-			.then(console.log)
-			.catch(console.log);
 	}
 
 	/**
@@ -34,6 +29,10 @@ export class Database {
 	 * @returns Raw database information
 	 */
 	public async get(): Promise<Array<RawDBData>> {
+		await this.pool.query(
+			'CREATE TABLE IF NOT EXISTS guilds(id VARCHAR UNIQUE NOT NULL, settings JSON);'
+		);
+
 		const query = await this.pool.query('SELECT * FROM guilds');
 
 		return query.rows;

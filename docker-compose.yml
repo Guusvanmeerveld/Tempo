@@ -3,7 +3,7 @@ services:
   tempo:
     depends_on: [db]
     image: guusvanmeerveld/tempo
-    container_name: tempo-test
+    container_name: tempo
     environment:
       # Optional tokens, function will be disabled if token isn't provided
       YOUTUBE: YOUTUBE API TOKEN
@@ -17,6 +17,8 @@ services:
 
       # Required if you want errors to be sent to you
       OWNER: DISCORD OWNER ID
+
+      # You can use your own database url if you already have one running
       DATABASE_URL: 'postgresql://tempo:tempo@tempo-db:5432/tempo'
   db:
     image: postgres
