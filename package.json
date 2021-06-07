@@ -38,7 +38,7 @@
 		"ytsr": "^3.5.0"
 	},
 	"devDependencies": {
-		"@types/humanize-duration": "^3.18.1",
+		"@types/humanize-duration": "^3.25.0",
 		"@types/lodash": "^4.14.168",
 		"@types/long": "^4.0.1",
 		"@types/node": "^15.12.1",
