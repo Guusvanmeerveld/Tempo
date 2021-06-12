@@ -8,9 +8,10 @@
 </p>
 <p align="center">Tempo is a Discord music bot, written in TypeScript.</p>
 
-### Installation
+# Installation
 
-The easiest way to install Tempo locally is via Docker:
+## Docker
+Using a docker-compose.yml:
 ```yml
 version: '3'
 services:
@@ -49,6 +50,8 @@ services:
 volumes:
   data:
 ```
+
+## Node.js & NPM
 You can also install Tempo using the following commands:
 ```
 git clone https://github.com/guusvanmeerveld/tempo/ tempo
