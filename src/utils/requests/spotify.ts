@@ -21,9 +21,12 @@ const regex = /(open\.spotify\.com\/(album|track)\/)([0-9A-Za-z_-]{22}).*/;
 export default class Spotify {
 	private oauth: OAuth;
 	private token: string;
+	public enabled: boolean;
 
 	constructor() {
-		if (!process.env.SPOTIFY_SECRET || !process.env.SPOTIFY_ID) {
+		this.enabled = process.env.SPOTIFY_SECRET !== undefined && process.env.SPOTIFY_ID !== undefined;
+
+		if (!this.enabled) {
 			Console.info(
 				'Could not find SPOTIFY_SECRET or SPOTIFY_ID variables, disabling Spotify support'
 			);

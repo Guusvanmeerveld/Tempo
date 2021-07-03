@@ -168,26 +168,28 @@ export class Play implements Command {
 			const settings = this.client.settings.get(guild.id);
 			const volume = settings.volume;
 
-			connection.play(stream, { volume: volume / 100, seek }).on('finish', () => {
-				const id = guild?.id ?? '';
-				const queue = this.client.queue.get(id);
+			connection
+				.play(stream, { volume: volume / 100, seek })
+				.on('finish', () => {
+					const queue = this.client.queue.get(guild.id);
 
-				if (!queue) return;
+					if (!queue) return;
 
-				if (queue.loop) {
-					this.play(guild, queue.playing);
-					return;
-				}
+					if (queue.loop) {
+						this.play(guild, queue.playing);
+						return;
+					}
 
-				const shifted = this.client.queue.shift(id);
-				if (shifted) {
-					this.play(guild, shifted);
+					const shifted = this.client.queue.shift(guild.id);
+					if (shifted) {
+						this.play(guild, shifted);
 
-					return;
-				}
+						return;
+					}
 
-				guild.voice?.channel?.leave();
-			});
+					guild.voice?.channel?.leave();
+				})
+				.on('error', console.log);
 		}
 	}
 
@@ -213,6 +215,10 @@ export class Play implements Command {
 		}
 
 		if (input.match(SPOTIFY)) {
+			if (!this.client.request.spotify.enabled) {
+				throw 'The owner of the bot has disabled Spotify support.';
+			}
+
 			const id = this.client.request.spotify.id(input);
 
 			const song = await this.client.request.spotify.get('tracks', id);
